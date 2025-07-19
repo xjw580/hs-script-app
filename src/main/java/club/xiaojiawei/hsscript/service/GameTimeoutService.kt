@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.service
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.dll.User32ExDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
@@ -9,7 +9,7 @@ import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.go
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinUser.SMTO_ABORTIFHUNG

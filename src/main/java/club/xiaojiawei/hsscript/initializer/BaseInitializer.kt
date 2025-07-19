@@ -1,12 +1,12 @@
 package club.xiaojiawei.hsscript.initializer
 
 import club.xiaojiawei.data.BaseData
-import club.xiaojiawei.enums.ModeEnum
-import club.xiaojiawei.enums.WarPhaseEnum
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.utils.ConfigUtil
-import club.xiaojiawei.interfaces.ModeStrategy
-import club.xiaojiawei.interfaces.PhaseStrategy
+import club.xiaojiawei.hsscriptbase.interfaces.ModeStrategy
+import club.xiaojiawei.hsscriptbase.interfaces.PhaseStrategy
 
 /**
  * @author 肖嘉威

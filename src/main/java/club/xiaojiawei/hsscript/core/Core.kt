@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.core
 
-import club.xiaojiawei.config.CORE_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.CORE_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
@@ -14,8 +14,8 @@ import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import java.util.concurrent.locks.ReentrantLock
 
 /**

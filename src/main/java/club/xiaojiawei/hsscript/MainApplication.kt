@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript
 
 import club.xiaojiawei.CardAction.Companion.commonActionFactory
-import club.xiaojiawei.bean.LThread
-import club.xiaojiawei.config.log
-import club.xiaojiawei.config.submitExtra
+import club.xiaojiawei.hsscriptbase.bean.LThread
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.config.submitExtra
 import club.xiaojiawei.hsscript.bean.CommonCardAction.Companion.DEFAULT
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.config.InitializerConfig
@@ -24,8 +24,9 @@ import club.xiaojiawei.hsscript.utils.SystemUtil.shutdownSoft
 import club.xiaojiawei.hsscript.utils.WindowUtil.buildStage
 import club.xiaojiawei.hsscript.utils.WindowUtil.getStage
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.VersionUtil
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.Memory
 import com.sun.jna.WString
 import javafx.application.Application

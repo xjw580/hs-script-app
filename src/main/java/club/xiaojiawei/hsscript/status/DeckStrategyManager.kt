@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.status
 
 import club.xiaojiawei.DeckStrategy
 import club.xiaojiawei.bean.PluginWrapper
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.status.PluginManager.DECK_STRATEGY_PLUGINS
 import club.xiaojiawei.hsscript.status.PluginManager.loadDeckProperty

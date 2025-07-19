@@ -1,10 +1,10 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.bean.LRunnable
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.log
-import club.xiaojiawei.enums.ModeEnum
-import club.xiaojiawei.enums.RunModeEnum
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.listener.log.PowerLogListener

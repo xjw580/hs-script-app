@@ -1,11 +1,11 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.bean.LRunnable
-import club.xiaojiawei.config.VIRTUAL_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.VIRTUAL_THREAD_POOL
 import club.xiaojiawei.controls.ico.CopyIco
 import club.xiaojiawei.controls.ico.OKIco
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import javafx.animation.PauseTransition
 import javafx.application.Platform
 import javafx.event.ActionEvent

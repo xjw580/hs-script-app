@@ -9,7 +9,7 @@ import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
 import club.xiaojiawei.hsscript.utils.runUI
-import club.xiaojiawei.util.RandomUtil
+import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import java.awt.Point
 import java.util.function.Consumer
 

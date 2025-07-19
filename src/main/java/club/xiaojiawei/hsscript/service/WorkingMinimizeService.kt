@@ -5,8 +5,8 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import javafx.beans.value.ChangeListener
 
 /**

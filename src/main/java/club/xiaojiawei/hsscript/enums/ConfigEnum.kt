@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.enums
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.enums.RunModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WorkTime
 import club.xiaojiawei.hsscript.bean.WorkTimeRule

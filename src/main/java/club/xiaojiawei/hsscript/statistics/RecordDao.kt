@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.statistics
 
-import club.xiaojiawei.enums.RunModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.consts.ZONE_OFFSET
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper

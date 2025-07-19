@@ -6,8 +6,8 @@ import club.xiaojiawei.StrategyPlugin
 import club.xiaojiawei.DeckStrategy
 import club.xiaojiawei.bean.DBCard
 import club.xiaojiawei.bean.PluginWrapper
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.controls.CopyLabel
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal

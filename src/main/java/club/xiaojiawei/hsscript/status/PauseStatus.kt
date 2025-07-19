@@ -1,13 +1,6 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscript.controller.javafx.settings.SettingsController
-import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
-import club.xiaojiawei.hsscript.enums.WindowEnum
-import club.xiaojiawei.hsscript.utils.ConfigExUtil
-import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.hsscript.utils.WindowUtil
-import club.xiaojiawei.hsscript.utils.runUI
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import javafx.beans.property.ReadOnlyBooleanWrapper
 import javafx.beans.value.ChangeListener
 

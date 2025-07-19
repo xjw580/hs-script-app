@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
 import club.xiaojiawei.bean.isValid
-import club.xiaojiawei.config.log
-import club.xiaojiawei.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscript.bean.Behavior
 import club.xiaojiawei.hsscript.bean.DeckStrategyThread
 import club.xiaojiawei.hsscript.bean.OutCardThread
@@ -17,8 +17,7 @@ import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.status.WAR
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 
 /**
  * 游戏回合阶段

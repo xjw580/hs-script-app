@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import java.io.*
 

@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.config.log
-import club.xiaojiawei.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.status.Mode.prevMode
 import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.GameUtil

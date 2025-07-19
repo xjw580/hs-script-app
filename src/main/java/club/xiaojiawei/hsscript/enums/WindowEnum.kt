@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.enums
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
 import javafx.stage.Screen
 import javafx.stage.StageStyle

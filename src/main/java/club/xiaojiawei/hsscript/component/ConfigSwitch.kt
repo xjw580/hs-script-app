@@ -6,7 +6,7 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.service.Service
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.runUI
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isFalse
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 

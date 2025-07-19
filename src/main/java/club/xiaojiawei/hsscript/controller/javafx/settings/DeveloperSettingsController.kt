@@ -2,8 +2,8 @@ package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
 import club.xiaojiawei.config.DBConfig.DB_NAME
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
@@ -14,8 +14,8 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
 import javafx.fxml.FXML

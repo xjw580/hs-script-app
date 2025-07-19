@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.GAME_US_NAME
 import club.xiaojiawei.hsscript.consts.INJECT_UTIL_FILE
 import club.xiaojiawei.hsscript.consts.LIB_HS_FILE

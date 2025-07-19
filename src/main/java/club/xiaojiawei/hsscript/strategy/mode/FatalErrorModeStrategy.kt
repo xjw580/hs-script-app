@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 

@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.bean.LRunnable
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.custom.MouseClickListener
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -18,8 +18,8 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.initializer.ServiceInitializer
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.SystemUtil.delay
-import club.xiaojiawei.util.RandomUtil
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.RandomUtil
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.WString
 import com.sun.jna.platform.win32.*
 import com.sun.jna.platform.win32.WinUser.*

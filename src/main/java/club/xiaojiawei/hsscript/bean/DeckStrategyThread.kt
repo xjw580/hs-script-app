@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.bean.LThread
+import club.xiaojiawei.hsscriptbase.bean.LThread
 
 /**
  * @author 肖嘉威

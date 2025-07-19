@@ -5,10 +5,10 @@ import club.xiaojiawei.bean.Player
 import club.xiaojiawei.bean.War
 import club.xiaojiawei.bean.area.Area
 import club.xiaojiawei.bean.isValid
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.enums.CardRaceEnum
 import club.xiaojiawei.enums.CardTypeEnum
-import club.xiaojiawei.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
@@ -17,7 +17,7 @@ import club.xiaojiawei.hsscript.consts.LOST
 import club.xiaojiawei.hsscript.consts.WON
 import club.xiaojiawei.hsscript.interfaces.ExtraEntityHandler
 import club.xiaojiawei.hsscript.interfaces.TagChangeHandler
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 
 /**
  * @author 肖嘉威

@@ -12,8 +12,6 @@ import kotlin.io.path.exists
 
 val ROOT_PATH = System.getProperty("user.dir")
 
-val MAIN_PATH = ROOT_PATH
-
 val TEMP_VERSION_PATH: String = Path.of(ROOT_PATH, "new_version_temp").toString()
 
 val LOG_PATH: String = Path.of(ROOT_PATH, "log").toString()
@@ -50,10 +48,13 @@ val INJECT_UTIL_FILE = ResourceFile("inject-util.exe")
 
 val INSTALL_DRIVE_FILE = ResourceFile("install-drive.exe")
 
-val LIB_HS_FILE = ResourceFile("hs.dll")
-val LIB_BN_FILE = ResourceFile("bn.dll")
-
 val HS_CARD_UTIL_FILE = ResourceFile("card-update-util.exe")
+
+val UPDATE_FILE = ResourceFile("update.exe")
+
+val LIB_HS_FILE = ResourceFile("hs.dll")
+
+val LIB_BN_FILE = ResourceFile("bn.dll")
 
 const val GAME_WAR_LOG_NAME = "Power.log"
 

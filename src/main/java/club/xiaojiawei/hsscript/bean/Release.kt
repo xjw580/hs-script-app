@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.regex.Pattern

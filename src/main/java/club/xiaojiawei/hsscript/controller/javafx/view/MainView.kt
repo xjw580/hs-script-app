@@ -5,7 +5,7 @@ import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ico.FlushIco
 import club.xiaojiawei.controls.ico.PauseIco
 import club.xiaojiawei.controls.ico.StartIco
-import club.xiaojiawei.enums.RunModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*

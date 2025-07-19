@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.dll
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.DRIVER_LOCK
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import com.sun.jna.*

@@ -3,9 +3,9 @@ package club.xiaojiawei.hsscript.utils
 import club.xiaojiawei.CardAction
 import club.xiaojiawei.bean.Card
 import club.xiaojiawei.bean.CardInfo
-import club.xiaojiawei.bean.CardWeight
+import club.xiaojiawei.hsscriptbase.bean.CardWeight
 import club.xiaojiawei.bean.War
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.data.CARD_INFO_TRIE
 import club.xiaojiawei.data.CARD_WEIGHT_TRIE
 import club.xiaojiawei.data.COIN_CARD_ID

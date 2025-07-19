@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.LAUNCH_PROGRAM_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -11,7 +11,7 @@ import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinDef.HWND

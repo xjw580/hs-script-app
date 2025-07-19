@@ -1,12 +1,12 @@
 package club.xiaojiawei.hsscript.starter
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.controller.javafx.MainController
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.utils.*
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isFalse
 
 /**
  * 发出警告

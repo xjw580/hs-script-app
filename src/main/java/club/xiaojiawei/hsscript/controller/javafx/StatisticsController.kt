@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.controller.javafx
 
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.controls.Date
 import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.controls.ico.OfflineIco
@@ -9,7 +9,7 @@ import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.statistics.Record
 import club.xiaojiawei.hsscript.statistics.RecordDaoEx
 import club.xiaojiawei.hsscript.utils.runUI
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import javafx.beans.property.DoubleProperty
 import javafx.fxml.FXML
 import javafx.fxml.Initializable

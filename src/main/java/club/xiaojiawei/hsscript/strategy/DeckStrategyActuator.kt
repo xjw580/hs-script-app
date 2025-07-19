@@ -3,9 +3,9 @@ package club.xiaojiawei.hsscript.strategy
 import club.xiaojiawei.bean.Card
 import club.xiaojiawei.bean.isValid
 import club.xiaojiawei.bean.safeRun
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.data.COIN_CARD_ID
-import club.xiaojiawei.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
@@ -16,9 +16,9 @@ import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.status.WAR
-import club.xiaojiawei.util.RandomUtil
-import club.xiaojiawei.util.isFalse
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.RandomUtil
+import club.xiaojiawei.hsscriptbase.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isTrue
 
 /**
  * 卡牌策略执行器

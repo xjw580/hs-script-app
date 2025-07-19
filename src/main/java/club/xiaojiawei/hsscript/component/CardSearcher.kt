@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.component
 
-import club.xiaojiawei.util.withNotNull
+import club.xiaojiawei.hsscriptbase.util.withNotNull
 import javafx.scene.layout.VBox
 
 /**

@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.JavaFXUI
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.COMMON_CSS_PATH
 import club.xiaojiawei.hsscript.consts.FXML_DIR
 import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
@@ -12,7 +12,7 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.utils.SystemUtil.findHWND
 import club.xiaojiawei.hsscript.utils.SystemUtil.showWindow
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.application.Platform
 import javafx.event.ActionEvent

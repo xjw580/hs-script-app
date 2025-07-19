@@ -1,18 +1,16 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.config.log
-import club.xiaojiawei.enums.StepEnum
-import club.xiaojiawei.enums.WarPhaseEnum
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.log.Block
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
-import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.interfaces.closer.ThreadCloser
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
-import club.xiaojiawei.hsscript.listener.log.DeckLogListener.dealing
 import club.xiaojiawei.hsscript.listener.log.PowerLogListener
 import club.xiaojiawei.hsscript.status.TaskManager
 import club.xiaojiawei.hsscript.utils.ConfigUtil
@@ -24,9 +22,9 @@ import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealShowEntity
 import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealTagChange
 import club.xiaojiawei.hsscript.utils.PowerLogUtil.isRelevance
 import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.interfaces.PhaseStrategy
+import club.xiaojiawei.hsscriptbase.interfaces.PhaseStrategy
 import club.xiaojiawei.status.WAR
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import java.io.IOException
 
 /**

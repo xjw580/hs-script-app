@@ -1,11 +1,11 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.interfaces.closer.ScheduledCloser
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.TaskManager
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isFalse
 import java.io.Closeable
 import java.util.concurrent.ScheduledFuture
 

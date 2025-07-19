@@ -1,17 +1,19 @@
 package club.xiaojiawei.hsscript.listener
 
-import club.xiaojiawei.bean.LRunnable
-import club.xiaojiawei.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.PROGRAM_ARGS
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
-import club.xiaojiawei.hsscript.consts.MAIN_PATH
+import club.xiaojiawei.hsscript.consts.ROOT_PATH
 import club.xiaojiawei.hsscript.consts.TEMP_VERSION_PATH
+import club.xiaojiawei.hsscript.consts.UPDATE_FILE
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscriptbase.util.VersionUtil
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
@@ -20,9 +22,7 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -39,8 +39,6 @@ import java.util.zip.ZipInputStream
 object VersionListener {
 
     const val VERSION_FILE_FLAG_NAME = "downloaded.flag"
-
-    const val UPDATE_PROGRAM_NAME: String = "update.exe"
 
     private var checkVersionTask: ScheduledFuture<*>? = null
 
@@ -135,18 +133,12 @@ object VersionListener {
                 if (updatingProperty.get()) return
                 updatingProperty.set(true)
 
-                val rootPath = MAIN_PATH
-                val updateProgramPath = Path.of(rootPath, UPDATE_PROGRAM_NAME).toString()
-                Files.copy(
-                    Path.of(versionPath, UPDATE_PROGRAM_NAME),
-                    Path.of(rootPath, UPDATE_PROGRAM_NAME),
-                    StandardCopyOption.REPLACE_EXISTING
-                )
+                val updateProgramPath = SystemUtil.getExeFilePath(UPDATE_FILE)
                 Runtime.getRuntime().exec(
                     String.format(
                         "%s --target='%s' --source='%s' --pause='%s' --pid='%s'",
                         updateProgramPath,
-                        rootPath,
+                        ROOT_PATH,
                         versionPath,
                         PauseStatus.isPause,
                         ProcessHandle.current().pid()

@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.status
 
 import club.xiaojiawei.CardAction
-import club.xiaojiawei.bean.LikeTrie
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.bean.LikeTrie
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.status.PluginManager.CARD_ACTION_PLUGINS
 import club.xiaojiawei.hsscript.status.PluginManager.loadCardProperty
 import javafx.beans.value.ObservableValue

@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.CONFIG_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.alibaba.fastjson.JSON
 import org.ini4j.Config
 import org.ini4j.Ini

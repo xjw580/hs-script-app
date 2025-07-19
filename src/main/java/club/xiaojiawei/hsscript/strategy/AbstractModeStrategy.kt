@@ -1,11 +1,11 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.interfaces.closer.ScheduledCloser
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.TaskManager
-import club.xiaojiawei.interfaces.ModeStrategy
-import club.xiaojiawei.util.isFalse
+import club.xiaojiawei.hsscriptbase.interfaces.ModeStrategy
+import club.xiaojiawei.hsscriptbase.util.isFalse
 import java.util.*
 import java.util.concurrent.ScheduledFuture
 

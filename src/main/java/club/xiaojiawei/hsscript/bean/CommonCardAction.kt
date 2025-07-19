@@ -5,12 +5,10 @@ import club.xiaojiawei.bean.Card
 import club.xiaojiawei.bean.area.PlayArea
 import club.xiaojiawei.bean.area.isInValid
 import club.xiaojiawei.enums.CardTypeEnum
-import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.status.WAR
-import club.xiaojiawei.util.isTrue
+import club.xiaojiawei.hsscriptbase.util.isTrue
 import kotlin.math.min
 
 /**

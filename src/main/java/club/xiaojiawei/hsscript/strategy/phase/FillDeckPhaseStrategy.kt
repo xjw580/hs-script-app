@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.bean.LThread
-import club.xiaojiawei.enums.WarPhaseEnum
+import club.xiaojiawei.hsscriptbase.bean.LThread
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.enums.ConfigEnum

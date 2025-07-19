@@ -3,7 +3,7 @@ package club.xiaojiawei.hsscript.status
 import club.xiaojiawei.*
 import club.xiaojiawei.bean.PluginWrapper
 import club.xiaojiawei.config.PluginScope
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.utils.ClassLoaderUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import javafx.beans.property.ReadOnlyBooleanProperty

@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.bean.LogRunnable
-import club.xiaojiawei.bean.ReadableThread
-import club.xiaojiawei.bean.WritableThread
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.bean.ReadableThread
+import club.xiaojiawei.hsscriptbase.bean.WritableThread
+import club.xiaojiawei.hsscriptbase.config.log
 import javafx.application.Platform
 
 /**

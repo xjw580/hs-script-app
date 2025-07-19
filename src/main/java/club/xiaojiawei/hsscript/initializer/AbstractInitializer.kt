@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.initializer
 
-import club.xiaojiawei.config.log
+import club.xiaojiawei.hsscriptbase.config.log
 
 /**
  * 初始化器，在主页显示前执行
