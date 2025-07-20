@@ -53,12 +53,12 @@
         <!--卡组插件-->
         <dependency>
             <groupId>com.github.xjw580</groupId>
-            <artifactId>hs-script-base-strategy</artifactId>
+            <artifactId>hs-script-base-strategy-plugin</artifactId>
         </dependency>
         <!--卡牌插件-->
         <dependency>
             <groupId>com.github.xjw580</groupId>
-            <artifactId>hs-script-base-card</artifactId>
+            <artifactId>hs-script-base-card-plugin</artifactId>
         </dependency>
         <!--javafx-->
         <dependency>
