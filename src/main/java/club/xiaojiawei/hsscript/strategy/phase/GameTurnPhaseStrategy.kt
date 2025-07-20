@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscript.bean.Behavior

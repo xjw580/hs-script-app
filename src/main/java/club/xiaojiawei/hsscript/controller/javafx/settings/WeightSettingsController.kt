@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.TableFilterManagerGroup
-import club.xiaojiawei.data.BaseData
+import club.xiaojiawei.hsscriptcardsdk.data.BaseData
 import club.xiaojiawei.hsscript.bean.WeightCard
 import club.xiaojiawei.hsscript.component.CardTableView
 import club.xiaojiawei.hsscript.consts.CARD_WEIGHT_CONFIG_PATH

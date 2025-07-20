@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.enums.CardActionEnum
-import club.xiaojiawei.enums.CardEffectTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty

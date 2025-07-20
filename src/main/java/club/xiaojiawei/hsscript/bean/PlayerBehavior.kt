@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.bean.Player
+import club.xiaojiawei.hsscriptcardsdk.bean.Player
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
 import java.util.*

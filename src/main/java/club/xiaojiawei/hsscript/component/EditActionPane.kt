@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.component
 
 import club.xiaojiawei.controls.WindowBar
 import club.xiaojiawei.controls.ico.ClearIco
-import club.xiaojiawei.enums.CardActionEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
 import club.xiaojiawei.hsscript.MainApplication
 import club.xiaojiawei.hsscript.bean.InfoCard
 import club.xiaojiawei.hsscript.enums.CardInfoActionTypeEnum

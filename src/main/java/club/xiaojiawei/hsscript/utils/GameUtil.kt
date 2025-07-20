@@ -14,7 +14,7 @@ import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.GameUtil.CHOOSE_ONE_RECTS
 import club.xiaojiawei.hsscript.utils.SystemUtil.delay
-import club.xiaojiawei.status.WAR
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.randomSelect
 import com.sun.jna.WString
@@ -423,7 +423,7 @@ object GameUtil {
             val myHeroBlood = myHero.blood()
             if (rivalAllDamage - myHeroBlood - myTauntBlood >= 0) {
                 log.info { "敌方已能斩杀我方，敌方伤害:${rivalAllDamage}，我方血量:${myHeroBlood}，我方嘲讽随从血量:${myTauntBlood}" }
-                GameUtil.surrender()
+                surrender()
             }
         }
     }

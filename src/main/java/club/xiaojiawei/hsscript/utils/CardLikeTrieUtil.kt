@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.bean.BaseCard
-import club.xiaojiawei.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.BaseCard
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
 import club.xiaojiawei.hsscript.bean.MultiLikeTrieNode
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier

@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.controller.javafx
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
-import club.xiaojiawei.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.config.submitExtra
 import club.xiaojiawei.controls.CopyLabel

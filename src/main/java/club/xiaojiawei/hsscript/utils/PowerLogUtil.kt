@@ -1,12 +1,12 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.Entity
-import club.xiaojiawei.bean.area.SetasideArea
-import club.xiaojiawei.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.Entity
+import club.xiaojiawei.hsscriptcardsdk.bean.area.SetasideArea
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.CommonCardAction
 import club.xiaojiawei.hsscript.bean.DiscoverCardThread
 import club.xiaojiawei.hsscript.bean.FixedSizeStack
@@ -27,7 +27,7 @@ import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
 import club.xiaojiawei.hsscript.utils.CardUtil.exchangeAreaOfCard
 import club.xiaojiawei.hsscript.utils.CardUtil.setCardAction
 import club.xiaojiawei.hsscript.utils.CardUtil.updateCardByExtraEntity
-import club.xiaojiawei.status.WAR
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import java.io.*
 import java.nio.charset.StandardCharsets

@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.bean.log
 
-import club.xiaojiawei.bean.Entity
-import club.xiaojiawei.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.bean.Entity
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 
 /**
  * @author 肖嘉威

@@ -1,6 +1,6 @@
 package club.xiaojiawei.util
 
-import club.xiaojiawei.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.log.CommonEntity
 import club.xiaojiawei.hsscript.utils.PowerLogUtil
 import kotlin.test.Test

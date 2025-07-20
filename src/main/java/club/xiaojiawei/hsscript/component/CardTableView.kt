@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript.component
 
-import club.xiaojiawei.bean.DBCard
+import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.bean.tableview.NoEditTextFieldTableCell
-import club.xiaojiawei.util.CardDBUtil
+import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader

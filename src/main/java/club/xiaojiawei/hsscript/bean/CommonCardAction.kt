@@ -1,13 +1,13 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.CardAction
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.area.PlayArea
-import club.xiaojiawei.bean.area.isInValid
-import club.xiaojiawei.enums.CardTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.CardAction
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.area.PlayArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.isInValid
+import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.status.WAR
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import kotlin.math.min
 

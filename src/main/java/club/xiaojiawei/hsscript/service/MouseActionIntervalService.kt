@@ -1,8 +1,6 @@
 package club.xiaojiawei.hsscript.service
 
-import club.xiaojiawei.CardAction
-import club.xiaojiawei.hsscript.status.ScriptStatus
-import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptcardsdk.CardAction
 
 /**
  * @author 肖嘉威

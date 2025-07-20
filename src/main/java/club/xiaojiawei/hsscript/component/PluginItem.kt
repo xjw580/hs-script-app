@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.component
 
-import club.xiaojiawei.CardPlugin
-import club.xiaojiawei.StrategyPlugin
-import club.xiaojiawei.bean.PluginWrapper
+import club.xiaojiawei.hsscriptcardsdk.CardPlugin
+import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
+import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.OKIco
@@ -41,7 +41,10 @@ class PluginItem(
     private lateinit var version: Text
 
     @FXML
-    private lateinit var sdkVersion: Label
+    private lateinit var cardSDKVersion: Label
+
+    @FXML
+    private lateinit var strategySDKVersion: Label
 
     init {
         val fxmlLoader = FXMLLoader(javaClass.getResource("/fxml/component/PluginItem.fxml"))
@@ -67,31 +70,72 @@ class PluginItem(
         author.text = pluginWrapper.plugin.author()
         version.text = pluginWrapper.plugin.version()
 
-        val sdkVersionStr = pluginWrapper.plugin.sdkVersion()
-        sdkVersion.contentDisplay = ContentDisplay.RIGHT
-        if (sdkVersionStr.isBlank() ||
-            Release.compareVersion(
-                minimumCompatibleVersion,
-                sdkVersionStr.removeSuffix("v"),
-            ) > 0
-        ) {
-            sdkVersion.styleClass.add("label-ui-error")
-            sdkVersion.graphic =
-                FailIco().apply {
-                    scaleX = 0.8
-                    scaleY = 0.8
-                }
-            sdkVersion.tooltip = Tooltip("版本不兼容，最低为$minimumCompatibleVersion，可能无法正常使用")
-        } else {
-            sdkVersion.styleClass.add("label-ui-success")
-            sdkVersion.graphic =
-                OKIco().apply {
-                    scaleX = 0.8
-                    scaleY = 0.8
-                }
-            sdkVersion.tooltip = Tooltip("版本兼容")
+        val cardSDKVersionStr = pluginWrapper.plugin.cardSDKVersion()
+        cardSDKVersion.contentDisplay = ContentDisplay.RIGHT
+        cardSDKVersionStr?.let { sdk ->
+            cardSDKVersion.isVisible = true
+            cardSDKVersion.isManaged = true
+            if (sdk.isBlank() ||
+                Release.compareVersion(
+                    minimumCompatibleVersion,
+                    sdk.removeSuffix("v"),
+                ) > 0
+            ) {
+                cardSDKVersion.styleClass.add("label-ui-error")
+                cardSDKVersion.graphic =
+                    FailIco().apply {
+                        scaleX = 0.8
+                        scaleY = 0.8
+                    }
+                cardSDKVersion.tooltip = Tooltip("卡牌SDK版本不兼容，最低为$minimumCompatibleVersion，可能无法正常使用")
+            } else {
+                cardSDKVersion.styleClass.add("label-ui-success")
+                cardSDKVersion.graphic =
+                    OKIco().apply {
+                        scaleX = 0.8
+                        scaleY = 0.8
+                    }
+                cardSDKVersion.tooltip = Tooltip("卡牌SDK版本兼容")
+            }
+            cardSDKVersion.text = sdk.ifBlank { "版本号错误" }
+        } ?: let {
+            cardSDKVersion.isVisible = false
+            cardSDKVersion.isManaged = false
         }
-        sdkVersion.text = if (sdkVersionStr.isBlank()) "版本号错误" else sdkVersionStr
+
+        val strategySDKVersionStr = pluginWrapper.plugin.strategySDKVersion()
+        strategySDKVersion.contentDisplay = ContentDisplay.RIGHT
+        strategySDKVersionStr?.let { sdk ->
+            strategySDKVersion.isVisible = true
+            strategySDKVersion.isManaged = true
+            if (sdk.isBlank() ||
+                Release.compareVersion(
+                    minimumCompatibleVersion,
+                    sdk.removeSuffix("v"),
+                ) > 0
+            ) {
+                strategySDKVersion.styleClass.add("label-ui-error")
+                strategySDKVersion.graphic =
+                    FailIco().apply {
+                        scaleX = 0.8
+                        scaleY = 0.8
+                    }
+                strategySDKVersion.tooltip = Tooltip("策略SDK版本不兼容，最低为$minimumCompatibleVersion，可能无法正常使用")
+            } else {
+                strategySDKVersion.styleClass.add("label-ui-success")
+                strategySDKVersion.graphic =
+                    OKIco().apply {
+                        scaleX = 0.8
+                        scaleY = 0.8
+                    }
+                strategySDKVersion.tooltip = Tooltip("策略SDK版本兼容")
+            }
+            strategySDKVersion.text = sdk.ifBlank { "版本号错误" }
+        } ?: let {
+            strategySDKVersion.isVisible = false
+            strategySDKVersion.isManaged = false
+        }
+
 
         enable.selectedProperty().bindBidirectional(pluginWrapper.enabledProperty())
         enable.selectedProperty().addListener { _, _, enable ->

@@ -1,13 +1,20 @@
 package club.xiaojiawei.hsscript.bean.single
 
-import club.xiaojiawei.bean.Player
-import club.xiaojiawei.bean.area.*
-import club.xiaojiawei.bean.safeRun
+import club.xiaojiawei.hsscriptcardsdk.bean.Player
+import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
-import club.xiaojiawei.status.WAR
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptcardsdk.bean.area.Area
+import club.xiaojiawei.hsscriptcardsdk.bean.area.DeckArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.GraveyardArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.HandArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.PlayArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.RemovedfromgameArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.SecretArea
+import club.xiaojiawei.hsscriptcardsdk.bean.area.SetasideArea
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleBooleanProperty

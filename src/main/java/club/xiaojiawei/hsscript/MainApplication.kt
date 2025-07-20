@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript
 
-import club.xiaojiawei.CardAction.Companion.commonActionFactory
+import club.xiaojiawei.hsscriptcardsdk.CardAction.Companion.commonActionFactory
 import club.xiaojiawei.hsscriptbase.bean.LThread
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.config.submitExtra

@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.hsscriptbase.bean.LRunnable
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log

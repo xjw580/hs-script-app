@@ -2,9 +2,9 @@ package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ico.EditIco
-import club.xiaojiawei.enums.CardActionEnum
-import club.xiaojiawei.enums.CardEffectTypeEnum
-import club.xiaojiawei.enums.CardTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import club.xiaojiawei.hsscript.bean.InfoCard
 import club.xiaojiawei.hsscript.bean.tableview.ComboBoxTableCell
 import club.xiaojiawei.hsscript.bean.tableview.NoEditTextFieldTableCell

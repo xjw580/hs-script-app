@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.bean.Entity
-import club.xiaojiawei.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.Entity
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.data.COIN_CARD_ID
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity

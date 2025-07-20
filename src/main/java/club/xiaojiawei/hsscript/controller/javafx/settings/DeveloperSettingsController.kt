@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.config.DBConfig.DB_NAME
+import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.controls.Modal

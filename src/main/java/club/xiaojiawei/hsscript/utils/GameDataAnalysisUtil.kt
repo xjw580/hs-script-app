@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.War
-import club.xiaojiawei.enums.CardTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.War
+import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color

@@ -1,15 +1,15 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.CardAction
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.CardInfo
+import club.xiaojiawei.hsscriptcardsdk.CardAction
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.CardInfo
 import club.xiaojiawei.hsscriptbase.bean.CardWeight
-import club.xiaojiawei.bean.War
+import club.xiaojiawei.hsscriptcardsdk.bean.War
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.data.CARD_INFO_TRIE
-import club.xiaojiawei.data.CARD_WEIGHT_TRIE
-import club.xiaojiawei.data.COIN_CARD_ID
-import club.xiaojiawei.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.data.CARD_INFO_TRIE
+import club.xiaojiawei.hsscriptcardsdk.data.CARD_WEIGHT_TRIE
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.CommonCardAction
 import club.xiaojiawei.hsscript.bean.CommonCardAction.Companion.DEFAULT
 import club.xiaojiawei.hsscript.bean.InfoCard
@@ -21,8 +21,8 @@ import club.xiaojiawei.hsscript.consts.CARD_INFO_CONFIG_PATH
 import club.xiaojiawei.hsscript.consts.CARD_WEIGHT_CONFIG_PATH
 import club.xiaojiawei.hsscript.status.CardActionManager.CARD_ACTION_MAP
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
-import club.xiaojiawei.mapper.BaseCardMapper
-import club.xiaojiawei.mapper.EntityMapper
+import club.xiaojiawei.hsscriptcardsdk.mapper.BaseCardMapper
+import club.xiaojiawei.hsscriptcardsdk.mapper.EntityMapper
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

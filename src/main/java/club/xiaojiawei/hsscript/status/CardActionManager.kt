@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.CardAction
+import club.xiaojiawei.hsscriptcardsdk.CardAction
 import club.xiaojiawei.hsscriptbase.bean.LikeTrie
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.status.PluginManager.CARD_ACTION_PLUGINS

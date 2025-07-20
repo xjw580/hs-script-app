@@ -1,10 +1,10 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.isValid
-import club.xiaojiawei.bean.safeRun
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.data.COIN_CARD_ID
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
 import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
@@ -15,7 +15,7 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.go
-import club.xiaojiawei.status.WAR
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue

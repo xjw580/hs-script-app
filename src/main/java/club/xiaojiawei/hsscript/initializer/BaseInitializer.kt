@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.initializer
 
-import club.xiaojiawei.data.BaseData
+import club.xiaojiawei.hsscriptcardsdk.data.BaseData
 import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum

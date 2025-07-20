@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.component
 
-import club.xiaojiawei.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.hsscript.utils.FXUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.runUI

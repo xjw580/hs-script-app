@@ -1,15 +1,15 @@
 package club.xiaojiawei.hsscript.enums
 
-import club.xiaojiawei.bean.Card
-import club.xiaojiawei.bean.Player
-import club.xiaojiawei.bean.War
-import club.xiaojiawei.bean.area.Area
-import club.xiaojiawei.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.Player
+import club.xiaojiawei.hsscriptcardsdk.bean.War
+import club.xiaojiawei.hsscriptcardsdk.bean.area.Area
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.enums.CardRaceEnum
-import club.xiaojiawei.enums.CardTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardRaceEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
-import club.xiaojiawei.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.consts.CONCEDED
@@ -218,7 +218,7 @@ enum class TagEnum(
 
     /**
      * 卡牌属性标签-复杂TAG_CHANGE
-     * [club.xiaojiawei.bean.BaseCard]里添加
+     * [club.xiaojiawei.hsscriptcardsdk.bean.BaseCard]里添加
      */
     HEALTH(
         "生命值",
@@ -453,7 +453,7 @@ enum class TagEnum(
     CARDRACE(
         "种族",
         TagChangeHandler { card: Card?, tagChangeEntity: TagChangeEntity, war: War, player: Player?, area: Area? ->
-            card?.cardRace = club.xiaojiawei.enums.CardRaceEnum.fromString(tagChangeEntity.value)
+            card?.cardRace = CardRaceEnum.fromString(tagChangeEntity.value)
             log(player, card, "种族", tagChangeEntity.value)
         },
         ExtraEntityHandler { extraEntity: ExtraEntity, value: String ->

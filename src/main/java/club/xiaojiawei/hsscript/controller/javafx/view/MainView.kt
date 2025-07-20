@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.controller.javafx.view
 
-import club.xiaojiawei.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ico.FlushIco
 import club.xiaojiawei.controls.ico.PauseIco

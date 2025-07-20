@@ -1,11 +1,16 @@
 package club.xiaojiawei.hsscript.status
 
 import club.xiaojiawei.*
-import club.xiaojiawei.bean.PluginWrapper
-import club.xiaojiawei.config.PluginScope
+import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
+import club.xiaojiawei.hsscriptpluginsdk.config.PluginScope
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.utils.ClassLoaderUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscriptcardsdk.CardAction
+import club.xiaojiawei.hsscriptcardsdk.CardPlugin
+import club.xiaojiawei.hsscriptpluginsdk.Plugin
+import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
 import java.nio.file.Path
