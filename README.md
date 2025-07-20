@@ -1,9 +1,6 @@
 ## hs-script-app
 
-
-
 此项目用于构建[Hearthstone-Script](https://github.com/xjw580/Hearthstone-Script)的客户端软件
-
 
 
 ## 协议
