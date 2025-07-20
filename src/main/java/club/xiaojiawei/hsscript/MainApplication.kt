@@ -41,6 +41,8 @@ import java.awt.event.ActionEvent
 import java.awt.event.MouseEvent
 import java.io.File
 import java.net.URLClassLoader
+import java.util.Locale
+import java.util.Locale.getDefault
 import java.util.function.Consumer
 import java.util.function.Supplier
 import java.util.prefs.Preferences
@@ -134,7 +136,8 @@ class MainApplication : Application() {
         }
 
         val classLoader = URLClassLoader(arrayOf(classDir.toURI().toURL()))
-        val className = ktFiles.first().nameWithoutExtension.capitalize() // 使用第一个文件的类名
+        val className =
+            ktFiles.first().nameWithoutExtension.replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() } // 使用第一个文件的类名
         try {
             val tempClass = classLoader.loadClass(className)
             val newInstance = tempClass.getDeclaredConstructor().newInstance()

@@ -46,11 +46,17 @@
             <outputDirectory>resources/img/</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>${project.basedir}</directory>
+            <includes>
+                <include>*.db</include>
+            </includes>
+            <outputDirectory/>
+        </fileSet>
+        <fileSet>
             <directory>${project.parent.basedir}</directory>
             <outputDirectory/>
             <includes>
-                <include>*.md</include>
-                <include>*.db</include>
+                <include>doc/*.md</include>
                 <include>LICENSE*</include>
             </includes>
         </fileSet>
