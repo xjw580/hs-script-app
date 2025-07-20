@@ -24,7 +24,7 @@ import club.xiaojiawei.hsscript.utils.SystemUtil.shutdownSoft
 import club.xiaojiawei.hsscript.utils.WindowUtil.buildStage
 import club.xiaojiawei.hsscript.utils.WindowUtil.getStage
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
-import club.xiaojiawei.hsscriptbase.util.VersionUtil
+import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.Memory
@@ -417,11 +417,11 @@ class MainApplication : Application() {
             val preferences = Preferences.userNodeForPackage(this::class.java)
             val key = "used"
             val version = ConfigUtil.getString(ConfigEnum.CURRENT_VERSION)
-            if (Release.compareVersion(VersionUtil.VERSION, version) > 0) {
+            if (Release.compareVersion(BuildInfo.VERSION, version) > 0) {
                 runUI {
                     showStage(WindowEnum.ABOUT)
                     showStage(WindowEnum.VERSION_MSG, getStage(WindowEnum.MAIN))
-                    ConfigUtil.putString(ConfigEnum.CURRENT_VERSION, VersionUtil.VERSION)
+                    ConfigUtil.putString(ConfigEnum.CURRENT_VERSION, BuildInfo.VERSION)
                 }
             } else {
                 if (preferences.get(key, "").isNullOrBlank()) {

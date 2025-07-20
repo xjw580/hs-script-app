@@ -13,7 +13,7 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.*
-import club.xiaojiawei.hsscriptbase.util.VersionUtil
+import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
@@ -79,7 +79,7 @@ object VersionListener {
     private var updated = false
 
     init {
-        currentRelease.tagName = VersionUtil.VERSION
+        currentRelease.tagName = BuildInfo.VERSION
         currentRelease.isPreRelease = VersionTypeEnum.getEnum(currentRelease).isPreview
         WorkTimeListener.addChangeListener { _, _, newValue ->
             if (!newValue) {

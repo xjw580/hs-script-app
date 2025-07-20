@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.controller.javafx
 
-import club.xiaojiawei.hsscriptbase.util.VersionUtil.VERSION
+import club.xiaojiawei.hsscriptbase.const.BuildInfo.VERSION
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
