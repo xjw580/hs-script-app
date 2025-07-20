@@ -19,12 +19,14 @@ object ClassLoaderUtil {
             val files = path.listFiles()
             if (files != null) {
                 for (file in files) {
-                    classLoaderList.add(
-                        URLClassLoader(
-                            arrayOf<URL>(file.toURI().toURL()),
-                            Thread.currentThread().getContextClassLoader()
+                    if (file.name.endsWith(".jar")){
+                        classLoaderList.add(
+                            URLClassLoader(
+                                arrayOf<URL>(file.toURI().toURL()),
+                                Thread.currentThread().getContextClassLoader()
+                            )
                         )
-                    )
+                    }
                 }
             }
         } else {

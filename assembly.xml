@@ -17,15 +17,15 @@
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <excludes>
-                <exclude>com.github.xjw580:hs-script-base-card</exclude>
-                <exclude>com.github.xjw580:hs-script-base-strategy</exclude>
+                <exclude>com.github.xjw580:hs-script-base-card-plugin</exclude>
+                <exclude>com.github.xjw580:hs-script-base-strategy-plugin</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>
             <outputDirectory>plugin</outputDirectory>
             <includes>
-                <include>com.github.xjw580:hs-script-base-card</include>
-                <include>com.github.xjw580:hs-script-base-strategy</include>
+                <include>com.github.xjw580:hs-script-base-card-plugin</include>
+                <include>com.github.xjw580:hs-script-base-strategy-plugin</include>
             </includes>
         </dependencySet>
     </dependencySets>

@@ -1,13 +1,5 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
-import club.xiaojiawei.hsscriptcardsdk.CardAction
-import club.xiaojiawei.hsscriptcardsdk.CardPlugin
-import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
-import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
-import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
-import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.controls.CopyLabel
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
@@ -19,7 +11,15 @@ import club.xiaojiawei.hsscript.status.PluginManager.CARD_ACTION_PLUGINS
 import club.xiaojiawei.hsscript.status.PluginManager.DECK_STRATEGY_PLUGINS
 import club.xiaojiawei.hsscript.utils.SystemUtil.openURL
 import club.xiaojiawei.hsscript.utils.runUI
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptcardsdk.CardAction
+import club.xiaojiawei.hsscriptcardsdk.CardPlugin
+import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
+import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable

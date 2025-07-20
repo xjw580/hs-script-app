@@ -1,19 +1,19 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.*
-import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
-import club.xiaojiawei.hsscriptpluginsdk.config.PluginScope
-import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscript.consts.PLUGIN_PATH
 import club.xiaojiawei.hsscript.utils.ClassLoaderUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptcardsdk.CardAction
 import club.xiaojiawei.hsscriptcardsdk.CardPlugin
 import club.xiaojiawei.hsscriptpluginsdk.Plugin
-import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
+import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
+import club.xiaojiawei.hsscriptpluginsdk.config.PluginScope
 import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
+import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
-import java.nio.file.Path
+import java.io.File
 import java.util.*
 import java.util.stream.StreamSupport
 
@@ -23,8 +23,6 @@ import java.util.stream.StreamSupport
  * @date 2024/9/7 15:05
  */
 object PluginManager {
-
-    private val PLUGIN_ROOT_PATH: Path = Path.of(System.getProperty("user.dir"), "plugin")
 
     /**
      * key：pluginId
@@ -78,7 +76,7 @@ object PluginManager {
         pluginWrapperMap: MutableMap<String, MutableList<PluginWrapper<T>>>
     ) {
         pluginWrapperMap.clear()
-        val deckClassLoaders = ClassLoaderUtil.getClassLoader(PLUGIN_ROOT_PATH.toFile())
+        val deckClassLoaders = ClassLoaderUtil.getClassLoader(File(PLUGIN_PATH))
 
         var pluginWrapper: PluginWrapper<T>
         val disableSet: MutableSet<String> =
