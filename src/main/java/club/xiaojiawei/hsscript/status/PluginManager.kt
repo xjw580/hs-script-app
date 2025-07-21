@@ -94,36 +94,41 @@ object PluginManager {
                 PluginManager::class.java.classLoader
             ).spliterator(), false
         ).toList()
-        val baseInstance: List<T>?
+        val innerAllInstance: List<T>?
         if (basePlugin.isEmpty()) {
-            baseInstance = null
+            innerAllInstance = null
         } else {
-            val isEnabled = !disableSet.contains(basePlugin.last().id())
-            if (isEnabled) {
-                basePlugin.last().init()
-            }
-            baseInstance = StreamSupport.stream(
+            innerAllInstance = StreamSupport.stream(
                 ServiceLoader.load(aClass, PluginManager::class.java.classLoader).spliterator(),
                 false
             ).toList()
-            pluginWrapper = PluginWrapper(basePlugin.first(), baseInstance)
-            pluginWrapper.setEnabled(isEnabled)
-
-            val plugin = pluginWrapper.plugin
-            val pluginId = plugin.id()
-            if (plugin is CardPlugin) {
-                val pluginScope = plugin.pluginScope()
-                if (pluginScope === PluginScope.PUBLIC) {
-                    addPluginWrapper(pluginWrapper, pluginWrapperMap, "", pluginClass.simpleName)
-                } else if (pluginScope === PluginScope.PROTECTED) {
-                    addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
-                } else {
-                    for (id in pluginScope) {
-                        addPluginWrapper(pluginWrapper, pluginWrapperMap, id, pluginClass.simpleName)
-                    }
+            for (p in basePlugin) {
+                val isEnabled = !disableSet.contains(p.id())
+                if (isEnabled) {
+                    p.init()
                 }
-            } else if (plugin is StrategyPlugin) {
-                addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
+                val packageName = p::class.java.packageName
+                pluginWrapper = PluginWrapper(p, innerAllInstance.filter {
+                    it::class.java.packageName.startsWith(packageName)
+                })
+                pluginWrapper.setEnabled(isEnabled)
+
+                val plugin = pluginWrapper.plugin
+                val pluginId = plugin.id()
+                if (plugin is CardPlugin) {
+                    val pluginScope = plugin.pluginScope()
+                    if (pluginScope === PluginScope.PUBLIC) {
+                        addPluginWrapper(pluginWrapper, pluginWrapperMap, "", pluginClass.simpleName)
+                    } else if (pluginScope === PluginScope.PROTECTED) {
+                        addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
+                    } else {
+                        for (id in pluginScope) {
+                            addPluginWrapper(pluginWrapper, pluginWrapperMap, id, pluginClass.simpleName)
+                        }
+                    }
+                } else if (plugin is StrategyPlugin) {
+                    addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
+                }
             }
         }
 
@@ -145,9 +150,9 @@ object PluginManager {
                     }
 
                     var stream = StreamSupport.stream(ServiceLoader.load(aClass, deckClassLoader).spliterator(), false)
-                    baseInstance?.let {
+                    innerAllInstance?.let {
                         stream = stream.filter { i: T ->
-                            for (t in baseInstance) {
+                            for (t in innerAllInstance) {
                                 if (t!!::class.java.name == i!!::class.java.name) {
                                     return@filter false
                                 }

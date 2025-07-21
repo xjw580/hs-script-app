@@ -19,6 +19,8 @@
             <excludes>
                 <exclude>com.github.xjw580:hs-script-base-card-plugin</exclude>
                 <exclude>com.github.xjw580:hs-script-base-strategy-plugin</exclude>
+                <exclude>com.github.xjw580:hs-card-plugin-template</exclude>
+                <exclude>com.github.xjw580:hs-strategy-plugin-template</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>

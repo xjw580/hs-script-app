@@ -60,6 +60,15 @@
             <groupId>com.github.xjw580</groupId>
             <artifactId>hs-script-base-card-plugin</artifactId>
         </dependency>
+        <!--模板插件-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xjw580</groupId>-->
+<!--            <artifactId>hs-card-plugin-template</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xjw580</groupId>-->
+<!--            <artifactId>hs-strategy-plugin-template</artifactId>-->
+<!--        </dependency>-->
         <!--javafx-->
         <dependency>
             <groupId>org.openjfx</groupId>
