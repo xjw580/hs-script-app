@@ -8,6 +8,10 @@ import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.consts.ROOT_PATH
 import club.xiaojiawei.hsscript.consts.TEMP_VERSION_PATH
+import club.xiaojiawei.hsscript.consts.UPDATE_ARG_PAUSE
+import club.xiaojiawei.hsscript.consts.UPDATE_ARG_PID
+import club.xiaojiawei.hsscript.consts.UPDATE_ARG_SOURCE
+import club.xiaojiawei.hsscript.consts.UPDATE_ARG_TARGET
 import club.xiaojiawei.hsscript.consts.UPDATE_FILE
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
@@ -29,6 +33,7 @@ import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import kotlin.jvm.java
 
 
 /**
@@ -136,7 +141,7 @@ object VersionListener {
                 val updateProgramPath = SystemUtil.getExeFilePath(UPDATE_FILE)
                 Runtime.getRuntime().exec(
                     String.format(
-                        "%s --target='%s' --source='%s' --pause='%s' --pid='%s'",
+                        "%s ${UPDATE_ARG_TARGET}'%s' ${UPDATE_ARG_SOURCE}'%s' ${UPDATE_ARG_PAUSE}'%s' ${UPDATE_ARG_PID}'%s'",
                         updateProgramPath,
                         ROOT_PATH,
                         versionPath,

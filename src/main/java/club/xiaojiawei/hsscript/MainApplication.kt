@@ -41,7 +41,6 @@ import java.awt.event.ActionEvent
 import java.awt.event.MouseEvent
 import java.io.File
 import java.net.URLClassLoader
-import java.util.Locale
 import java.util.Locale.getDefault
 import java.util.function.Consumer
 import java.util.function.Supplier
@@ -405,7 +404,7 @@ class MainApplication : Application() {
         val args = this.parameters.raw
         var pause: String? = ""
         for (arg in args) {
-            if (arg.startsWith(ARG_PAUSE)) {
+            if (arg.startsWith(UPDATE_ARG_PAUSE)) {
                 val split: Array<String?> = arg.split("=".toRegex(), limit = 2).toTypedArray()
                 if (split.size > 1) {
                     pause = split[1]

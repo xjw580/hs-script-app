@@ -19,17 +19,14 @@
     <!--ALL FILE-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${logPath}/hs_script.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <FileNamePattern>${logPath}/hs_script-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
-            <!--指定日志保存天数-->
+            <MaxFileSize>5MB</MaxFileSize>
             <MaxHistory>3</MaxHistory>
-            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!--指定每个日志文件大小-->
-                <MaxFileSize>5MB</MaxFileSize>
-            </TimeBasedFileNamingAndTriggeringPolicy>
+            <TotalSizeCap>1GB</TotalSizeCap> <!-- 可选：日志总大小上限 -->
         </rollingPolicy>
         <encoder>
-            <!--            <pattern>%-5p [%d %C:%L - %m %n</pattern>-->
+            <!--<pattern>%-5p [%d %C:%L - %m %n</pattern>-->
             <pattern>${log_pattern_file}</pattern>
             <charset>UTF-8</charset>
         </encoder>

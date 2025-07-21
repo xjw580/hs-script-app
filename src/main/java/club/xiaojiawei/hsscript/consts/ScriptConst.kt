@@ -1,9 +1,5 @@
 package club.xiaojiawei.hsscript.consts
 
-import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.status.ScriptStatus.maxLogSizeB
-import club.xiaojiawei.hsscript.status.ScriptStatus.maxLogSizeKB
-import club.xiaojiawei.hsscript.utils.ConfigUtil
 import java.awt.Toolkit
 import java.time.ZoneOffset
 
@@ -64,5 +60,8 @@ const val CHANGE_ENTITY: String = "CHANGE_ENTITY"
 const val LOST: String = "LOST"
 const val WON: String = "WON"
 const val CONCEDED: String = "CONCEDED"
-const val ARG_PAUSE: String = "--pause="
+const val UPDATE_ARG_TARGET: String = "--target="
+const val UPDATE_ARG_SOURCE: String = "--source="
+const val UPDATE_ARG_PAUSE: String = "--pause="
+const val UPDATE_ARG_PID: String = "--pid="
 const val ARG_PAGE: String = "--page="
