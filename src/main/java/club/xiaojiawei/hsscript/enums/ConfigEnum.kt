@@ -1,12 +1,12 @@
 package club.xiaojiawei.hsscript.enums
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WorkTime
 import club.xiaojiawei.hsscript.bean.WorkTimeRule
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.service.*
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import com.alibaba.fastjson.JSON
 import com.melloware.jintellitype.JIntellitype
 
@@ -376,7 +376,7 @@ enum class ConfigEnum(
     /**
      * 使用系统代理
      */
-    USE_PROXY(group = SYSTEM_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
+    USE_PROXY(group = SYSTEM_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }, service = UseProxyService),
 
     /**
      * 退出程序热键

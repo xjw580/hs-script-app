@@ -1,7 +1,8 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
+import club.xiaojiawei.hsscriptbase.config.log
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.regex.Pattern
 import kotlin.math.min
@@ -24,23 +25,29 @@ class Release : Comparable<Release> {
     var body: String? = null
 
     /**
-     * @param release the object to be compared.
+     * @param other the object to be compared.
      * @return
      */
-    override fun compareTo(release: Release): Int {
-        if (release.tagName.isBlank()) return Int.MAX_VALUE
+    override fun compareTo(other: Release): Int {
+        if (other.tagName.isBlank()) return Int.MAX_VALUE
         val version1: String = this.tagName
-        val version2: String = release.tagName
+        val version2: String = other.tagName
         return compareVersion(version1, version2)
     }
 
+    fun fileName(): String = String.format(
+        "%s_%s.zip",
+        SCRIPT_NAME,
+        tagName
+    )
+
     override fun toString(): String =
         "Release{" +
-            "tagName='$tagName', " +
-            "preRelease=$isPreRelease, " +
-            "name='$name', " +
-            "body='${body?.let { "\n$it".trimIndent() } ?: "null"}'" +
-            "}"
+                "tagName='$tagName', " +
+                "preRelease=$isPreRelease, " +
+                "name='$name', " +
+                "body='${body?.let { "\n$it".trimIndent() } ?: "null"}'" +
+                "}"
 
     companion object {
         fun compareVersion(

@@ -2,17 +2,13 @@ package club.xiaojiawei.hsscript.controller.javafx
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
-import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.config.submitExtra
 import club.xiaojiawei.controls.CopyLabel
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ico.AbstractIco
 import club.xiaojiawei.controls.ico.ClearIco
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum.Companion.fromString
 import club.xiaojiawei.hsscript.appender.ExtraLogAppender
+import club.xiaojiawei.hsscript.bean.DownloaderParam
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.bean.single.WarEx.resetStatistics
 import club.xiaojiawei.hsscript.component.WorkTimeItem
@@ -31,8 +27,13 @@ import club.xiaojiawei.hsscript.utils.SystemUtil.copyToClipboard
 import club.xiaojiawei.hsscript.utils.WindowUtil
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscript.utils.runUI
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.config.submitExtra
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum.Companion.fromString
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import javafx.animation.RotateTransition
 import javafx.animation.Timeline
 import javafx.application.Platform
@@ -418,9 +419,14 @@ class MainController : MainView() {
             downloadProgress.progress
             val release = VersionListener.latestRelease ?: return
 
-            VersionListener.downloadLatestRelease(
+            val param = DownloaderParam(0.1) { progress, totalSize, downloadedBytes ->
+                runUI {
+                    downloadProgress.progress = progress / 100
+                }
+            }
+            VersionListener.asyncDownloadLatestRelease(
                 false,
-                downloadProgress.progressProperty(),
+                param,
             ) { path: String? ->
                 if (path == null) {
                     runUI {
@@ -438,7 +444,7 @@ class MainController : MainView() {
                                 "新版本[" + release.tagName + "]下载完毕",
                                 "现在更新？",
                                 { event: ActionEvent? -> VersionListener.execUpdate(path) },
-                                null,
+                                {},
                                 rootPane.scene.window,
                             ).show()
                     }
@@ -455,7 +461,7 @@ class MainController : MainView() {
                 rootPane,
                 null,
                 "重置统计数据？",
-                Runnable {
+                {
                     Platform.runLater {
                         resetStatistics()
                         gameCount.text = "0"
@@ -465,7 +471,7 @@ class MainController : MainView() {
                         notificationManger.showSuccess("统计数据已重置", 2)
                     }
                 },
-                Runnable {},
+                {},
             )
         modal.isMaskClosable = true
         modal.show()

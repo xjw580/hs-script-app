@@ -1,39 +1,28 @@
 package club.xiaojiawei.hsscript.listener
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.PROGRAM_ARGS
+import club.xiaojiawei.hsscript.bean.DownloaderParam
 import club.xiaojiawei.hsscript.bean.Release
+import club.xiaojiawei.hsscript.bean.ResumeDownloader
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
-import club.xiaojiawei.hsscript.consts.ROOT_PATH
-import club.xiaojiawei.hsscript.consts.TEMP_VERSION_PATH
-import club.xiaojiawei.hsscript.consts.UPDATE_ARG_PAUSE
-import club.xiaojiawei.hsscript.consts.UPDATE_ARG_PID
-import club.xiaojiawei.hsscript.consts.UPDATE_ARG_SOURCE
-import club.xiaojiawei.hsscript.consts.UPDATE_ARG_TARGET
-import club.xiaojiawei.hsscript.consts.UPDATE_FILE
+import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
-import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
-import javafx.beans.property.SimpleDoubleProperty
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.nio.file.Path
 import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
-import kotlin.jvm.java
 
 
 /**
@@ -90,8 +79,7 @@ object VersionListener {
             if (!newValue) {
                 if (!updated && ConfigUtil.getBoolean(ConfigEnum.AUTO_UPDATE) && VersionListener.canUpdate) {
                     updated = true
-                    val progress = SimpleDoubleProperty()
-                    downloadLatestRelease(false, progress) { path ->
+                    asyncDownloadLatestRelease(false, DownloaderParam()) { path ->
                         path?.let {
                             execUpdate(path)
                         } ?: let {
@@ -115,13 +103,15 @@ object VersionListener {
     /**
      * 下载最新版本
      */
-    fun downloadLatestRelease(force: Boolean, progress: DoubleProperty, callback: Consumer<String?>?) {
+    fun asyncDownloadLatestRelease(
+        force: Boolean,
+        downloaderParam: DownloaderParam,
+        callback: ((filePath: String?) -> Unit)? = null
+    ) {
         latestRelease?.let {
-            return downloadRelease(it, force, progress, callback)
+            asyncDownloadRelease(it, force, downloaderParam, callback)
         } ?: let {
-            EXTRA_THREAD_POOL.submit {
-                callback?.accept(null)
-            }
+            callback?.invoke(null)
         }
     }
 
@@ -129,26 +119,23 @@ object VersionListener {
      * 更新版本
      */
     @Suppress("DEPRECATION")
-    fun execUpdate(versionPath: String) {
+    fun execUpdate(versionFilePath: String) {
         if (updatingProperty.get()) return
 
         synchronized(updatingProperty) {
-            log.info { "开始更新软件【${versionPath}】" }
+            log.info { "开始更新软件【${versionFilePath}】" }
             try {
                 if (updatingProperty.get()) return
                 updatingProperty.set(true)
 
                 val updateProgramPath = SystemUtil.getExeFilePath(UPDATE_FILE)
-                Runtime.getRuntime().exec(
-                    String.format(
-                        "%s ${UPDATE_ARG_TARGET}'%s' ${UPDATE_ARG_SOURCE}'%s' ${UPDATE_ARG_PAUSE}'%s' ${UPDATE_ARG_PID}'%s'",
-                        updateProgramPath,
-                        ROOT_PATH,
-                        versionPath,
-                        PauseStatus.isPause,
-                        ProcessHandle.current().pid()
+                Runtime
+                    .getRuntime()
+                    .exec(
+                        "$updateProgramPath ${UPDATE_ARG_TARGET}'${ROOT_PATH}' ${UPDATE_ARG_PAUSE}'${PauseStatus.isPause}' ${UPDATE_ARG_PID}'${
+                            ProcessHandle.current().pid()
+                        }' ${UPDATE_ARG_VERSION_FILE}'${versionFilePath}'"
                     )
-                )
             } catch (e: RuntimeException) {
                 log.error(e) { "执行版本更新失败" }
             } finally {
@@ -160,7 +147,12 @@ object VersionListener {
     /**
      * 下载指定版本
      */
-    fun downloadRelease(release: Release, force: Boolean, progress: DoubleProperty, callback: Consumer<String?>?) {
+    fun asyncDownloadRelease(
+        release: Release,
+        force: Boolean,
+        downloaderParam: DownloaderParam,
+        callback: ((filePath: String?) -> Unit)? = null
+    ) {
         if (downloadingProperty.get()) return
 
         synchronized(downloadingProperty) {
@@ -168,22 +160,17 @@ object VersionListener {
             downloadingProperty.set(true)
 
             EXTRA_THREAD_POOL.submit {
-                var path: String? = null
+                var filePath: String? = null
                 try {
-                    val versionDir: File = Path.of(TEMP_VERSION_PATH, release.tagName, VERSION_FILE_FLAG_NAME).toFile()
-                    if (!force && versionDir.exists()) {
-                        path = versionDir.parentFile.absolutePath
+                    val versionFile: File = Path.of(ROOT_PATH, release.fileName()).toFile()
+                    if (!force && versionFile.exists()) {
+                        filePath = versionFile.absolutePath
                     } else {
                         val repositoryList = ConfigExUtil.getUpdateSourceList()
                         for (repository in repositoryList) {
-                            if ((downloadRelease(
-                                    release,
-                                    repository.getReleaseDownloadURL(release),
-                                    progress
-                                ).also {
-                                    path = it
-                                }) == null
-                            ) {
+                            filePath =
+                                downloadRelease(release, repository.getReleaseDownloadURL(release), downloaderParam)
+                            if (filePath == null) {
                                 log.info { "更换下载源重新下载" }
                             } else {
                                 break
@@ -192,7 +179,7 @@ object VersionListener {
                     }
                 } finally {
                     downloadingProperty.set(false)
-                    callback?.accept(path)
+                    callback?.invoke(filePath)
                 }
             }
         }
@@ -212,16 +199,13 @@ object VersionListener {
         synchronized(canUpdateProperty) {
             val updateDev = ConfigUtil.getBoolean(ConfigEnum.UPDATE_DEV)
             val repositoryList = ConfigExUtil.getUpdateSourceList()
+            val updateSource = (if (repositoryList.isEmpty()) GiteeRepository else repositoryList.first())
+            val repositoryStr = updateSource::class.java.simpleName.replace(
+                "Repository",
+                ""
+            )
             log.info {
-                "开始检查更新，更新源：${
-                    if (repositoryList.isEmpty()) GiteeRepository::class.java.simpleName.replace(
-                        "Repository",
-                        ""
-                    ) else repositoryList.first()::class.java.simpleName.replace(
-                        "Repository",
-                        ""
-                    )
-                }, 更新开发版：$updateDev"
+                "开始检查更新，更新源：${repositoryStr}, 更新开发版：$updateDev"
             }
             for (repository in repositoryList) {
                 try {
@@ -254,74 +238,22 @@ object VersionListener {
         }
     }
 
-    private fun downloadRelease(release: Release, url: String, progress: DoubleProperty): String? {
-        var rootPath: Path
+    private fun downloadRelease(release: Release, url: String, downloaderParam: DownloaderParam): String? {
+        val fileName = release.fileName()
+        val outPath = Path.of(ROOT_PATH, fileName)
+        val downloader = ResumeDownloader(url, outPath.toString())
         try {
-            NetUtil.buildConnection(url).getInputStream().use { inputStream ->
-                ZipInputStream(inputStream).use { zipInputStream ->
-                    val startContent = "开始下载<" + release.tagName + ">"
-                    log.info { startContent }
-                    runUI {
-                        progress.set(0.0)
-                    }
-                    var nextEntry: ZipEntry
-                    val count = 59.0
-                    val step = 0.95 / count
-                    rootPath = Path.of(TEMP_VERSION_PATH, release.tagName)
-                    val rootFile = rootPath.toFile()
-                    if (!FileUtil.createDirectory(rootFile)) {
-                        log.error { rootFile.absolutePath + "创建失败" }
-                        return null
-                    }
-                    rootFile.listFiles()?.forEach { file ->
-                        file.delete()
-                    }
-                    while ((zipInputStream.getNextEntry().also { nextEntry = it }) != null) {
-                        val entryFile = rootPath.resolve(nextEntry!!.getName()).toFile()
-                        if (nextEntry.isDirectory) {
-                            if (entryFile.mkdirs()) {
-                                log.info { "created_dir：" + entryFile.path }
-                            }
-                        } else {
-                            val parentFile = entryFile.getParentFile()
-                            if (parentFile.exists() || parentFile.mkdirs()) {
-                                BufferedOutputStream(FileOutputStream(entryFile)).use { bufferedOutputStream ->
-                                    var l: Int
-                                    val bytes = ByteArray(8192)
-                                    while ((zipInputStream.read(bytes).also { l = it }) != -1) {
-                                        bufferedOutputStream.write(bytes, 0, l)
-                                    }
-                                }
-                                log.info { "downloaded_file：" + entryFile.path }
-                            }
-                        }
-                        runUI {
-                            progress.set(step + progress.get())
-                        }
-                    }
-                    writeVersionFileCompleteFlag(rootPath.toString())
-                    runUI {
-                        progress.set(1.0)
-                    }
-                    val endContent = "<" + release.tagName + ">下载完毕"
-                    log.info { endContent }
-                }
-            }
-        } catch (e: RuntimeException) {
-            val errorContent = "<" + release.tagName + ">下载失败"
+            val startContent = "开始下载<$fileName>"
+            log.info { startContent }
+            downloader.download(downloaderParam)
+        } catch (e: Exception) {
+            val errorContent = "<$fileName>下载失败"
             log.error(e) { "$errorContent,$url" }
             return null
         }
-        return rootPath.toString()
-    }
-
-    private fun writeVersionFileCompleteFlag(path: String): Boolean {
-        try {
-            return Path.of(path, VERSION_FILE_FLAG_NAME).toFile().createNewFile()
-        } catch (e: IOException) {
-            log.error(e) { "" }
-        }
-        return false
+        val endContent = "<$fileName>下载完毕"
+        log.info { endContent }
+        return outPath.toString()
     }
 
 }

@@ -10,28 +10,33 @@ import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
  */
 abstract class AbstractRepository {
 
-    fun getReleaseDownloadURL(isPreview: Boolean = false): String?{
+    fun getReleaseDownloadURL(isPreview: Boolean = false): String? {
         val latestRelease = getLatestRelease(isPreview)
-        latestRelease?.let {
-            return getReleaseDownloadURL(latestRelease)
-        }?:let {
-            return null
+        return latestRelease?.let {
+            getReleaseDownloadURL(it)
         }
     }
 
-    open fun getReleaseDownloadURL(release: Release): String{
+    open fun getReleaseDownloadURL(release: Release): String {
         return String.format(
-            "https://%s/%s/%s/releases/download/%s/%s_%s.zip",
+            "https://%s/%s/%s/releases/download/%s/%s",
             getDomain(),
             getUserName(),
             PROJECT_NAME,
             release.tagName,
+            getFileName(release)
+        )
+    }
+
+    fun getFileName(release: Release): String {
+        return String.format(
+            "%s_%s.zip",
             SCRIPT_NAME,
             release.tagName
         )
     }
 
-    open fun getReleasePageURL(release: Release): String{
+    open fun getReleasePageURL(release: Release): String {
         return String.format(
             "https://%s/%s/%s/releases/tag/%s",
             GiteeRepository.getDomain(),
