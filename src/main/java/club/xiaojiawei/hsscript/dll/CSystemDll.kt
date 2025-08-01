@@ -97,9 +97,9 @@ interface CSystemDll : Library {
         type: Int,
     )
 
-    fun findWindowsByProcessName(processName: String?): HWND?
+    fun findWindowsByProcessName(processName: String?, isTerminatable: Boolean): HWND?
 
-    fun findProcessId(processName: String?): Long
+    fun findProcessId(processName: String?, isTerminatable: Boolean): Long
 
     fun getWindowsProxy(
         proxyUrl: Pointer,
@@ -119,7 +119,7 @@ interface CSystemDll : Library {
 
     fun killProcessByName(processName: String)
 
-    fun isProcessRunning(processName: String): Boolean
+    fun isProcessRunning(processName: String, isTerminatable: Boolean): Boolean
 
     fun isDebug(): Boolean
 

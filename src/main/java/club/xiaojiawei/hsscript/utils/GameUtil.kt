@@ -539,16 +539,16 @@ object GameUtil {
         }
     }
 
-    fun isAliveOfGame(): Boolean = CSystemDll.INSTANCE.isProcessRunning(GAME_PROGRAM_NAME)
+    fun isAliveOfGame(): Boolean = CSystemDll.INSTANCE.isProcessRunning(GAME_PROGRAM_NAME, true)
 
-    fun isAliveOfPlatform(): Boolean = CSystemDll.INSTANCE.isProcessRunning(PLATFORM_PROGRAM_NAME)
+    fun isAliveOfPlatform(): Boolean = CSystemDll.INSTANCE.isProcessRunning(PLATFORM_PROGRAM_NAME, true)
 
     fun findGameHWND(): WinDef.HWND? {
         val hwnd =
             (
                     SystemUtil.findHWND("UnityWndClass", GAME_CN_NAME)
                         ?: SystemUtil.findHWND("UnityWndClass", GAME_US_NAME)
-                        ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME)
+                        ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME, true)
                     )
                 ?: SystemUtil.findHWND(null, GAME_CN_NAME)
                 ?: SystemUtil.findHWND(null, GAME_US_NAME)
@@ -573,8 +573,6 @@ object GameUtil {
      * 通过此方式停止的游戏，screen.log监听器可能无法监测到游戏被关闭
      */
     fun killGame(sync: Boolean = false) {
-//        todo del
-        println("killGame")
         val exec = {
             if (isAliveOfGame()) {
                 kotlin
