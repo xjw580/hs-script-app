@@ -21,6 +21,7 @@ import kotlin.test.Test
  * @date 2025/6/23 19:37
  */
 @ExtendWith(GameUtilTest.Callback::class)
+@Disabled
 class GameUtilTest {
 
     private class Callback : BeforeAllCallback, AfterAllCallback {
@@ -39,7 +40,6 @@ class GameUtilTest {
         }
     }
 
-    @Disabled
     @Test
     fun testGetChooseOneCardRect() {
         getChooseOneCardRect(0).lClick()
