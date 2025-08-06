@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.file.Files
+import java.util.LinkedList
+import java.util.Queue
 
 /**
  * @author 肖嘉威
@@ -56,7 +58,7 @@ private fun setLogPath() {
 }
 
 fun main(args: Array<String>) {
-    System.setProperty("jna.library.path", "lib")
+        System.setProperty("jna.library.path", "lib")
 
     val file = File(".pid")
     if (!file.exists()) {
@@ -77,4 +79,6 @@ fun main(args: Array<String>) {
     PROGRAM_ARGS = args.toList()
 
     Application.launch(MainApplication::class.java, *args)
+
+
 }

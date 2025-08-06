@@ -539,16 +539,16 @@ object GameUtil {
         }
     }
 
-    fun isAliveOfGame(): Boolean = CSystemDll.INSTANCE.isProcessRunning(GAME_PROGRAM_NAME, true)
+    fun isAliveOfGame(): Boolean = CSystemDll.INSTANCE.isProcessRunning(GAME_PROGRAM_NAME)
 
-    fun isAliveOfPlatform(): Boolean = CSystemDll.INSTANCE.isProcessRunning(PLATFORM_PROGRAM_NAME, true)
+    fun isAliveOfPlatform(): Boolean = CSystemDll.INSTANCE.isProcessRunning(PLATFORM_PROGRAM_NAME)
 
     fun findGameHWND(): WinDef.HWND? {
         val hwnd =
             (
                     SystemUtil.findHWND("UnityWndClass", GAME_CN_NAME)
                         ?: SystemUtil.findHWND("UnityWndClass", GAME_US_NAME)
-                        ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME, true)
+                        ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME)
                     )
                 ?: SystemUtil.findHWND(null, GAME_CN_NAME)
                 ?: SystemUtil.findHWND(null, GAME_US_NAME)

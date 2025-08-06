@@ -97,7 +97,7 @@ interface CSystemDll : Library {
         type: Int,
     )
 
-    fun findWindowsByProcessName(processName: String?, isTerminatable: Boolean): HWND?
+    fun findWindowsByProcessName(processName: String?): HWND?
 
     fun findProcessId(processName: String?, isTerminatable: Boolean): Long
 
@@ -119,7 +119,7 @@ interface CSystemDll : Library {
 
     fun killProcessByName(processName: String)
 
-    fun isProcessRunning(processName: String, isTerminatable: Boolean): Boolean
+    fun isProcessRunning(processName: String): Boolean
 
     fun isDebug(): Boolean
 
