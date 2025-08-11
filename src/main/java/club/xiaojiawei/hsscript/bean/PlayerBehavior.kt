@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.hsscriptcardsdk.bean.Player
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptcardsdk.bean.Player
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -13,19 +13,18 @@ import kotlin.math.sqrt
  * @author 肖嘉威
  * @date 2024/12/10 19:44
  */
-class PlayerBehavior(val player: Player) {
+class PlayerBehavior(var player: Player) {
 
-    val behaviors: MutableList<Behavior> = LinkedList()
+    private val turnBehaviors: MutableList<Behavior> = LinkedList()
 
     var robotProbability: Double = 0.5
+        private set(newProbability){
+            field = min(max(newProbability, 0.0), 1.0)
+        }
 
-    private fun setProbability(newProbability: Double): Double {
-        val value = min(max(newProbability, 0.0), 1.0)
-        robotProbability = value
-        return robotProbability
-    }
+    private var isCalcGameId = false
 
-    fun calcInterval(): Triple<MutableList<Long>, MutableList<Long>, MutableList<Long>> {
+    private fun calcInterval(): Triple<MutableList<Long>, MutableList<Long>, MutableList<Long>> {
         val atcInterval = mutableListOf<Long>()
         val playInterval = mutableListOf<Long>()
         val avgInterval = mutableListOf<Long>()
@@ -33,7 +32,7 @@ class PlayerBehavior(val player: Player) {
         var lastBehaviorMillis: Long = -1
         var lastAtcMillis: Long = -1
         var lastPlayMillis: Long = -1
-        for (behavior in behaviors) {
+        for (behavior in turnBehaviors) {
             if (behavior.blockType == BlockTypeEnum.ATTACK) {
                 if (lastAtcMillis != -1L) {
                     atcInterval.add(behavior.millis - lastAtcMillis)
@@ -53,12 +52,12 @@ class PlayerBehavior(val player: Player) {
         return Triple(atcInterval, playInterval, avgInterval)
     }
 
-    fun robotGameIdCheck(): Boolean {
+    private fun robotGameIdCheck(): Boolean {
         val gameId = player.gameId
         return gameId.contains("之") || gameId.contains("的")
     }
 
-    fun calcVariance(clickIntervals: List<Long>): Double {
+    private fun calcVariance(clickIntervals: List<Long>): Double {
         if (clickIntervals.isEmpty()) return 0.0
 
         val mean = clickIntervals.average()
@@ -67,13 +66,11 @@ class PlayerBehavior(val player: Player) {
         return stdDev
     }
 
-    fun calcProbabilityByVariance(variance: Double, threshold: Double): Double {
+    private fun calcProbabilityByVariance(variance: Double, threshold: Double): Double {
         return (threshold - variance) / threshold
     }
 
-    private var isCalcGameId = false
-
-    fun renewCalcRobotProbability(): Double {
+    fun updateRobotProbability(): Double {
         var newProbability = robotProbability
 
         if (!isCalcGameId && robotGameIdCheck()) {
@@ -108,7 +105,20 @@ class PlayerBehavior(val player: Player) {
 //        }
 //        newProbability += atcProbability * (3 / 7.0) + playProbability * (3 / 7.0) + avgProbability * (1 / 7.0)
         newProbability += max(min(0.2 * (atcProbability * (4 / 7.0) + playProbability * (3 / 7.0)), 0.2), -0.2)
-        return setProbability(newProbability)
+        robotProbability = newProbability
+        turnBehaviors.clear()
+        return robotProbability
+    }
+
+    fun add(behavior: Behavior) {
+        turnBehaviors.add(behavior)
+    }
+
+    fun reset(player: Player) {
+        this.player = player
+        robotProbability = 0.5
+        turnBehaviors.clear()
+        isCalcGameId = false
     }
 
 }

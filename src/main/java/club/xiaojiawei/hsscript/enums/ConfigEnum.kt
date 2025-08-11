@@ -357,7 +357,7 @@ enum class ConfigEnum(
     /**
      * 只打人机
      */
-    ONLY_ROBOT(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }),
+    ONLY_ROBOT(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }, service = OnlyRobotService),
 
     /**
      * 游戏对局超时投降(s)
