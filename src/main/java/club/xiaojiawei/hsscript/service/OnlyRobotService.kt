@@ -29,11 +29,7 @@ object OnlyRobotService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean {
-        return if (ConfigUtil.getBoolean(ConfigEnum.ONLY_ROBOT)) {
-            execStart()
-        } else {
-            execStop()
-        }
+    override fun getStatus(value: Boolean?): Boolean {
+        return value ?: ConfigUtil.getBoolean(ConfigEnum.ONLY_ROBOT)
     }
 }

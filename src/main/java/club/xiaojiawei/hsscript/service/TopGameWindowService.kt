@@ -54,5 +54,5 @@ object TopGameWindowService : Service<Boolean>() {
         CSystemDll.INSTANCE.topWindow(ScriptStatus.gameHWND, top)
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.TOP_GAME_WINDOW))
+    override fun getStatus(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.TOP_GAME_WINDOW))
 }

@@ -5,13 +5,14 @@ package club.xiaojiawei.hsscript.service
  * @date 2025/3/24 17:20
  */
 abstract class Service<T> {
+
     private var isRunningInner = false
 
     open val isRunning: Boolean
         get() = isRunningInner
 
     fun intelligentStartStop(value: T? = null): Boolean =
-        if (execIntelligentStartStop(value)) {
+        if (getStatus(value)) {
             start()
         } else {
             stop()
@@ -53,10 +54,14 @@ abstract class Service<T> {
 
     protected abstract fun execStop(): Boolean
 
-    protected abstract fun execIntelligentStartStop(value: T?): Boolean
+    /**
+     * 通过传入值判断应该启动还是停止，如果传入值为null，应该从配置文件中读取
+     */
+    protected abstract fun getStatus(value: T?): Boolean
 
     protected open fun execValueChanged(
         oldValue: T,
         newValue: T,
-    ) {}
+    ) {
+    }
 }

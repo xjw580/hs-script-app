@@ -47,7 +47,7 @@ object GameWindowOpacityService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean = (value ?: ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_OPACITY)) < 255
+    override fun getStatus(value: Int?): Boolean = (value ?: ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_OPACITY)) < 255
 
     override fun execValueChanged(
         oldValue: Int,

@@ -71,6 +71,6 @@ object UpdateGameWindowService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean =
-        ConfigUtil.getBoolean(ConfigEnum.UPDATE_GAME_WINDOW)
+    override fun getStatus(value: Boolean?): Boolean =
+        value?:ConfigUtil.getBoolean(ConfigEnum.UPDATE_GAME_WINDOW)
 }

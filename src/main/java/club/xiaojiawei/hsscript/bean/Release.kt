@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscriptbase.config.log
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -37,7 +37,7 @@ class Release : Comparable<Release> {
 
     fun fileName(): String = String.format(
         "%s_%s.zip",
-        SCRIPT_NAME,
+        PROGRAM_NAME,
         tagName
     )
 
@@ -50,6 +50,9 @@ class Release : Comparable<Release> {
                 "}"
 
     companion object {
+        /**
+         * 比较版本号大小，支持v前缀
+         */
         fun compareVersion(
             version1: String,
             version2: String,

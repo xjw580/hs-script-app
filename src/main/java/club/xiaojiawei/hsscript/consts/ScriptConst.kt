@@ -20,7 +20,7 @@ const val PLATFORM_US_NAME: String = "Battle.net"
 /**
  * 本脚本的程序名
  */
-const val SCRIPT_NAME: String = "hs-script"
+const val PROGRAM_NAME: String = "hs-script"
 
 /**
  * 项目名

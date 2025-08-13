@@ -10,6 +10,7 @@ import com.sun.jna.platform.win32.WinDef.HWND
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.CountDownLatch
 
 /**
  * 系统相关功能
@@ -125,7 +126,7 @@ interface CSystemDll : Library {
     fun isProcessRunning(processName: String): Boolean
 
     /**
-     * 开机自启
+     * 开机自启，不要在主线程中执行
      */
     fun enablePowerBoot(enable: Boolean, processName: WString, programPath: WString): Boolean
 
@@ -137,11 +138,20 @@ interface CSystemDll : Library {
         fun enablePowerBoot(enable: Boolean): Boolean {
             return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe" }
                 ?.let { latestJar ->
-                    INSTANCE.enablePowerBoot(enable, WString(PROGRAM_NAME), WString(latestJar.absolutePath))
+                    val countDownLatch = CountDownLatch(1)
+                    var res = false
+                    Thread {
+                        runCatching {
+                            res = INSTANCE.enablePowerBoot(enable, WString(PROGRAM_NAME), WString(latestJar.absolutePath))
+                        }
+                        countDownLatch.countDown()
+                    }.start()
+                    countDownLatch.await()
+                    res
                 } ?: false
         }
 
-        fun isTaskExists(): Boolean{
+        fun isTaskExists(): Boolean {
             return INSTANCE.isTaskExists(WString(PROGRAM_NAME))
         }
     }

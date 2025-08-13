@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.enums
 
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import javafx.stage.Screen
 import javafx.stage.StageStyle
 
@@ -10,7 +10,7 @@ import javafx.stage.StageStyle
  * @date 2023/10/1 10:37
  */
 
-private fun formatTitle(title: String): String = "$SCRIPT_NAME-$title"
+private fun formatTitle(title: String): String = "$PROGRAM_NAME-$title"
 
 @Suppress("ktlint:standard:property-naming")
 var SCREEN_WIDTH = Screen.getPrimary().bounds.width
@@ -62,7 +62,7 @@ enum class WindowEnum(
     ),
     MAIN(
         "main.fxml",
-        SCRIPT_NAME,
+        PROGRAM_NAME,
         215.0,
         590.0,
         SCREEN_WIDTH - 210.0,

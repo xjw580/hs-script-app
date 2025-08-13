@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.bean.single.repository
 
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.consts.PROJECT_NAME
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 
 /**
  * @author 肖嘉威
@@ -31,7 +31,7 @@ abstract class AbstractRepository {
     fun getFileName(release: Release): String {
         return String.format(
             "%s_%s.zip",
-            SCRIPT_NAME,
+            PROGRAM_NAME,
             release.tagName
         )
     }

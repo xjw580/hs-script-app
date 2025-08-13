@@ -38,5 +38,5 @@ object DisplayGameRectPosService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean = ConfigUtil.getBoolean(ConfigEnum.DISPLAY_GAME_RECT_POS)
+    override fun getStatus(value: Boolean?): Boolean = value ?: ConfigUtil.getBoolean(ConfigEnum.DISPLAY_GAME_RECT_POS)
 }

@@ -16,7 +16,7 @@ object GameLogLimitService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean {
+    override fun getStatus(value: Int?): Boolean {
         value?.let {
             ScriptStatus.reloadLogSize(it)
         }

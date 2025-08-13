@@ -42,7 +42,7 @@ object LimitMouseRangeService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE))
+    override fun getStatus(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE))
 
     override fun execValueChanged(
         oldValue: Boolean,

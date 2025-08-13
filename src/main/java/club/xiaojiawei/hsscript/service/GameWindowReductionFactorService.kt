@@ -49,7 +49,8 @@ object GameWindowReductionFactorService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean = ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR) > 0
+    override fun getStatus(value: Int?): Boolean =
+        (value ?: ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR)) > 0
 
     private fun changeWindowSize(
         hwnd: HWND?,

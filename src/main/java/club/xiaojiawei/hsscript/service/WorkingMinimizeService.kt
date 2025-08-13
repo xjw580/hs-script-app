@@ -35,5 +35,5 @@ object WorkingMinimizeService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.WORKING_MINIMIZE))
+    override fun getStatus(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.WORKING_MINIMIZE))
 }

@@ -143,6 +143,11 @@
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
                             <HBox styleClass="h-box">
+                                <Text text="开机自启"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <ConfigSwitch notificationManager="${notificationManager}" config="POWER_BOOT"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <Text text="发送Windows通知"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigSwitch notificationManager="${notificationManager}" config="SEND_NOTICE"/>

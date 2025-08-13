@@ -4,7 +4,7 @@ import club.xiaojiawei.JavaFXUI
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.COMMON_CSS_PATH
 import club.xiaojiawei.hsscript.consts.FXML_DIR
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.SCREEN_HEIGHT
 import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
@@ -88,7 +88,7 @@ object WindowUtil {
     ): Stage {
         val stage =
             Stage().apply {
-                title = SCRIPT_NAME
+                title = PROGRAM_NAME
                 isMaximized = false
                 isResizable = false
                 initModality(Modality.APPLICATION_MODAL)

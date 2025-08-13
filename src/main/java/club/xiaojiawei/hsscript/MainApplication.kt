@@ -276,7 +276,7 @@ class MainApplication : Application() {
         CSystemDll.TrayMenu.Reference().apply {
             text =
                 Memory(textMemorySize).apply {
-                    setWideString(0, SCRIPT_NAME)
+                    setWideString(0, PROGRAM_NAME)
                 }
             iconPath = WString(SystemUtil.getTrayIconFile().absolutePath)
             clickCallback =

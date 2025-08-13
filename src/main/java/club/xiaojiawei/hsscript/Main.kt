@@ -6,7 +6,7 @@ import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.classic.joran.JoranConfigurator
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.spi.FilterReply
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
 import javafx.application.Application
@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.file.Files
-import java.util.LinkedList
-import java.util.Queue
 
 /**
  * @author 肖嘉威
@@ -58,7 +56,7 @@ private fun setLogPath() {
 }
 
 fun main(args: Array<String>) {
-        System.setProperty("jna.library.path", "lib")
+    System.setProperty("jna.library.path", "lib")
 
     val file = File(".pid")
     if (!file.exists()) {
@@ -66,13 +64,13 @@ fun main(args: Array<String>) {
         Files.setAttribute(file.toPath(), "dos:hidden", true);
     }
     val randomAccessFile = RandomAccessFile(file, "rw")
-    if (randomAccessFile.channel.tryLock() == null){
+    if (randomAccessFile.channel.tryLock() == null) {
         WindowUtil.hideLaunchPage()
         return
     }
 
     randomAccessFile.setLength(0)
-    randomAccessFile.write(SCRIPT_NAME.toByteArray());
+    randomAccessFile.write(PROGRAM_NAME.toByteArray());
 
     setLogPath()
 

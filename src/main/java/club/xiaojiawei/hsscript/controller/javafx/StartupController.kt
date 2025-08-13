@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.controller.javafx
 
-import club.xiaojiawei.hsscript.consts.SCRIPT_NAME
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.utils.WindowUtil.hideStage
 import javafx.application.Platform
@@ -24,7 +24,7 @@ class StartupController : Initializable {
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         staticProgressBar = progressBar
-        tip.text = SCRIPT_NAME + "启动中......"
+        tip.text = PROGRAM_NAME + "启动中......"
         timer = Timer().apply {
             scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {

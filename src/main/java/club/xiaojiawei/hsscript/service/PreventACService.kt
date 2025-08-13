@@ -20,5 +20,5 @@ object PreventACService : Service<Boolean>() {
         ConfigExUtil.storePreventAntiCheat(newValue)
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.PREVENT_AC))
+    override fun getStatus(value: Boolean?): Boolean = (value ?: ConfigUtil.getBoolean(ConfigEnum.PREVENT_AC))
 }

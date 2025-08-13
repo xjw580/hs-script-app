@@ -102,5 +102,5 @@ object GameTimeoutService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean = (value ?: ConfigUtil.getInt(ConfigEnum.GAME_TIMEOUT)) > 0
+    override fun getStatus(value: Int?): Boolean = (value ?: ConfigUtil.getInt(ConfigEnum.GAME_TIMEOUT)) > 0
 }

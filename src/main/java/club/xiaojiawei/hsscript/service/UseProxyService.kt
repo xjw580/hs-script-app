@@ -19,7 +19,7 @@ object UseProxyService : Service<Boolean>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Boolean?): Boolean {
+    override fun getStatus(value: Boolean?): Boolean {
         if (ConfigUtil.getBoolean(ConfigEnum.USE_PROXY)) {
             log.info { "代理地址:${NetUtil.getSystemProxy()}" }
         }

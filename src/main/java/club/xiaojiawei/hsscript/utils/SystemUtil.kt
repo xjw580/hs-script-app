@@ -77,7 +77,7 @@ object SystemUtil {
         (ConfigUtil.getBoolean(ConfigEnum.SEND_NOTICE) || forceNotify).isTrue {
             Thread.ofVirtual().name("Notice VThread").start(
                 LRunnable {
-                    val appIDBytes: ByteArray = SCRIPT_NAME.toByteArray(StandardCharsets.UTF_8)
+                    val appIDBytes: ByteArray = PROGRAM_NAME.toByteArray(StandardCharsets.UTF_8)
                     val titleBytes = title.toByteArray(StandardCharsets.UTF_8)
                     val msgBytes = content.toByteArray(StandardCharsets.UTF_8)
 
@@ -267,10 +267,10 @@ object SystemUtil {
             popupMenu.add(menuItem)
         }
         //        托盘图标
-        trayIcon = TrayIcon(image, SCRIPT_NAME, popupMenu)
+        trayIcon = TrayIcon(image, PROGRAM_NAME, popupMenu)
         trayIcon?.let { tray ->
             tray.setImageAutoSize(true)
-            tray.setToolTip(SCRIPT_NAME)
+            tray.setToolTip(PROGRAM_NAME)
             mouseClickListener?.let { listener ->
                 tray.addMouseListener(MouseClickListener(listener))
             }
@@ -363,7 +363,7 @@ object SystemUtil {
                     }
                 },
                 text,
-                SCRIPT_NAME,
+                PROGRAM_NAME,
                 type xor MB_TOPMOST,
             )
         }

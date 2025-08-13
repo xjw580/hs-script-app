@@ -19,7 +19,9 @@ open class ConfigSwitch : Switch() {
         set(value) {
             isDisable = value?.isEnable != true
             value?.let {
+                interceptChange = true
                 status = ConfigUtil.getBoolean(it)
+                interceptChange = false
             }
             field = value
         }

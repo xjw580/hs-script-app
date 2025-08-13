@@ -56,7 +56,7 @@ object PlatformWindowReductionFactorService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean = ConfigUtil.getInt(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR) > 0
+    override fun getStatus(value: Int?): Boolean = (value?:ConfigUtil.getInt(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR)) > 0
 
     private fun inject(): Boolean {
         if (User32.INSTANCE.IsWindow(ScriptStatus.platformHWND)) {

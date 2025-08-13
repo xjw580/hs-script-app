@@ -5,6 +5,7 @@ import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WorkTime
 import club.xiaojiawei.hsscript.bean.WorkTimeRule
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
+import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.service.*
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import com.alibaba.fastjson.JSON
@@ -366,6 +367,15 @@ enum class ConfigEnum(
         group = STRATEGY_CONFIG_GROUP,
         defaultValueInitializer = { "-1" },
         service = WarTimeoutSurrenderService,
+    ),
+
+    /**
+     * 开机自启
+     */
+    POWER_BOOT(
+        group = SYSTEM_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR },
+        service = PowerBootService
     ),
 
     /**

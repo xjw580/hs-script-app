@@ -56,6 +56,6 @@ object WarTimeoutSurrenderService : Service<Int>() {
         return true
     }
 
-    override fun execIntelligentStartStop(value: Int?): Boolean =
+    override fun getStatus(value: Int?): Boolean =
         (value ?: ConfigUtil.getInt(ConfigEnum.WAR_TIMEOUT_SURRENDER)) > 0
 }
