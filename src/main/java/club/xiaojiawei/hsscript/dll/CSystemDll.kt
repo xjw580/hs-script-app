@@ -1,10 +1,13 @@
 package club.xiaojiawei.hsscript.dll
 
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.DRIVER_LOCK
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
+import club.xiaojiawei.hsscript.consts.ROOT_PATH
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
 import com.sun.jna.platform.win32.WinDef.HWND
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -121,7 +124,27 @@ interface CSystemDll : Library {
 
     fun isProcessRunning(processName: String): Boolean
 
+    /**
+     * 开机自启
+     */
+    fun enablePowerBoot(enable: Boolean, processName: WString, programPath: WString): Boolean
+
+    fun isTaskExists(processName: WString): Boolean
+
     fun isDebug(): Boolean
+
+    object SystemPart {
+        fun enablePowerBoot(enable: Boolean): Boolean {
+            return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe" }
+                ?.let { latestJar ->
+                    INSTANCE.enablePowerBoot(enable, WString(PROGRAM_NAME), WString(latestJar.absolutePath))
+                } ?: false
+        }
+
+        fun isTaskExists(): Boolean{
+            return INSTANCE.isTaskExists(WString(PROGRAM_NAME))
+        }
+    }
 
     // ===================================message===================================
 
