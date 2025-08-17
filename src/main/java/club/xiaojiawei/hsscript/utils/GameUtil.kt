@@ -1,9 +1,5 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.consts.*
@@ -14,9 +10,13 @@ import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.GameUtil.CHOOSE_ONE_RECTS
 import club.xiaojiawei.hsscript.utils.SystemUtil.delay
-import club.xiaojiawei.hsscriptcardsdk.status.WAR
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.randomSelect
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import com.sun.jna.WString
 import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
@@ -31,6 +31,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlin.math.min
+
 
 /**
  * 游戏工具类
@@ -387,13 +388,9 @@ object GameUtil {
     @Suppress("DEPRECATION")
     fun launchPlatformAndGame() {
         try {
-//            CMDUtil.directExec(
-//                arrayOf(
-//                    ConfigUtil.getString(ConfigEnum.PLATFORM_PATH),
-//                    """--exec="launch WTCG""""
-//                )
-//            )
-            Runtime.getRuntime().exec(""""${ConfigUtil.getString(ConfigEnum.PLATFORM_PATH)}" --exec="launch WTCG"""")
+            val platformPath = ConfigUtil.getString(ConfigEnum.PLATFORM_PATH)
+            val command = """runas /trustlevel:0x20000 "$platformPath --exec=\"launch WTCG\""""
+            Runtime.getRuntime().exec(command)
         } catch (e: IOException) {
             log.error(e) { "启动${PLATFORM_CN_NAME}及${GAME_CN_NAME}异常" }
         }
