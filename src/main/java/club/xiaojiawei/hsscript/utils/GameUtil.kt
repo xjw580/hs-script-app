@@ -39,80 +39,84 @@ import kotlin.math.min
  * @date 2022/11/27 1:42
  */
 object GameUtil {
-    private val GAME_CLASS_NAME_W = WString("UnityWndClass")
 
-    val CENTER_RECT: GameRect = GameRect(-0.1, 0.1, 0.1, -0.1)
+    private val GAME_CLASS_NAME_W by lazy { WString("UnityWndClass") }
 
-    val RIGHT_CENTER_RECT: GameRect = GameRect(0.4, 0.5, 0.1, -0.1)
+    val CENTER_RECT: GameRect by lazy { GameRect(-0.1, 0.1, 0.1, -0.1) }
 
-    val CONFIRM_RECT: GameRect = GameRect(-0.0546, 0.0601, 0.2709, 0.3222)
+    val RIGHT_CENTER_RECT: GameRect by lazy { GameRect(0.4, 0.5, 0.1, -0.1) }
 
-    val END_TURN_RECT: GameRect = GameRect(0.3550, 0.4533, -0.0636, -0.0196)
+    val CONFIRM_RECT: GameRect by lazy { GameRect(-0.0546, 0.0601, 0.2709, 0.3222) }
 
-    val RECONNECT_RECT: GameRect = GameRect(-0.1845, -0.0396, 0.2282, 0.2904)
+    val END_TURN_RECT: GameRect by lazy { GameRect(0.3550, 0.4533, -0.0636, -0.0196) }
 
-    val CANCEL_CONNECT_RECT: GameRect = GameRect(0.0266, 0.1714, 0.2282, 0.2904)
+    val RECONNECT_RECT: GameRect by lazy { GameRect(-0.1845, -0.0396, 0.2282, 0.2904) }
 
-    val SURRENDER_RECT: GameRect = GameRect(-0.0629, 0.0607, -0.1677, -0.1279)
+    val CANCEL_CONNECT_RECT: GameRect by lazy { GameRect(0.0266, 0.1714, 0.2282, 0.2904) }
+
+    val SURRENDER_RECT: GameRect by lazy { GameRect(-0.0629, 0.0607, -0.1677, -0.1279) }
 
     /**
      * 游戏进度已保存，请重启游戏的按钮
      */
-    private val RESTART_GAME_RECT = GameRect(-0.0365, 0.0302, 0.0878, 0.1272)
+    private val RESTART_GAME_RECT by lazy { GameRect(-0.0365, 0.0302, 0.0878, 0.1272) }
 
     //    表情
-    val THANK_RECT: GameRect = GameRect(-0.1604, -0.0404, 0.1153, 0.1502)
-    val PRAISE_RECT: GameRect = GameRect(-0.1930, -0.0730, 0.1971, 0.2320)
-    val GREET_RECT: GameRect = GameRect(-0.1907, -0.0707, 0.2799, 0.3148)
-    val THREATEN_RECT: GameRect = GameRect(0.0754, 0.1954, 0.2830, 0.3180)
-    val ERROR_RECT: GameRect = GameRect(0.0786, 0.1986, 0.1981, 0.2331)
-    val WONDER_RECT: GameRect = GameRect(0.0444, 0.1644, 0.1174, 0.1523)
+    val THANK_RECT: GameRect by lazy { GameRect(-0.1604, -0.0404, 0.1153, 0.1502) }
+    val PRAISE_RECT: GameRect by lazy { GameRect(-0.1930, -0.0730, 0.1971, 0.2320) }
+    val GREET_RECT: GameRect by lazy { GameRect(-0.1907, -0.0707, 0.2799, 0.3148) }
+    val THREATEN_RECT: GameRect by lazy { GameRect(0.0754, 0.1954, 0.2830, 0.3180) }
+    val ERROR_RECT: GameRect by lazy { GameRect(0.0786, 0.1986, 0.1981, 0.2331) }
+    val WONDER_RECT: GameRect by lazy { GameRect(0.0444, 0.1644, 0.1174, 0.1523) }
 
-    val RIVAL_HERO_RECT: GameRect = GameRect(-0.0453, 0.0488, -0.3620, -0.2355)
-    val MY_HERO_RECT: GameRect = GameRect(-0.0453, 0.0488, 0.2229, 0.3494)
+    val RIVAL_HERO_RECT: GameRect by lazy { GameRect(-0.0453, 0.0488, -0.3620, -0.2355) }
+    val MY_HERO_RECT: GameRect by lazy { GameRect(-0.0453, 0.0488, 0.2229, 0.3494) }
 
-    val RIVAL_POWER_RECT: GameRect = GameRect(0.0840, 0.1554, -0.3260, -0.2338)
-    val MY_POWER_RECT: GameRect = GameRect(0.0855, 0.1569, 0.2254, 0.3176)
+    val RIVAL_POWER_RECT: GameRect by lazy { GameRect(0.0840, 0.1554, -0.3260, -0.2338) }
+    val MY_POWER_RECT: GameRect by lazy { GameRect(0.0855, 0.1569, 0.2254, 0.3176) }
 
     /**
      * 星舰发射
      */
-    val STARSHIP_LAUNCH_RECT: GameRect = GameRect(0.0180, 0.1268, 0.2723, 0.4089)
+    val STARSHIP_LAUNCH_RECT: GameRect by lazy { GameRect(0.0180, 0.1268, 0.2723, 0.4089) }
 
     /**
      * 星舰取消发射
      */
-    val STARSHIP_CANCEL_LAUNCH_RECT: GameRect = GameRect(-0.1107, -0.0295, 0.3106, 0.4120)
+    val STARSHIP_CANCEL_LAUNCH_RECT: GameRect by lazy { GameRect(-0.1107, -0.0295, 0.3106, 0.4120) }
 
     /**
      * 牌库
      */
-    val DECK_RECT = GameRect(0.4376, 0.4688, 0.0346, 0.1645)
+    val DECK_RECT by lazy { GameRect(0.4376, 0.4688, 0.0346, 0.1645) }
 
     /**
      * 抉择
      */
-    private val CHOOSE_ONE_RECTS = arrayOf(
-        GameRect(-0.2030, -0.0364, -0.1775, 0.1677),
-        GameRect(0.0412, 0.2030, -0.1732, 0.1656)
-    )
+    private val CHOOSE_ONE_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.2030, -0.0364, -0.1775, 0.1677), GameRect(0.0412, 0.2030, -0.1732, 0.1656)
+        )
+    }
 
-    private val FOUR_DISCOVER_RECTS =
+    private val FOUR_DISCOVER_RECTS by lazy {
         arrayOf(
             GameRect(-0.3332, -0.1911, -0.1702, 0.1160),
             GameRect(-0.1570, -0.0149, -0.1702, 0.1160),
             GameRect(0.0182, 0.1603, -0.1702, 0.1160),
             GameRect(0.1934, 0.3355, -0.1702, 0.1160),
         )
+    }
 
-    private val THREE_DISCOVER_RECTS =
+    private val THREE_DISCOVER_RECTS by lazy {
         arrayOf(
             GameRect(-0.3037, -0.1595, -0.1702, 0.1160),
             GameRect(-0.0666, 0.0741, -0.1702, 0.1160),
             GameRect(0.1656, 0.3106, -0.1702, 0.1160),
         )
+    }
 
-    private val MY_HAND_DECK_RECTS =
+    private val MY_HAND_DECK_RECTS by lazy {
         arrayOf(
             arrayOf(
                 GameRect(-0.0693, 0.0136, 0.3675, 0.5000),
@@ -190,8 +194,9 @@ object GameUtil {
                 GameRect(0.1093, 0.1677, 0.4163, 0.5000),
             ),
         )
+    }
 
-    private val MY_PLAY_DECK_RECTS =
+    private val MY_PLAY_DECK_RECTS by lazy {
         arrayOf<Array<GameRect>>(
             //            偶数
             arrayOf(
@@ -212,8 +217,9 @@ object GameUtil {
                 GameRect(0.2578, 0.3156, -0.0041, 0.1043),
             ),
         )
+    }
 
-    private val RIVAL_PLAY_DECK_RECTS =
+    private val RIVAL_PLAY_DECK_RECTS by lazy {
         arrayOf<Array<GameRect>>(
             //            偶数
             arrayOf(
@@ -235,8 +241,9 @@ object GameUtil {
                 GameRect(0.2578, 0.3156, -0.1730, -0.0716),
             ),
         )
+    }
 
-    private val DECK_POS_RECTS =
+    private val DECK_POS_RECTS by lazy {
         arrayOf(
             GameRect(-0.4108, -0.2487, -0.2782, -0.2019),
             GameRect(-0.2368, -0.0833, -0.2782, -0.2019),
@@ -248,8 +255,11 @@ object GameUtil {
             GameRect(-0.2337, -0.0802, 0.1384, 0.2148),
             GameRect(-0.0672, 0.0863, 0.1384, 0.2148),
         )
+    }
 
-    private var gameEndTasks: MutableList<ScheduledFuture<*>> = mutableListOf()
+    private val gameEndTasks: MutableList<ScheduledFuture<*>> by lazy {
+        mutableListOf()
+    }
 
     /**
      * 谢谢表情
@@ -288,17 +298,11 @@ object GameUtil {
      * 获取抉择位置
      * @param index 范围：0-[CHOOSE_ONE_RECTS.size]
      */
-    fun getChooseOneCardRect(index: Int): GameRect {
-        return CHOOSE_ONE_RECTS.getOrElse(index) { GameRect.INVALID }
-    }
+    fun getChooseOneCardRect(index: Int): GameRect = CHOOSE_ONE_RECTS.getOrElse(index) { GameRect.INVALID }
 
-    fun getThreeDiscoverCardRect(index: Int): GameRect {
-        return THREE_DISCOVER_RECTS.getOrElse(index) { GameRect.INVALID }
-    }
+    fun getThreeDiscoverCardRect(index: Int): GameRect = THREE_DISCOVER_RECTS.getOrElse(index) { GameRect.INVALID }
 
-    fun getFourDiscoverCardRect(index: Int): GameRect {
-        return FOUR_DISCOVER_RECTS.getOrElse(index) { GameRect.INVALID }
-    }
+    fun getFourDiscoverCardRect(index: Int): GameRect = FOUR_DISCOVER_RECTS.getOrElse(index) { GameRect.INVALID }
 
     /**
      * 左击套牌位置
@@ -318,12 +322,9 @@ object GameUtil {
     fun getMyHandCardRect(
         index: Int,
         size: Int,
-    ): GameRect {
-        if (index < 0 || index > size - 1 || size > MY_HAND_DECK_RECTS.size) {
-            return GameRect.INVALID
-        }
-        return MY_HAND_DECK_RECTS[size - 1][index]
-    }
+    ): GameRect = if (index < 0 || index > size - 1 || size > MY_HAND_DECK_RECTS.size) {
+        GameRect.INVALID
+    } else MY_HAND_DECK_RECTS[size - 1][index]
 
     fun getMyPlayCardRect(
         index: Int,
@@ -355,32 +356,22 @@ object GameUtil {
     fun chooseDiscoverCard(
         index: Int,
         discoverCardSize: Int,
-    ) {
-        if (discoverCardSize >= 4) {
-            getFourDiscoverCardRect(Math.clamp(index.toLong(), 0, 3)).lClick()
-        } else {
-            getThreeDiscoverCardRect(Math.clamp(index.toLong(), 0, 2)).lClick()
-        }
+    ) = if (discoverCardSize >= 4) {
+        getFourDiscoverCardRect(Math.clamp(index.toLong(), 0, 3)).lClick()
+    } else {
+        getThreeDiscoverCardRect(Math.clamp(index.toLong(), 0, 2)).lClick()
     }
 
-    fun leftButtonClick(point: Point) {
-        MouseUtil.leftButtonClick(point, ScriptStatus.gameHWND)
-    }
+    fun leftButtonClick(point: Point) = MouseUtil.leftButtonClick(point, ScriptStatus.gameHWND)
 
-    fun rightButtonClick(point: Point) {
-        MouseUtil.rightButtonClick(point, ScriptStatus.gameHWND)
-    }
+    fun rightButtonClick(point: Point) = MouseUtil.rightButtonClick(point, ScriptStatus.gameHWND)
 
     fun moveMouse(
         startPos: Point?,
         endPos: Point,
-    ) {
-        MouseUtil.moveMouseByHuman(startPos, endPos, ScriptStatus.gameHWND)
-    }
+    ) = MouseUtil.moveMouseByHuman(startPos, endPos, ScriptStatus.gameHWND)
 
-    fun moveMouse(endPos: Point) {
-        MouseUtil.moveMouseByHuman(endPos, ScriptStatus.gameHWND)
-    }
+    fun moveMouse(endPos: Point) = MouseUtil.moveMouseByHuman(endPos, ScriptStatus.gameHWND)
 
     /**
      * 如果战网不在运行则相当于启动战网，如果战网已经运行则为启动炉石
@@ -478,25 +469,15 @@ object GameUtil {
         leftButtonClick(Point((width - width * 0.0072992700729927).toInt(), (height - height * 0.015625).toInt()))
     }
 
-    fun cancelAction() {
-        MouseUtil.rightButtonClick(ScriptStatus.gameHWND)
-    }
+    fun cancelAction() = MouseUtil.rightButtonClick(ScriptStatus.gameHWND)
 
-    fun lClickCenter() {
-        CENTER_RECT.lClick()
-    }
+    fun lClickCenter() = CENTER_RECT.lClick()
 
-    fun lClickRightCenter() {
-        RIGHT_CENTER_RECT.lClick()
-    }
+    fun lClickRightCenter() =RIGHT_CENTER_RECT.lClick()
 
-    fun rClickCenter() {
-        CENTER_RECT.rClick()
-    }
+    fun rClickCenter() =CENTER_RECT.rClick()
 
-    fun reconnect() {
-        RECONNECT_RECT.lClick()
-    }
+    fun reconnect() =RECONNECT_RECT.lClick()
 
     /**
      * 点掉游戏结束结算页面
@@ -542,19 +523,20 @@ object GameUtil {
 
     fun findGameHWND(): WinDef.HWND? {
         val hwnd =
-            (
-                    SystemUtil.findHWND("UnityWndClass", GAME_CN_NAME)
-                        ?: SystemUtil.findHWND("UnityWndClass", GAME_US_NAME)
-                        ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME)
-                    )
-                ?: SystemUtil.findHWND(null, GAME_CN_NAME)
-                ?: SystemUtil.findHWND(null, GAME_US_NAME)
+            (SystemUtil.findHWND("UnityWndClass", GAME_CN_NAME) ?: SystemUtil.findHWND("UnityWndClass", GAME_US_NAME)
+            ?: CSystemDll.INSTANCE.findWindowsByProcessName(GAME_PROGRAM_NAME)) ?: SystemUtil.findHWND(
+                null,
+                GAME_CN_NAME
+            ) ?: SystemUtil.findHWND(null, GAME_US_NAME)
         return hwnd
     }
 
-    fun findPlatformHWND(): WinDef.HWND? =
-        SystemUtil.findHWND("Chrome_WidgetWin_0", PLATFORM_CN_NAME)
-            ?: let { SystemUtil.findHWND("Chrome_WidgetWin_0", PLATFORM_US_NAME) }
+    fun findPlatformHWND(): WinDef.HWND? = SystemUtil.findHWND("Chrome_WidgetWin_0", PLATFORM_CN_NAME) ?: let {
+        SystemUtil.findHWND(
+            "Chrome_WidgetWin_0",
+            PLATFORM_US_NAME
+        )
+    }
 
     fun findLoginPlatformHWND(): WinDef.HWND? = SystemUtil.findHWND("Qt5151QWindowIcon", PLATFORM_LOGIN_CN_NAME)
 
@@ -572,27 +554,26 @@ object GameUtil {
     fun killGame(sync: Boolean = false) {
         val exec = {
             if (isAliveOfGame()) {
-                kotlin
-                    .runCatching {
-                        for (i in 0 until 2) {
-                            CSystemDll.INSTANCE.quitWindow(ScriptStatus.gameHWND)
-                            delay(2000)
-                            if (!isAliveOfGame()) return@runCatching
-                        }
-                        for (i in 0 until 2) {
-                            CSystemDll.INSTANCE.killProcessByName(GAME_PROGRAM_NAME)
-                            delay(2000)
-                            if (!isAliveOfGame()) return@runCatching
-                        }
-                    }.onSuccess {
-                        if (isAliveOfGame()) {
-                            log.error { "${GAME_CN_NAME}关闭失败" }
-                        } else {
-                            log.info { "${GAME_CN_NAME}已关闭" }
-                        }
-                    }.onFailure {
-                        log.error(it) { "关闭${GAME_CN_NAME}异常" }
+                kotlin.runCatching {
+                    for (i in 0 until 2) {
+                        CSystemDll.INSTANCE.quitWindow(ScriptStatus.gameHWND)
+                        delay(2000)
+                        if (!isAliveOfGame()) return@runCatching
                     }
+                    for (i in 0 until 2) {
+                        CSystemDll.INSTANCE.killProcessByName(GAME_PROGRAM_NAME)
+                        delay(2000)
+                        if (!isAliveOfGame()) return@runCatching
+                    }
+                }.onSuccess {
+                    if (isAliveOfGame()) {
+                        log.error { "${GAME_CN_NAME}关闭失败" }
+                    } else {
+                        log.info { "${GAME_CN_NAME}已关闭" }
+                    }
+                }.onFailure {
+                    log.error(it) { "关闭${GAME_CN_NAME}异常" }
+                }
             } else {
                 log.info { "${GAME_CN_NAME}不在运行" }
             }

@@ -10,22 +10,22 @@ import kotlin.io.path.exists
  * @date 2024/10/13 16:45
  */
 
-val ROOT_PATH = System.getProperty("user.dir")
+val ROOT_PATH by lazy { System.getProperty("user.dir") }
 
-val TEMP_VERSION_PATH: String = Path.of(ROOT_PATH, "new_version_temp").toString()
+val TEMP_VERSION_PATH: String by lazy { Path.of(ROOT_PATH, "new_version_temp").toString() }
 
-val LOG_PATH: String = Path.of(ROOT_PATH, "log").toString()
+val LOG_PATH: String by lazy { Path.of(ROOT_PATH, "log").toString() }
 
-val LIBRARY_PATH: String = Path.of(ROOT_PATH, "lib").toString()
-val DLL_PATH: String = Path.of(LIBRARY_PATH, "dll").toString()
+val LIBRARY_PATH: String by lazy { Path.of(ROOT_PATH, "lib").toString() }
+val DLL_PATH: String by lazy { Path.of(LIBRARY_PATH, "dll").toString() }
 
-val CONFIG_PATH: String = Path.of(ROOT_PATH, "config").toString()
+val CONFIG_PATH: String by lazy { Path.of(ROOT_PATH, "config").toString() }
 
-val PLUGIN_PATH: String = Path.of(ROOT_PATH, "plugin").toString()
+val PLUGIN_PATH: String by lazy { Path.of(ROOT_PATH, "plugin").toString() }
 
-val CARD_WEIGHT_CONFIG_PATH: Path = Path.of(CONFIG_PATH, "card.weight");
+val CARD_WEIGHT_CONFIG_PATH: Path by lazy { Path.of(CONFIG_PATH, "card.weight") }
 
-val CARD_INFO_CONFIG_PATH: Path = Path.of(CONFIG_PATH, "card.info");
+val CARD_INFO_CONFIG_PATH: Path by lazy { Path.of(CONFIG_PATH, "card.info") }
 
 const val FXML_DIR: String = "/fxml/"
 
@@ -33,28 +33,28 @@ const val GAME_LOG_DIR: String = "Logs"
 
 const val DRIVE_PATH = "C:\\Windows\\System32\\drivers"
 
-val MOUSE_DRIVE_PATH: String = Path.of(DRIVE_PATH, "mouse.sys").toString()
+val MOUSE_DRIVE_PATH: String by lazy { Path.of(DRIVE_PATH, "mouse.sys").toString() }
 
-val KEYBOARD_DRIVE_PATH: String = Path.of(DRIVE_PATH, "keyboard.sys").toString()
+val KEYBOARD_DRIVE_PATH: String by lazy { Path.of(DRIVE_PATH, "keyboard.sys").toString() }
 
-val DATA_DIR: Path = Path.of(ROOT_PATH, "data")
+val DATA_DIR: Path by lazy { Path.of(ROOT_PATH, "data") }
 
 const val STATISTICS_DB_NAME: String = "statistics.db"
 
 @JvmInline
 value class ResourceFile(val name: String)
 
-val INJECT_UTIL_FILE = ResourceFile("inject-util.exe")
+val INJECT_UTIL_FILE by lazy { ResourceFile("inject-util.exe") }
 
-val INSTALL_DRIVE_FILE = ResourceFile("install-drive.exe")
+val INSTALL_DRIVE_FILE by lazy { ResourceFile("install-drive.exe") }
 
-val HS_CARD_UTIL_FILE = ResourceFile("card-update-util.exe")
+val HS_CARD_UTIL_FILE by lazy { ResourceFile("card-update-util.exe") }
 
-val UPDATE_FILE = ResourceFile("update.exe")
+val UPDATE_FILE by lazy { ResourceFile("update.exe") }
 
-val LIB_HS_FILE = ResourceFile("hs.dll")
+val LIB_HS_FILE by lazy { ResourceFile("hs.dll") }
 
-val LIB_BN_FILE = ResourceFile("bn.dll")
+val LIB_BN_FILE by lazy { ResourceFile("bn.dll") }
 
 const val GAME_WAR_LOG_NAME = "Power.log"
 

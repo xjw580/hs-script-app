@@ -26,32 +26,32 @@ import java.util.concurrent.TimeUnit
  * @date 2022/11/25 12:39
  */
 object TournamentModeStrategy : AbstractModeStrategy<Any?>() {
-    val START_RECT: GameRect = GameRect(0.2586, 0.3459, 0.2706, 0.3794)
+    val START_RECT: GameRect by lazy { GameRect(0.2586, 0.3459, 0.2706, 0.3794) }
 
-    val ERROR_RECT: GameRect = GameRect(-0.0397, 0.0325, 0.0856, 0.1249)
+    val ERROR_RECT: GameRect by lazy { GameRect(-0.0397, 0.0325, 0.0856, 0.1249) }
 
-    val CHANGE_MODE_RECT: GameRect = GameRect(0.2868, 0.3256, -0.4672, -0.4279)
+    val CHANGE_MODE_RECT: GameRect by lazy { GameRect(0.2868, 0.3256, -0.4672, -0.4279) }
 
-    val STANDARD_MODE_RECT: GameRect = GameRect(-0.2012, -0.0295, -0.2156, -0.0400)
+    val STANDARD_MODE_RECT: GameRect by lazy { GameRect(-0.2012, -0.0295, -0.2156, -0.0400) }
 
-    val WILD_MODE_RECT: GameRect = GameRect(0.0295, 0.2012, -0.2156, -0.0400)
+    val WILD_MODE_RECT: GameRect by lazy { GameRect(0.0295, 0.2012, -0.2156, -0.0400) }
 
-    val CASUAL_MODE_RECT: GameRect = GameRect(0.2557, 0.4278, -0.1769, 0.0014)
+    val CASUAL_MODE_RECT: GameRect by lazy { GameRect(0.2557, 0.4278, -0.1769, 0.0014) }
 
-    val CLASSIC_MODE_RECT: GameRect = GameRect(-0.4278, -0.2557, -0.1769, 0.0014)
+    val CLASSIC_MODE_RECT: GameRect by lazy { GameRect(-0.4278, -0.2557, -0.1769, 0.0014) }
 
-    val TOURNAMENT_MODE_RECT: GameRect = GameRect(-0.0790, 0.0811, -0.2090, -0.1737)
+    val TOURNAMENT_MODE_RECT: GameRect by lazy { GameRect(-0.0790, 0.0811, -0.2090, -0.1737) }
 
     /**
      * 顶栏有限时借用套牌时使用
      */
-    val FIRST_DECK_RECT_LIMIT: GameRect = GameRect(-0.4072, -0.2516, -0.0696, 0.0139)
+    val FIRST_DECK_RECT_LIMIT: GameRect by lazy { GameRect(-0.4072, -0.2516, -0.0696, 0.0139) }
 
-    val PREV_DECK_PAGE: GameRect = GameRect(-0.4755, -0.4473, -0.0302, 0.0095)
+    val PREV_DECK_PAGE: GameRect by lazy { GameRect(-0.4755, -0.4473, -0.0302, 0.0095) }
 
-    val BACK_RECT: GameRect = GameRect(0.4041, 0.4575, 0.4083, 0.4410)
+    val BACK_RECT: GameRect by lazy { GameRect(0.4041, 0.4575, 0.4083, 0.4410) }
 
-    val CANCEL_RECT: GameRect = GameRect(-0.0251, 0.0530, 0.3203, 0.3802)
+    val CANCEL_RECT: GameRect by lazy { GameRect(-0.0251, 0.0530, 0.3203, 0.3802) }
 
     override fun wantEnter() {
         addWantEnterTask(

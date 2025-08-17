@@ -42,7 +42,7 @@ const val PLATFORM_PROGRAM_NAME: String = "$PLATFORM_US_NAME.exe"
  */
 const val AUTHOR: String = "XiaoJiawei"
 
-val ZONE_OFFSET = ZoneOffset.ofHours(8)
+val ZONE_OFFSET by lazy { ZoneOffset.ofHours(8) }
 
 
 /*日志相关*/
