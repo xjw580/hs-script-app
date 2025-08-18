@@ -11,6 +11,11 @@ abstract class Service<T> {
     open val isRunning: Boolean
         get() = isRunningInner
 
+    /**
+     * 值越大优先级越高
+     */
+    open fun priority() = 0
+
     fun intelligentStartStop(value: T? = null): Boolean =
         if (getStatus(value)) {
             start()
@@ -63,5 +68,9 @@ abstract class Service<T> {
         oldValue: T,
         newValue: T,
     ) {
+    }
+
+    override fun toString(): String {
+        return this::class.java.simpleName.removeSuffix("Service")
     }
 }

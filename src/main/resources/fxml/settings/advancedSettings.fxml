@@ -54,7 +54,7 @@
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="工作时最小化"/>
-                                <TipNode text="工作时将关闭软件所有窗口仅保留托盘，此时只能检测到Java进程"/>
+                                <TipNode text="工作时将关闭软件所有窗口仅保留托盘，此时只能检测到Java进程，推荐打开"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigSwitch notificationManager="${notificationManager}" config="WORKING_MINIMIZE"/>
                             </HBox>
@@ -145,7 +145,12 @@
                             <HBox styleClass="h-box">
                                 <Text text="开机自启"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigSwitch notificationManager="${notificationManager}" config="POWER_BOOT"/>
+                                <ConfigSwitch fx:id="powerBootSwitch" notificationManager="${notificationManager}" config="POWER_BOOT"/>
+                            </HBox>
+                            <HBox styleClass="h-box" fx:id="autoStartPane">
+                                <Text text="自启后自动开始"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <ConfigSwitch notificationManager="${notificationManager}" config="AUTO_START"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="发送Windows通知"/>

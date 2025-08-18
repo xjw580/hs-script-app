@@ -20,9 +20,12 @@ object UseProxyService : Service<Boolean>() {
     }
 
     override fun getStatus(value: Boolean?): Boolean {
-        if (ConfigUtil.getBoolean(ConfigEnum.USE_PROXY)) {
+        val status = value ?: ConfigUtil.getBoolean(ConfigEnum.USE_PROXY)
+        if (status) {
             log.info { "代理地址:${NetUtil.getSystemProxy()}" }
+        } else {
+            log.info { "取消使用代理" }
         }
-        return true
+        return status
     }
 }

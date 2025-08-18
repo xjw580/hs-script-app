@@ -3,6 +3,7 @@ package club.xiaojiawei.hsscript.dll
 import club.xiaojiawei.hsscript.config.DRIVER_LOCK
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.consts.ROOT_PATH
+import club.xiaojiawei.hsscript.consts.ARG_PAUSE
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
@@ -128,21 +129,31 @@ interface CSystemDll : Library {
     /**
      * 开机自启，不要在主线程中执行
      */
-    fun enablePowerBoot(enable: Boolean, processName: WString, programPath: WString): Boolean
+    fun enablePowerBoot(
+        enable: Boolean, processName: WString, programPath: WString, delaySec: Int,
+        arguments: WString?
+    ): Boolean
 
     fun isTaskExists(processName: WString): Boolean
 
     fun isDebug(): Boolean
 
     object SystemPart {
-        fun enablePowerBoot(enable: Boolean): Boolean {
+        fun enablePowerBoot(enable: Boolean, start: Boolean = false): Boolean {
             return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe" }
                 ?.let { latestJar ->
                     val countDownLatch = CountDownLatch(1)
                     var res = false
                     Thread {
                         runCatching {
-                            res = INSTANCE.enablePowerBoot(enable, WString(PROGRAM_NAME), WString(latestJar.absolutePath))
+                            res =
+                                INSTANCE.enablePowerBoot(
+                                    enable,
+                                    WString(PROGRAM_NAME),
+                                    WString(latestJar.absolutePath),
+                                    5,
+                                    if (start) WString("${ARG_PAUSE}=${false}") else null
+                                )
                         }
                         countDownLatch.countDown()
                     }.start()

@@ -25,4 +25,7 @@ object PowerBootService : Service<Boolean>() {
             res
         }
     }
+
+    override fun priority(): Int = 1
+
 }

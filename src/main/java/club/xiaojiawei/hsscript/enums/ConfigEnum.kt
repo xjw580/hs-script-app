@@ -286,6 +286,11 @@ enum class ConfigEnum(
     IDLE_MAXIMUM_TIME(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "10" }),
 
     /**
+     * 自启后自动开始
+     */
+    AUTO_START(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }, service = AutoStartService),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(

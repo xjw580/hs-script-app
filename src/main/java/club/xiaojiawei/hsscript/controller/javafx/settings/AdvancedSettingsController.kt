@@ -3,6 +3,7 @@ package club.xiaojiawei.hsscript.controller.javafx.settings
 import club.xiaojiawei.controls.ico.HelpIco
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
+import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
@@ -27,6 +28,7 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
+import javafx.scene.layout.HBox
 import javafx.util.Duration
 import java.net.URL
 import java.util.*
@@ -127,6 +129,9 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
     }
 
     private fun listen() {
+        autoStartPane.visibleProperty().bind(powerBootSwitch.statusProperty())
+        autoStartPane.managedProperty().bind(powerBootSwitch.statusProperty())
+
         navigationBarToggle.selectedToggleProperty().addListener { _, oldToggle, newToggle ->
             newToggle ?: let {
                 navigationBarToggle.selectToggle(oldToggle)

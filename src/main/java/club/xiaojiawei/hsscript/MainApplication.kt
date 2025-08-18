@@ -408,7 +408,7 @@ class MainApplication : Application() {
         val args = this.parameters.raw
         var pause: String? = ""
         for (arg in args) {
-            if (arg.startsWith(UPDATE_ARG_PAUSE)) {
+            if (arg.startsWith(ARG_PAUSE)) {
                 val split: Array<String?> = arg.split("=".toRegex(), limit = 2).toTypedArray()
                 if (split.size > 1) {
                     pause = split[1]

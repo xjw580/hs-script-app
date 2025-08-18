@@ -13,6 +13,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.control.ToggleGroup
+import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 
@@ -21,6 +22,12 @@ import javafx.scene.layout.VBox
  * @date 2025/3/7 16:11
  */
 open class AdvancedSettingsView {
+
+    @FXML
+    protected lateinit var autoStartPane: HBox
+
+    @FXML
+    protected lateinit var powerBootSwitch: ConfigSwitch
 
     @FXML
     protected lateinit var systemTitled: TitledPane

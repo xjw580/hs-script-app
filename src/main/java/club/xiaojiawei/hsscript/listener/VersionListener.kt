@@ -132,9 +132,9 @@ object VersionListener {
                 Runtime
                     .getRuntime()
                     .exec(
-                        "$updateProgramPath ${UPDATE_ARG_TARGET}'${ROOT_PATH}' ${UPDATE_ARG_PAUSE}'${PauseStatus.isPause}' ${UPDATE_ARG_PID}'${
+                        "$updateProgramPath ${ARG_TARGET}'${ROOT_PATH}' ${ARG_PAUSE}'${PauseStatus.isPause}' ${ARG_PID}'${
                             ProcessHandle.current().pid()
-                        }' ${UPDATE_ARG_VERSION_FILE}'${versionFilePath}'"
+                        }' ${ARG_VERSION_FILE}'${versionFilePath}'"
                     )
             } catch (e: RuntimeException) {
                 log.error(e) { "执行版本更新失败" }
