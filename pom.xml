@@ -37,6 +37,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.nguyenq</groupId>
+            <artifactId>tess4j</artifactId>
+        </dependency>
+        <dependency>
             <groupId>eu.hansolo</groupId>
             <artifactId>tilesfx</artifactId>
         </dependency>
