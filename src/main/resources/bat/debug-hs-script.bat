@@ -7,5 +7,5 @@ set curdir=%cd%
 chcp 65001
 
 for /f "delims=\" %%a in ('dir /b /a-d /o-d "%curdir%\*.jar"') do (
-    java -Djna.library.path="%curdir%" -jar %%a %1
+    java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Djna.library.path="%curdir%" -jar %%a %1
 )

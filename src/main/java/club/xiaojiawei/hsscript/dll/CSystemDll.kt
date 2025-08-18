@@ -151,8 +151,8 @@ interface CSystemDll : Library {
                                     enable,
                                     WString(PROGRAM_NAME),
                                     WString(latestJar.absolutePath),
-                                    5,
-                                    if (start) WString("${ARG_PAUSE}=${false}") else null
+                                    30,
+                                    if (start) WString("${ARG_PAUSE}${false}") else null
                                 )
                         }
                         countDownLatch.countDown()
