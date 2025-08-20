@@ -182,6 +182,12 @@ interface CSystemDll : Library {
 
     fun limitMouseRange(enable: Boolean)
 
+    fun capture(enable: Boolean)
+
+    fun writeCapture()
+
+    fun saveCapture()
+
     fun isConnected(): Boolean
 
     // ===================================tray===================================

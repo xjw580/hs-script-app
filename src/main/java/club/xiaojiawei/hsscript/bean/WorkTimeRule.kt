@@ -2,11 +2,8 @@ package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.enums.OperateEnum
 import com.fasterxml.jackson.annotation.JsonIgnore
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
-import java.util.UUID
+import javafx.beans.property.*
+import java.util.*
 
 /**
  * @author 肖嘉威
@@ -20,7 +17,9 @@ class WorkTimeRule : Cloneable {
     private val workTime: ObjectProperty<WorkTime> = SimpleObjectProperty<WorkTime>(WorkTime())
 
     private val operates: ObjectProperty<Set<OperateEnum>> =
-        SimpleObjectProperty<Set<OperateEnum>>(emptySet<OperateEnum>())
+        SimpleObjectProperty(emptySet())
+
+    private val strategyId: StringProperty = SimpleStringProperty("e71234fa-1-radical-deck-97e9-1f4e126cd33b")
 
     private val enable: BooleanProperty = SimpleBooleanProperty(false)
 
@@ -70,6 +69,18 @@ class WorkTimeRule : Cloneable {
 
     fun setEnable(isEnable: Boolean) {
         this.enable.set(isEnable)
+    }
+
+    fun getStrategyId(): String? {
+        return strategyId.get()
+    }
+
+    fun strategyIdProperty(): StringProperty {
+        return strategyId
+    }
+
+    fun setStrategyId(strategyId: String?) {
+        this.strategyId.set(strategyId)
     }
 
     public override fun clone(): WorkTimeRule {

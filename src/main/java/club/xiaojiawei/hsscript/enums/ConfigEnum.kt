@@ -5,7 +5,6 @@ import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WorkTime
 import club.xiaojiawei.hsscript.bean.WorkTimeRule
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
-import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.service.*
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import com.alibaba.fastjson.JSON
@@ -289,6 +288,15 @@ enum class ConfigEnum(
      * 自启后自动开始
      */
     AUTO_START(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }, service = AutoStartService),
+
+    /**
+     * 自动刷新游戏每日任务
+     */
+    AUTO_REFRESH_GAME_TASK(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR },
+        service = AutoRefreshGameTaskService
+    ),
 
     /**
      * 套牌插件禁用列表

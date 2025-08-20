@@ -117,7 +117,7 @@
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigNumberField config="MATCH_MAXIMUM_TIME"
                                                    styleClass="text-field-ui, text-field-ui-small"
-                                                   prefWidth="${fieldWidth}"/>
+                                                   prefWidth="${fieldWidth}" notificationManager="${notificationManager}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="最长空闲时间/min"/>
@@ -125,7 +125,7 @@
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigNumberField config="IDLE_MAXIMUM_TIME"
                                                    styleClass="text-field-ui, text-field-ui-small"
-                                                   prefWidth="${fieldWidth}"/>
+                                                   prefWidth="${fieldWidth}" notificationManager="${notificationManager}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="游戏日志大小限制/KB"/>
@@ -133,7 +133,15 @@
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigNumberField config="GAME_LOG_LIMIT"
                                                    styleClass="text-field-ui, text-field-ui-small"
-                                                   prefWidth="${fieldWidth}"/>
+                                                   prefWidth="${fieldWidth}" notificationManager="${notificationManager}"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
+                                <Text text="自动刷新游戏任务"/>
+                                <TipNode text="任务长时间没有完成时自动刷新"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <ConfigNumberField config="AUTO_REFRESH_GAME_TASK"
+                                                   styleClass="text-field-ui, text-field-ui-small"
+                                                   prefWidth="${fieldWidth}" notificationManager="${notificationManager}"/>
                             </HBox>
                         </VBox>
                     </TitledPane>

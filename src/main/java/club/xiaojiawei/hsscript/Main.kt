@@ -7,13 +7,28 @@ import ch.qos.logback.classic.joran.JoranConfigurator
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.spi.FilterReply
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
+import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
+import club.xiaojiawei.hsscript.dll.KernelExDll
+import club.xiaojiawei.hsscript.dll.KernelExDll.Companion.FILE_MAP_READ
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
+import com.sun.jna.Pointer
+import com.sun.jna.WString
+import com.sun.jna.platform.win32.Kernel32
+import com.sun.jna.platform.win32.WinNT
 import javafx.application.Application
+import net.sourceforge.tess4j.ITesseract
+import net.sourceforge.tess4j.Tesseract
+import net.sourceforge.tess4j.TesseractException
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.RandomAccessFile
+import java.net.URLEncoder
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.nio.file.Files
+import java.nio.file.Path
+
 
 /**
  * @author 肖嘉威
@@ -78,5 +93,12 @@ fun main(args: Array<String>) {
 
     Application.launch(MainApplication::class.java, *args)
 
-
+//    val imageFile = File("C:\\Users\\28671\\Downloads\\2.png")
+////    val imageFile = File("C:\\Users\\28671\\Downloads\\1.png")
+//    val instance: ITesseract = Tesseract()
+//    instance.setDatapath(Path.of(TESS_DATA_PATH).toString())
+//    instance.setLanguage("chi_sim")
+////    instance.setVariable("tessedit_char_whitelist", "0123456789/");
+//    val result = instance.doOCR(imageFile).replace("\\s".toRegex(), "")
+//    println(result)
 }

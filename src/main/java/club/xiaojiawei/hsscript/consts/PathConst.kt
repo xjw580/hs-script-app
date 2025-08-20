@@ -62,24 +62,34 @@ const val GAME_MODE_LOG_NAME = "LoadingScreen.log"
 
 const val COMMON_CSS_PATH = "/fxml/css/common.css"
 
-/**
- * 图片路径
- */
-val IMG_PATH by lazy {
-    val imgDir = "resources/img"
+private fun getPath(relativePath: String): String {
     val jarDir = File(
         SystemUtil.javaClass.getProtectionDomain()
             .codeSource
             .location
             .toURI()
     )
-    var imgPath = Path.of(
-        jarDir.path, imgDir
+    var path = Path.of(
+        jarDir.path, relativePath
     )
-    if (!imgPath.exists()) {
-        imgPath = Path.of(jarDir.parentFile.path, imgDir)
+    if (!path.exists()) {
+        path = Path.of(jarDir.parentFile.path, relativePath)
     }
-    imgPath.toString()
+    return path.toString()
+}
+
+/**
+ * 图片路径
+ */
+val IMG_PATH by lazy {
+    getPath("resources/img")
+}
+
+/**
+ * tess数据集路径
+ */
+val TESS_DATA_PATH by lazy {
+    getPath("resources/tessdata")
 }
 
 /**

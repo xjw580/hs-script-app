@@ -48,6 +48,13 @@
             <outputDirectory>resources/img/</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>${project.basedir}/src/main/resources/resources/tessdata</directory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+            <outputDirectory>resources/tessdata/</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.basedir}</directory>
             <includes>
                 <include>*.db</include>
