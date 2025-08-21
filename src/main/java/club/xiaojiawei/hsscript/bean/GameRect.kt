@@ -18,22 +18,34 @@ import java.util.function.Consumer
  * @date 2024/8/28 15:15
  */
 data class GameRect(
-    val left: Double,
-    val right: Double,
-    val top: Double,
-    val bottom: Double,
+    val left: Double,// [-0.5,0.5]
+    val right: Double,// [-0.5,0.5]
+    val top: Double,// [-0.5,0.5]
+    val bottom: Double,// [-0.5,0.5]
 ) {
+
     fun getClickPos(): Point {
+        val (x, y, width, height) = getRelativeRect()
+        val pointX: Int = RandomUtil.getRandom(x.toInt(), (x + width).toInt())
+        val pointY: Int = RandomUtil.getRandom(y.toInt(), (y + height).toInt())
+        return Point(pointX, pointY)
+    }
+
+    fun getRelativeRect(applyMonitorScale: Boolean = false): Rect {
         val realH: Int = GAME_RECT.bottom - GAME_RECT.top
         val usableH = realH
         val realW: Int = GAME_RECT.right - GAME_RECT.left
-        val usableW = (realH * GameRationConst.GAME_WINDOW_ASPECT_TO_HEIGHT_RATIO).toInt()
+        val usableW = (realH * GameRationConst.GAME_WINDOW_CONTENT_WIDTH_HEIGHT_RATIO).toInt()
         val middleX = realW shr 1
         val middleY = realH shr 1
-        val pointX: Int = RandomUtil.getRandom((left * usableW).toInt(), (right * usableW).toInt())
-        val pointY: Int = RandomUtil.getRandom((top * usableH).toInt(), (bottom * usableH).toInt())
-        return Point(middleX + pointX, middleY + pointY)
+        return Rect(
+            middleX + left * usableW,
+            middleY + top * usableH,
+            (right - left) * usableW,
+            (bottom - top) * usableH
+        )
     }
+
 
     private fun cancel() {
         GameUtil.cancelAction()
@@ -44,7 +56,7 @@ data class GameRect(
 
     fun isInvalid(): Boolean = this == INVALID
 
-    private fun showControlPos(gameRect: GameRect = this) {
+    fun showControlPos(gameRect: GameRect = this) {
         if (ScriptStatus.testMode) return
         WindowUtil.getStage(WindowEnum.GAME_WINDOW_CONTROL_MODAL)?.let {
             if (it.isShowing) {
@@ -183,3 +195,5 @@ data class GameRect(
         val INVALID: GameRect = GameRect(0.0, 0.0, 0.0, 0.0)
     }
 }
+
+data class Rect(val x: Double, val y: Double, val width: Double, val height: Double)

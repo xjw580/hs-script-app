@@ -4,28 +4,29 @@ import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.bean.FrameData
 import club.xiaojiawei.hsscript.bean.FrameReader
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
+import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
+import club.xiaojiawei.hsscript.utils.cropImage
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscriptbase.config.log
-import com.sun.jna.Pointer
-import com.sun.jna.platform.win32.WinDef
-import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.Cursor
 import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
 import javafx.scene.image.WritableImage
-import javafx.scene.input.KeyCode
-import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
+import net.sourceforge.tess4j.ITesseract
+import net.sourceforge.tess4j.Tesseract
+import java.io.File
 import java.net.URL
+import java.nio.file.Path
 import java.util.*
-import kotlin.math.abs
+import javax.imageio.ImageIO
 
 /**
  * @author 肖嘉威
@@ -95,6 +96,7 @@ class GameFrameController : Initializable, StageHook {
         running = true
         log.info { "开始捕获" }
         go {
+            var i = 0
             while (running) {
                 val frame = frameReader.tryReadFrame()
                 if (frame != null) {
@@ -125,3 +127,12 @@ class GameFrameController : Initializable, StageHook {
         startCapture()
     }
 }
+//
+//fun main() {
+//    val instance: ITesseract = Tesseract()
+//    instance.setDatapath(Path.of(TESS_DATA_PATH).toString())
+//    instance.setLanguage("chi_sim")
+//    instance.setVariable("tessedit_char_whitelist", "0123456789/");
+//    val result = instance.doOCR(File("C:\\Users\\28671\\Downloads\\1.png")).replace("\\s".toRegex(), "")
+//    println(result)
+//}

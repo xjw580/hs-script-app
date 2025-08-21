@@ -1,6 +1,8 @@
 package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.dll.CaptureReader
+import club.xiaojiawei.hsscript.utils.toBufferedImage
+import java.awt.image.BufferedImage
 import java.io.Closeable
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -168,12 +170,17 @@ class FrameReader : Closeable {
 
 // 帧数据类
 data class FrameData(
-    val buffer: ByteBuffer,
+    val buffer: ByteBuffer, // BGRA排列的图片数据
     val width: Int,
     val height: Int,
     val frameCounter: Int, // 帧计数器
-    val format: Int // 像素格式(0=ARGB, 1=ABGR)
+    val format: Int // 写入端的像素格式(0=ARGB, 1=ABGR)
 ) {
+
+    fun toBufferedImage(): BufferedImage {
+        return buffer.toBufferedImage(width, height)
+    }
+
     fun toArgbArray(): IntArray? {
         if (format == 0) {
             val pixels = IntArray(width * height)
@@ -198,7 +205,7 @@ data class FrameData(
         return null
     }
 
-    fun getAbgrArray(): IntArray? {
+    fun toAbgrArray(): IntArray? {
         if (format == 1) {
             val pixels = IntArray(width * height)
             buffer.rewind()

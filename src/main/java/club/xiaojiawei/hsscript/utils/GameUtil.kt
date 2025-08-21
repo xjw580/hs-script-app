@@ -22,6 +22,8 @@ import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinUser
+import com.sun.jna.platform.win32.WinUser.SWP_NOMOVE
+import com.sun.jna.platform.win32.WinUser.SWP_NOZORDER
 import java.awt.Point
 import java.io.File
 import java.io.IOException
@@ -89,6 +91,50 @@ object GameUtil {
      * 牌库
      */
     val DECK_RECT by lazy { GameRect(0.4376, 0.4688, 0.0346, 0.1645) }
+
+    /**
+     * 每日任务描述
+     */
+    val DAILY_TASK_DESC_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.2932, -0.1573, -0.1239, -0.0374),
+            GameRect(-0.1146, 0.0183, -0.1239, -0.0374),
+            GameRect(0.0606, 0.1945, -0.1239, -0.0374),
+        )
+    }
+
+    /**
+     * 每日任务进度
+     */
+    val DAILY_TASK_PROGRESS_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.2609, -0.1800, -0.0396, -0.0095),
+            GameRect(-0.0903, -0.0094, -0.0396, -0.0095),
+            GameRect(0.0876, 0.1685, -0.0396, -0.0095),
+        )
+    }
+
+    /**
+     * 每周任务描述
+     */
+    val WEEKLY_TASK_DESC_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.2932, -0.1573, 0.1730, 0.2653),
+            GameRect(-0.1146, 0.0183, 0.1730, 0.2653),
+            GameRect(0.0606, 0.1945, 0.1730, 0.2653),
+        )
+    }
+
+    /**
+     * 每周任务进度
+     */
+    val WEEKLY_TASK_PROGRESS_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.2609, -0.1800, 0.2607, 0.2910),
+            GameRect(-0.0903, -0.0094, 0.2607, 0.2910),
+            GameRect(0.0876, 0.1685, 0.2607, 0.2910),
+        )
+    }
 
     /**
      * 抉择
@@ -260,6 +306,15 @@ object GameUtil {
     private val gameEndTasks: MutableList<ScheduledFuture<*>> by lazy {
         mutableListOf()
     }
+
+    fun getDailyTaskDescRect(index: Int): GameRect? = DAILY_TASK_DESC_RECTS.getOrNull(index)
+
+    fun getDailyTaskProgressRect(index: Int): GameRect? = DAILY_TASK_PROGRESS_RECTS.getOrNull(index)
+
+    fun getWeaklyTaskDescRect(index: Int): GameRect? = WEEKLY_TASK_DESC_RECTS.getOrNull(index)
+
+    fun getWeaklyTaskProgressRect(index: Int): GameRect? = WEEKLY_TASK_PROGRESS_RECTS.getOrNull(index)
+
 
     /**
      * 谢谢表情
@@ -473,11 +528,11 @@ object GameUtil {
 
     fun lClickCenter() = CENTER_RECT.lClick()
 
-    fun lClickRightCenter() =RIGHT_CENTER_RECT.lClick()
+    fun lClickRightCenter() = RIGHT_CENTER_RECT.lClick()
 
-    fun rClickCenter() =CENTER_RECT.rClick()
+    fun rClickCenter() = CENTER_RECT.rClick()
 
-    fun reconnect() =RECONNECT_RECT.lClick()
+    fun reconnect() = RECONNECT_RECT.lClick()
 
     /**
      * 点掉游戏结束结算页面
@@ -545,6 +600,26 @@ object GameUtil {
      */
     fun updateGameRect(gameHWND: WinDef.HWND? = ScriptStatus.gameHWND) {
         SystemUtil.updateRECT(gameHWND, ScriptStatus.GAME_RECT)
+        if (ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK) && User32.INSTANCE.IsWindow(gameHWND)) {
+            ScriptStatus.GAME_RECT.run {
+                val height = bottom - top
+                val width = right - left
+                val ratio = width.toDouble() / height
+                if (ratio < GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO || ratio > GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) {
+                    User32.INSTANCE.SetWindowPos(
+                        gameHWND,
+                        null,
+                        0,
+                        0,
+                        (height * GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO).toInt() + 1,
+                        height,
+                        SWP_NOMOVE or SWP_NOZORDER
+                    )
+                    log.warn { "${GAME_CN_NAME}窗口宽高比不合理，已自动调整" }
+                    SystemUtil.updateRECT(gameHWND, ScriptStatus.GAME_RECT)
+                }
+            }
+        }
 //        println("left:${ScriptStatus.GAME_RECT.left}, right:${ScriptStatus.GAME_RECT.right}, top:${ScriptStatus.GAME_RECT.top}, bottom:${ScriptStatus.GAME_RECT.bottom}")
     }
 

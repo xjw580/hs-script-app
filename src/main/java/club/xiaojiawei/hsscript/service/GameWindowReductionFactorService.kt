@@ -64,7 +64,7 @@ object GameWindowReductionFactorService : Service<Int>() {
             null,
             0,
             0,
-            (height * GameRationConst.GAME_WINDOW_ASPECT_TO_HEIGHT_RATIO).toInt(),
+            (height * GameRationConst.GAME_WINDOW_CONTENT_WIDTH_HEIGHT_RATIO).toInt(),
             height.toInt(),
             SWP_NOZORDER or SWP_NOMOVE,
         )

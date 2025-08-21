@@ -169,16 +169,6 @@ enum class ConfigEnum(
     AUTO_UPDATE(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }),
 
     /**
-     * 是否执行策略
-     */
-    STRATEGY(group = DEV_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
-
-    /**
-     * 启用鼠标
-     */
-    ENABLE_MOUSE(group = DEV_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
-
-    /**
      * 工作时最小化软件
      */
     WORKING_MINIMIZE(
@@ -416,6 +406,16 @@ enum class ConfigEnum(
         group = SYSTEM_CONFIG_GROUP,
         defaultValueInitializer = { JSON.toJSONString(HotKey(JIntellitype.MOD_CONTROL, 'P'.code)) },
     ),
+
+    /**
+     * 是否执行策略
+     */
+    STRATEGY(group = DEV_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
+
+    /**
+     * 启用鼠标
+     */
+    ENABLE_MOUSE(group = DEV_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
 
     /**
      * 文件日志级别

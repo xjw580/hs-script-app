@@ -268,7 +268,7 @@ class GameWindowModalController : Initializable, StageHook {
         val windowH = windowRECT.bottom - windowRECT.top
         val outputScaleX = Screen.getPrimary().outputScaleX
         val usableH = (clientH) / outputScaleX
-        val usableW = usableH * GameRationConst.GAME_WINDOW_ASPECT_TO_HEIGHT_RATIO
+        val usableW = usableH * GameRationConst.GAME_WINDOW_CONTENT_WIDTH_HEIGHT_RATIO
         return Rect(
             x = ((windowRECT.left + ((windowW - clientW) / 2.0)) / outputScaleX) + ((clientW / outputScaleX - usableW) / 2),
             y = (windowRECT.top + ((windowH - clientH - titleH) / 2.0) + titleH) / outputScaleX,

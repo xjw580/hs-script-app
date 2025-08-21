@@ -72,7 +72,7 @@ class GameDataAnalysisController : Initializable, StageHook {
     private var canvasHeight = 0.0
 
     private fun calcHeight(width: Double): Double {
-        return width / GameRationConst.GAME_WINDOW_ASPECT_TO_HEIGHT_RATIO
+        return width / GameRationConst.GAME_WINDOW_CONTENT_WIDTH_HEIGHT_RATIO
     }
 
     private var warAnimationTimer: AnimationTimer? = null

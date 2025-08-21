@@ -11,6 +11,7 @@ import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.dll.KernelExDll
 import club.xiaojiawei.hsscript.dll.KernelExDll.Companion.FILE_MAP_READ
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
 import com.sun.jna.Pointer
 import com.sun.jna.WString
@@ -92,13 +93,4 @@ fun main(args: Array<String>) {
     PROGRAM_ARGS = args.toList()
 
     Application.launch(MainApplication::class.java, *args)
-
-//    val imageFile = File("C:\\Users\\28671\\Downloads\\2.png")
-////    val imageFile = File("C:\\Users\\28671\\Downloads\\1.png")
-//    val instance: ITesseract = Tesseract()
-//    instance.setDatapath(Path.of(TESS_DATA_PATH).toString())
-//    instance.setLanguage("chi_sim")
-////    instance.setVariable("tessedit_char_whitelist", "0123456789/");
-//    val result = instance.doOCR(imageFile).replace("\\s".toRegex(), "")
-//    println(result)
 }
