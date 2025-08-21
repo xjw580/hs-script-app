@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.enums
 
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
+import club.xiaojiawei.hsscriptbase.config.log
 import javafx.stage.Screen
 import javafx.stage.StageStyle
 
@@ -69,6 +69,7 @@ enum class WindowEnum(
         (SCREEN_HEIGHT - 590.0) / 2,
         alwaysOnTop = true,
     ),
+    GAME_FRAME("gameFrame.fxml", cache = false ,alwaysOnTop = true),
     TIME_SETTINGS(
         "timeSettings.fxml",
         formatTitle("工作时间设置"),

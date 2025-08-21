@@ -13,11 +13,7 @@ import java.util.concurrent.ScheduledFuture
  * @author 肖嘉威
  * @date 2023/7/5 14:37
  */
-abstract class AbstractStarter : ScheduledCloser, Closeable {
-
-    constructor() {
-        TaskManager.addTask(this)
-    }
+abstract class AbstractStarter : ScheduledCloser{
 
     private var nextStarter: AbstractStarter? = null
 
@@ -67,13 +63,6 @@ abstract class AbstractStarter : ScheduledCloser, Closeable {
 
     override fun stopAll() {
         stopTask()
-    }
-
-    /**
-     * 释放资源，不代表关闭服务
-     */
-    override fun close() {
-        TaskManager.removeTask(this)
     }
 
 }

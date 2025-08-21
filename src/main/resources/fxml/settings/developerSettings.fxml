@@ -59,6 +59,10 @@
                             onAction="#openMeasureUtil"/>
                 </HBox>
                 <HBox styleClass="h-box">
+                    <Button text="捕获游戏画面" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#captureGameFrame"/>
+                </HBox>
+                <HBox styleClass="h-box">
                     <Button text="分析游戏数据" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openGameDataAnalysis"/>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <Label text="对局开始自动打开" contentDisplay="RIGHT">

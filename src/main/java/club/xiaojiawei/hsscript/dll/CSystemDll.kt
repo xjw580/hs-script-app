@@ -1,9 +1,9 @@
 package club.xiaojiawei.hsscript.dll
 
 import club.xiaojiawei.hsscript.config.DRIVER_LOCK
+import club.xiaojiawei.hsscript.consts.ARG_PAUSE
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.consts.ROOT_PATH
-import club.xiaojiawei.hsscript.consts.ARG_PAUSE
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
@@ -135,6 +135,10 @@ interface CSystemDll : Library {
     ): Boolean
 
     fun isTaskExists(processName: WString): Boolean
+
+    fun isDllLoadedInProcess(processId: Long, dllName: String): Boolean
+
+    fun activeWindowMove(hwnd: HWND?)
 
     fun isDebug(): Boolean
 

@@ -14,6 +14,7 @@ import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.fileLogLevel
 import club.xiaojiawei.hsscript.initializer.DriverInitializer
 import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import com.alibaba.fastjson.JSON
@@ -93,9 +94,8 @@ object ConfigExUtil {
                 if (oldMouseControlMode === MouseControlModeEnum.DRIVE) {
                     DriverInitializer().uninstall()
                 }
-                InjectStarter().use {
-                    it.start()
-                }
+                InjectStarter().start()
+                InjectedAfterStarter().start()
             }
 
             MouseControlModeEnum.EVENT -> {

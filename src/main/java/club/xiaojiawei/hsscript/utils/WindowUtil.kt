@@ -1,7 +1,6 @@
 package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.JavaFXUI
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.COMMON_CSS_PATH
 import club.xiaojiawei.hsscript.consts.FXML_DIR
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
@@ -12,7 +11,9 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.utils.SystemUtil.findHWND
 import club.xiaojiawei.hsscript.utils.SystemUtil.showWindow
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import com.sun.javafx.tk.quantum.WindowStage
 import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.application.Platform
 import javafx.event.ActionEvent
@@ -29,6 +30,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Paint
 import javafx.stage.*
 import java.io.IOException
+import java.lang.reflect.InvocationTargetException
 
 /**
  * 窗口工具类
@@ -177,6 +179,30 @@ object WindowUtil {
         contentText: String?,
         window: Window?,
     ): Stage = createAlert(headerText, contentText, null, null, window)
+
+    fun getHWND(windowEnum: WindowEnum): Long {
+        return getHWND(getStage(windowEnum))
+    }
+
+    fun getHWND(window: Window?): Long {
+        if (window == null) return 0L
+        try {
+            val windowClass = Window::class.java
+            val declaredMethod = windowClass.getDeclaredMethod("getPeer")
+            declaredMethod.setAccessible(true)
+            val tkStage = declaredMethod.invoke(window)
+            if (tkStage is WindowStage) {
+                return tkStage.getPlatformWindow().getRawHandle()
+            }
+        } catch (e: NoSuchMethodException) {
+            log.error(e) {}
+        } catch (e: InvocationTargetException) {
+            log.error(e) {}
+        } catch (e: IllegalAccessException) {
+            log.error(e) {}
+        }
+        return 0L
+    }
 
     fun findWindow(windowEnum: WindowEnum): HWND? = findHWND(null, windowEnum.title)
 

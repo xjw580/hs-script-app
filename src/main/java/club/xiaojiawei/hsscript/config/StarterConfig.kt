@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.config
 
 import club.xiaojiawei.hsscript.starter.*
+import club.xiaojiawei.hsscript.status.TaskManager
 
 /**
  * Starter的责任链配置
@@ -10,13 +11,15 @@ import club.xiaojiawei.hsscript.starter.*
 object StarterConfig {
 
     val starter: AbstractStarter = ClearStarter().also {
+        TaskManager.addTask(it)
         it.setNextStarter(CheckWarningStarter())
-            .setNextStarter(PlatformStarter())
-            .setNextStarter(LoginPlatformStarter())
-            .setNextStarter(GameStarter())
+            .setNextStarter(PlatformStarter().apply { TaskManager.addTask(this) })
+            .setNextStarter(LoginPlatformStarter().apply { TaskManager.addTask(this) })
+            .setNextStarter(GameStarter().apply { TaskManager.addTask(this) })
             .setNextStarter(InjectStarter())
+            .setNextStarter(InjectedAfterStarter())
             .setNextStarter(LogListenStarter())
-            .setNextStarter(ExceptionListenStarter())
+            .setNextStarter(ExceptionListenStarter().apply { TaskManager.addTask(this) })
     }
 
 }

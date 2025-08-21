@@ -44,17 +44,19 @@ const val STATISTICS_DB_NAME: String = "statistics.db"
 @JvmInline
 value class ResourceFile(val name: String)
 
-val INJECT_UTIL_FILE by lazy { ResourceFile("inject-util.exe") }
+val INJECT_UTIL_FILE = ResourceFile("inject-util.exe")
 
-val INSTALL_DRIVE_FILE by lazy { ResourceFile("install-drive.exe") }
+val INSTALL_DRIVE_FILE = ResourceFile("install-drive.exe")
 
-val HS_CARD_UTIL_FILE by lazy { ResourceFile("card-update-util.exe") }
+val HS_CARD_UTIL_FILE = ResourceFile("card-update-util.exe")
 
-val UPDATE_FILE by lazy { ResourceFile("update.exe") }
+val UPDATE_FILE = ResourceFile("update.exe")
 
-val LIB_HS_FILE by lazy { ResourceFile("hs.dll") }
+val LIB_HS_FILE = ResourceFile("hs.dll")
 
-val LIB_BN_FILE by lazy { ResourceFile("bn.dll") }
+val LIB_BN_FILE = ResourceFile("bn.dll")
+
+val LIB_CAPTURE_READER_FILE = ResourceFile("capture_reader.dll")
 
 const val GAME_WAR_LOG_NAME = "Power.log"
 

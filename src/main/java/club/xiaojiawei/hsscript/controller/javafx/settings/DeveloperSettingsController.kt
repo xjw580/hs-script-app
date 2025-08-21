@@ -1,21 +1,25 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.controls.ico.FileIco
+import club.xiaojiawei.hsscript.bean.FrameData
+import club.xiaojiawei.hsscript.bean.FrameReader
 import club.xiaojiawei.hsscript.consts.*
+import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -23,13 +27,18 @@ import javafx.fxml.Initializable
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.image.ImageView
+import javafx.scene.image.PixelFormat
+import javafx.scene.image.WritableImage
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.DirectoryChooser
+import javafx.stage.Stage
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
@@ -143,6 +152,11 @@ class DeveloperSettingsController : Initializable {
         showStage(WindowEnum.MEASURE_GAME, null)
     }
 
+    @FXML
+    protected fun captureGameFrame(){
+        showStage(WindowEnum.GAME_FRAME)
+    }
+    private var imageView: ImageView? = null
     @FXML
     protected fun openGameDataAnalysis(actionEvent: ActionEvent?) {
         showStage(WindowEnum.GAME_DATA_ANALYSIS, null)

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import club.xiaojiawei.controls.ico.CloseIco?>
+<?import club.xiaojiawei.controls.ico.StartIco?>
+<?import club.xiaojiawei.controls.ico.StopIco?>
+<?import club.xiaojiawei.controls.NotificationManager?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import club.xiaojiawei.factory.NotificationFactory?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="club.xiaojiawei.hsscript.controller.javafx.GameFrameController"
+           fx:id="rootPane"
+           prefHeight="216.0" prefWidth="384.0">
+    <ImageView fx:id="gameFrameView" fitWidth="${rootPane.width}" fitHeight="${rootPane.height}"/>
+    <NotificationManager fx:id="notificationManager">
+        <NotificationFactory size="TINY" showingCloseBtn="false"/>
+    </NotificationManager>
+</StackPane>
