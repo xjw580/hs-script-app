@@ -521,7 +521,9 @@ object GameUtil {
     fun lClickSettings() {
         val width = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val height = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
-        leftButtonClick(Point((width - width * 0.0072992700729927).toInt(), (height - height * 0.015625).toInt()))
+        val rightMargin = 0.0072992700729927
+        val bottomMargin = 0.015625
+        leftButtonClick(Point((width - width * rightMargin).toInt(), (height - height * bottomMargin).toInt()))
     }
 
     fun cancelAction() = MouseUtil.rightButtonClick(ScriptStatus.gameHWND)

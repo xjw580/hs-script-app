@@ -114,9 +114,12 @@ object PowerLogUtil {
         if (fullCardStack.size() < 3 && war.isMyTurn) return
         blockStack.peek()?.let { block ->
             if (block.blockType !== BlockTypeEnum.POWER && block.blockType !== BlockTypeEnum.UNKNOWN) return
+
             val testChooseCard: (Card) -> Boolean = { testCard ->
                 val blockEntity = block.entity
-                testCard.area::class.java === SetasideArea::class.java && testCard.creator.isNotEmpty() && (blockEntity == null || testCard.creator == blockEntity.entityId)
+                testCard.area::class.java === SetasideArea::class.java
+                        && testCard.creator.isNotEmpty()
+                        && (blockEntity == null || testCard.creator == blockEntity.entityId)
             }
 
             var creator: String? = null

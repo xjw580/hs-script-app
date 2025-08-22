@@ -96,7 +96,6 @@ class GameFrameController : Initializable, StageHook {
         running = true
         log.info { "开始捕获" }
         go {
-            var i = 0
             while (running) {
                 val frame = frameReader.tryReadFrame()
                 if (frame != null) {
