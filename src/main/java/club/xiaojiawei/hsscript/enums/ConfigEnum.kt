@@ -1,13 +1,10 @@
 package club.xiaojiawei.hsscript.enums
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.hsscript.bean.HotKey
-import club.xiaojiawei.hsscript.bean.WorkTime
-import club.xiaojiawei.hsscript.bean.WorkTimeRule
-import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
+import club.xiaojiawei.hsscript.bean.*
 import club.xiaojiawei.hsscript.service.*
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
-import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson2.JSON
 import com.melloware.jintellitype.JIntellitype
 
 /**
@@ -289,6 +286,16 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 自动刷新游戏每日任务
+     */
+    GAME_TASK_STATUS(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            JSON.toJSONString(GameTask())
+        }
+    ),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(
@@ -435,6 +442,14 @@ enum class ConfigEnum(
         defaultValueInitializer = { FALSE_STR },
         service = DisplayGameRectPosService,
         isEnable = false,
+    ),
+
+    /**
+     * 保存ocr图片
+     */
+    SAVE_OCR_IMG(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR },
     ),
 
     /**

@@ -135,7 +135,7 @@ class StatisticsController : Initializable, StageHook {
             strategyComboBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
                 val strategyItem = newValue ?: return@addListener
                 val strategyId = strategyItem.id
-                val records = queryRecord(calcStartDate(), calcEndDate()).filter {
+                val records = RecordDaoEx.queryRecord(calcStartDate(), calcEndDate()).filter {
                     var res = false
                     do {
                         val id = it.strategyId ?: break
@@ -172,7 +172,7 @@ class StatisticsController : Initializable, StageHook {
         if (startDate.isAfter(endDate)) return
 
         EXTRA_THREAD_POOL.submit {
-            val records = queryRecord(startDate, endDate)
+            val records = RecordDaoEx.queryRecord(startDate, endDate)
             initStrategyPane(records)
             initRunModePane(records)
             initTimePane(records)
@@ -193,16 +193,6 @@ class StatisticsController : Initializable, StageHook {
         return this.endDate.localDate ?: LocalDate.of(9999, 1, 1)
     }
 
-    private fun queryRecord(startDate: LocalDate, endDate: LocalDate): List<Record> {
-        val recordDao = RecordDaoEx.RECORD_DAO
-        val minDateTime = LocalDateTime.of(startDate.year, startDate.monthValue, startDate.dayOfMonth, 0, 0)
-        val maxDateTime = LocalDateTime.of(endDate.year, endDate.monthValue, endDate.dayOfMonth, 0, 0).plusDays(1)
-        val records = recordDao.queryByDateRange(minDateTime, maxDateTime).filter {
-            val endTime = it.endTime ?: return@filter false
-            endTime.isAfter(minDateTime) && endTime.isBefore(maxDateTime)
-        }
-        return records
-    }
 
     private fun initStrategyPane(records: List<Record>) {
         if (strategyComboBox.items.size > 1) {

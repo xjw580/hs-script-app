@@ -1,10 +1,5 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.listener.log.PowerLogListener
@@ -15,6 +10,11 @@ import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.strategy.mode.TournamentModeStrategy.BACK_RECT
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import java.util.concurrent.TimeUnit
 
 /**
@@ -32,7 +32,7 @@ object AdventureModeStrategy : AbstractModeStrategy<Any?>() {
     override fun wantEnter() {
         addWantEnterTask(
             EXTRA_THREAD_POOL.scheduleWithFixedDelay(
-                LRunnable {
+                {
                     if (PauseStatus.isPause) {
                         cancelAllWantEnterTasks()
                     } else if (Mode.currMode == ModeEnum.HUB) {
@@ -62,12 +62,12 @@ object AdventureModeStrategy : AbstractModeStrategy<Any?>() {
                 }
             var runModeEnum: RunModeEnum
             if ((
-                    (
-                        deckStrategy.runModes[0].also {
-                            runModeEnum = it
-                        }
-                    ) == RunModeEnum.PRACTICE
-                ) &&
+                        (
+                                deckStrategy.runModes[0].also {
+                                    runModeEnum = it
+                                }
+                                ) == RunModeEnum.PRACTICE
+                        ) &&
                 runModeEnum.isEnable
             ) {
                 if (!PowerLogListener.checkPowerLogSize()) {

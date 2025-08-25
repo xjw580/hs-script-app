@@ -4,14 +4,10 @@ import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.bean.FrameData
 import club.xiaojiawei.hsscript.bean.FrameReader
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
-import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.dll.CSystemDll
-import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.GameUtil
-import club.xiaojiawei.hsscript.utils.WindowUtil
-import club.xiaojiawei.hsscript.utils.cropImage
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscriptbase.config.log
 import javafx.fxml.FXML
@@ -20,13 +16,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
 import javafx.scene.image.WritableImage
 import javafx.scene.layout.StackPane
-import net.sourceforge.tess4j.ITesseract
-import net.sourceforge.tess4j.Tesseract
-import java.io.File
 import java.net.URL
-import java.nio.file.Path
 import java.util.*
-import javax.imageio.ImageIO
 
 /**
  * @author 肖嘉威

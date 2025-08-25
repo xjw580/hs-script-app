@@ -2,10 +2,12 @@ package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.dll.CaptureReader
 import club.xiaojiawei.hsscript.utils.toBufferedImage
+import club.xiaojiawei.hsscriptbase.config.log
 import java.awt.image.BufferedImage
 import java.io.Closeable
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.log
 
 /**
  * @author 肖嘉威
@@ -16,7 +18,6 @@ class FrameReader : Closeable {
     private var frameBuffer: ByteBuffer? = null
     private var isInitialized = false
 
-    // 初始化读取器
     fun initialize(): Boolean {
         nativeHandle = CaptureReader.nativeInit()
         if (nativeHandle != 0L) {
@@ -26,7 +27,6 @@ class FrameReader : Closeable {
         return false
     }
 
-    // 高性能轮询读取（推荐）
     fun tryReadFrame(): FrameData? {
         if (!isInitialized) return null
 
@@ -54,14 +54,13 @@ class FrameReader : Closeable {
                 width = width,
                 height = height,
                 frameCounter = frameCounter,
-                format = frameInfo[3] // ABGR格式
+                format = frameInfo[3]
             )
         }
 
         return null
     }
 
-    // 阻塞式等待新帧
     fun waitForFrame(timeoutMs: Int = 1000): FrameData? {
         if (!isInitialized) return null
 
@@ -129,12 +128,14 @@ class FrameReader : Closeable {
             return null
 
         } catch (e: Exception) {
-            println("Exception in waitForNewFrame: ${e.message}")
+            log.info (e){ "Exception in waitForNewFrame" }
             return null
         }
     }
 
-    // 获取读取器统计信息
+    /**
+     * 获取读取器统计信息
+     */
     fun getStats(): ReaderStats? {
         if (!isInitialized) return null
 
@@ -147,7 +148,9 @@ class FrameReader : Closeable {
         )
     }
 
-    // 检查写入端是否活跃
+    /**
+     * 检查写入端是否活跃
+     */
     fun isWriterActive(): Boolean {
         if (!isInitialized) return false
         val frameInfo = CaptureReader.nativeGetFrameInfo(nativeHandle) ?: return false

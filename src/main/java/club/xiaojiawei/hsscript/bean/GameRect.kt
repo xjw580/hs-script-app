@@ -31,7 +31,7 @@ data class GameRect(
         return Point(pointX, pointY)
     }
 
-    fun getRelativeRect(applyMonitorScale: Boolean = false): Rect {
+    fun getRelativeRect(): Rect {
         val realH: Int = GAME_RECT.bottom - GAME_RECT.top
         val usableH = realH
         val realW: Int = GAME_RECT.right - GAME_RECT.left

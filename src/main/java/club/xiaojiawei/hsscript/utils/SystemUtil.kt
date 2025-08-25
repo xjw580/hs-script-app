@@ -17,6 +17,7 @@ import club.xiaojiawei.hsscript.enums.RegCommonNameEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.initializer.ServiceInitializer
 import club.xiaojiawei.hsscript.status.PauseStatus
+import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.SystemUtil.delay
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import club.xiaojiawei.hsscriptbase.util.isTrue
@@ -121,6 +122,20 @@ object SystemUtil {
             if (className == null) null else WString(className),
             if (windowTitle == null) null else WString(windowTitle),
         )
+
+    fun changeWindowSize(hwnd: WinDef.HWND?, width: Int, height: Int) {
+        hwnd ?: return
+
+        User32.INSTANCE.SetWindowPos(
+            hwnd,
+            null,
+            0,
+            0,
+            width,
+            height,
+            SWP_NOMOVE or SWP_NOZORDER
+        )
+    }
 
     /**
      * 更新窗口信息

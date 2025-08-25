@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
 import ch.qos.logback.classic.Level
+import club.xiaojiawei.hsscript.bean.GameTask
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.bean.single.repository.AbstractRepository
@@ -17,7 +18,7 @@ import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
-import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson2.JSON
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -198,6 +199,15 @@ object ConfigExUtil {
 
     fun storeChooseDeckPos(chooseDeckPos: List<Int>) {
         ConfigUtil.putArray(ConfigEnum.CHOOSE_DECK_POS, chooseDeckPos)
+    }
+
+    fun getGameTask(): GameTask {
+        return ConfigUtil.getObject(ConfigEnum.GAME_TASK_STATUS, GameTask::class.java)
+            ?: JSON.parseObject(ConfigEnum.GAME_TASK_STATUS.defaultValue, GameTask::class.java)
+    }
+
+    fun storeGameTask(gameTaskStatus: GameTask) {
+        ConfigUtil.putString(ConfigEnum.GAME_TASK_STATUS, JSON.toJSONString(gameTaskStatus))
     }
 
 }

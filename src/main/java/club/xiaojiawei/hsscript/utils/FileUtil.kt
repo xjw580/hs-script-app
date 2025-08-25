@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
 import java.io.File
+import java.nio.file.Files
 
 /**
  * @author 肖嘉威
@@ -13,7 +14,11 @@ object FileUtil {
      */
     fun clearDirectory(directory: File?) {
         if (directory == null || !directory.exists() || !directory.isDirectory) return
-        deleteFile(directory)
+        directory.listFiles()?.let {
+            for (file in it) {
+                deleteFile(file)
+            }
+        }
     }
 
     /**
@@ -26,7 +31,7 @@ object FileUtil {
                 deleteFile(it)
             }
         }
-        file.delete()
+        Files.deleteIfExists(file.toPath())
     }
 
     fun createDirectory(directory: File?): Boolean {

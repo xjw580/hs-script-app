@@ -36,6 +36,11 @@
                     <ConfigSwitch notificationManager="${notificationManager}" config="DISPLAY_GAME_RECT_POS"/>
                 </HBox>
                 <HBox styleClass="h-box">
+                    <Text text="保存OCR图片"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
+                </HBox>
+                <HBox styleClass="h-box">
                     <HBox alignment="CENTER_LEFT">
                         <Hyperlink text="日志" onAction="#openLogFile"/>
                         <Label text="级别"/>

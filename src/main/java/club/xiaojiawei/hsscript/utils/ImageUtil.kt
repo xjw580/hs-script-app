@@ -1,5 +1,6 @@
 package club.xiaojiawei.hsscript.utils
 
+import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.utils.ImageUtil.byteBufferToBufferedImage
 import java.awt.Graphics2D
 import java.awt.Rectangle
@@ -116,6 +117,19 @@ fun BufferedImage.cropImage(
     height: Int
 ): BufferedImage {
     return ImageUtil.cropImage(this, x, y, width, height)
+}
+
+fun BufferedImage.cropImage(
+    gameRect: GameRect,
+): BufferedImage {
+    val relativeRect = gameRect.getRelativeRect()
+    return ImageUtil.cropImage(
+        this,
+        relativeRect.x.toInt(),
+        relativeRect.y.toInt(),
+        relativeRect.width.toInt(),
+        relativeRect.height.toInt()
+    )
 }
 
 fun ByteBuffer.toBufferedImage(width: Int, height: Int): BufferedImage {
