@@ -5,14 +5,7 @@ import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import javafx.fxml.FXML
 import javafx.scene.Group
-import javafx.scene.control.Button
-import javafx.scene.control.ComboBox
-import javafx.scene.control.RadioButton
-import javafx.scene.control.ScrollPane
-import javafx.scene.control.TextField
-import javafx.scene.control.TitledPane
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToggleGroup
+import javafx.scene.control.*
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
@@ -48,6 +41,18 @@ open class AdvancedSettingsView {
     protected lateinit var versionPane: Group
 
     @FXML
+    protected lateinit var windowTitled: TitledPane
+
+    @FXML
+    protected lateinit var windowPane: Group
+
+    @FXML
+    protected lateinit var mouseTitled: TitledPane
+
+    @FXML
+    protected lateinit var mousePane: Group
+
+    @FXML
     protected lateinit var behaviorPane: Group
 
     @FXML
@@ -55,6 +60,12 @@ open class AdvancedSettingsView {
 
     @FXML
     protected lateinit var systemNavigation: ToggleButton
+
+    @FXML
+    protected lateinit var windowNavigation: ToggleButton
+
+    @FXML
+    protected lateinit var mouseNavigation: ToggleButton
 
     @FXML
     protected lateinit var behaviorNavigation: ToggleButton

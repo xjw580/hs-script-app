@@ -1,11 +1,5 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
@@ -18,6 +12,12 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.GameUtil.reconnect
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import java.util.concurrent.TimeUnit
 
 /**
@@ -84,26 +84,25 @@ object TournamentModeStrategy : AbstractModeStrategy<Any?>() {
                 PauseStatus.isPause = true
                 return
             }
-            var runModeEnum: RunModeEnum
-            if ((
-                    (
-                        deckStrategy.runModes[0].also {
-                            runModeEnum = it
-                        }
-                    ) == RunModeEnum.CASUAL ||
-                        runModeEnum === RunModeEnum.CLASSIC ||
-                        runModeEnum === RunModeEnum.WILD ||
-                        runModeEnum === RunModeEnum.STANDARD
-                ) &&
-                runModeEnum.isEnable
+            val runMode = DeckStrategyManager.currentRunMode
+            if (runMode === RunModeEnum.STANDARD
+                || runMode === RunModeEnum.WILD
+                || runMode === RunModeEnum.CASUAL
+                || runMode === RunModeEnum.TWIST
+                || runMode === RunModeEnum.CLASSIC
             ) {
+                if (!runMode.isEnable) {
+                    log.warn { "${runMode.comment}未启用" }
+                    PauseStatus.isPause = false
+                    return
+                }
                 if (!PowerLogListener.checkPowerLogSize()) {
                     return
                 }
                 SystemUtil.delayShort()
                 clickModeChangeButton()
                 SystemUtil.delayShort()
-                changeMode(runModeEnum)
+                changeMode(runMode)
                 SystemUtil.delayShort()
                 selectDeck(deckStrategy)
                 SystemUtil.delayShort()
@@ -136,7 +135,7 @@ object TournamentModeStrategy : AbstractModeStrategy<Any?>() {
 
     private fun changeMode(runModeEnum: RunModeEnum) {
         when (runModeEnum) {
-            RunModeEnum.CLASSIC -> changeModeToClassic()
+            RunModeEnum.CLASSIC, RunModeEnum.TWIST -> changeModeToClassic()
             RunModeEnum.STANDARD -> changeModeToStandard()
             RunModeEnum.WILD -> changeModeToWild()
             RunModeEnum.CASUAL -> changeModeToCasual()

@@ -10,6 +10,8 @@
 <?import javafx.scene.text.*?>
 <?import javafx.util.Duration?>
 <?import java.lang.Double?>
+<?import club.xiaojiawei.hsscript.component.TipNode?>
+<?import club.xiaojiawei.hsscript.component.ConfigCheckBox?>
 <StackPane xmlns:fx="http://javafx.com/fxml"
            stylesheets="@css/main.css"
            fx:id="rootPane"
@@ -129,7 +131,12 @@
                         <ScrollPane styleClass="scroll-pane-item" style="-fx-background: #E8E8FF" VBox.vgrow="ALWAYS" fitToHeight="true">
                             <VBox fx:id="workTimePane" spacing="5" alignment="CENTER"/>
                         </ScrollPane>
-                        <HBox alignment="CENTER" style="-fx-padding: 5">
+                        <HBox alignment="CENTER" style="-fx-padding: 5;-fx-spacing: 20.0">
+                            <ConfigCheckBox text="高优先" styleClass="check-box-ui, check-box-ui-success" contentDisplay="RIGHT" config="WORK_TIME_RULE_HIGH_PRIORITY">
+                                <graphic>
+                                    <TipNode text="模式，策略，卡组位以此为准"/>
+                                </graphic>
+                            </ConfigCheckBox>
                             <Button styleClass="btn-ui, btn-ui-small, btn-ui-normal" onAction="#editWorkTime">
                                 <graphic>
                                     <EditIco/>

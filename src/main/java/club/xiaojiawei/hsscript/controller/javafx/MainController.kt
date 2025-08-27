@@ -120,6 +120,7 @@ class MainController : MainView() {
                     deckStrategyBox.items.clear()
                 }
                 putString(ConfigEnum.DEFAULT_RUN_MODE, newValue?.name ?: "", true)
+                DeckStrategyManager.currentRunMode = newValue
             }
 
         //        卡组更改监听
@@ -203,7 +204,7 @@ class MainController : MainView() {
     private fun appendLog(event: ILoggingEvent) {
         runUI {
             val list = logVBox.children
-            //                大于二百五条就清空,防止内存泄露和性能问题
+//                大于二百五条就清空,防止性能问题
             if (list.size > 250) {
                 list.clear()
             }
@@ -300,7 +301,7 @@ class MainController : MainView() {
             exp.text = WarEx.hangingEXP.toString()
         }
         DeckStrategyManager.deckStrategies.addListener(
-            SetChangeListener { observable: SetChangeListener.Change<out DeckStrategy?>? ->
+            SetChangeListener { _: SetChangeListener.Change<out DeckStrategy?>? ->
                 reloadRunMode()
             } as SetChangeListener<in DeckStrategy?>,
         )

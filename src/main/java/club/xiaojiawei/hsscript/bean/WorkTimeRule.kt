@@ -1,6 +1,9 @@
 package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.enums.OperateEnum
+import club.xiaojiawei.hsscript.utils.getValue
+import club.xiaojiawei.hsscript.utils.setValue
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javafx.beans.property.*
 import java.util.*
@@ -11,83 +14,58 @@ import java.util.*
  */
 class WorkTimeRule : Cloneable {
 
-    @JsonIgnore
     private val id = UUID.randomUUID().toString()
 
-    private val workTime: ObjectProperty<WorkTime> = SimpleObjectProperty<WorkTime>(WorkTime())
+    @JsonIgnore
+    val workTimeProperty: ObjectProperty<WorkTime> = SimpleObjectProperty(WorkTime())
+    var workTime: WorkTime by workTimeProperty
 
-    private val operates: ObjectProperty<Set<OperateEnum>> =
-        SimpleObjectProperty(emptySet())
+    @JsonIgnore
+    val operatesProperty: ObjectProperty<Set<OperateEnum>> = SimpleObjectProperty(emptySet())
+    var operates: Set<OperateEnum> by operatesProperty
 
-    private val strategyId: StringProperty = SimpleStringProperty("e71234fa-1-radical-deck-97e9-1f4e126cd33b")
+    @JsonIgnore
+    val runModeProperty: ObjectProperty<RunModeEnum> = SimpleObjectProperty(RunModeEnum.STANDARD)
+    var runMode: RunModeEnum by runModeProperty
 
-    private val enable: BooleanProperty = SimpleBooleanProperty(false)
+    @JsonIgnore
+    val strategyIdProperty: StringProperty = SimpleStringProperty("")
+    var strategyId: String by strategyIdProperty
+
+    @JsonIgnore
+    val deckPosProperty: ObjectProperty<Set<Int>> = SimpleObjectProperty(emptySet())
+    var deckPos: Set<Int> by deckPosProperty
+
+    @JsonIgnore
+    val enableProperty: BooleanProperty = SimpleBooleanProperty(false)
+    var enable: Boolean by enableProperty
 
     constructor()
 
-    constructor(workTime: WorkTime?, operates: Set<OperateEnum>?, enable: Boolean) {
-        workTime?.let {
-            this.workTime.set(it)
-        }
-        operates?.let {
-            this.operates.set(it)
-        }
-        this.enable.set(enable)
-    }
-
-    fun getWorkTime(): WorkTime {
-        return workTime.get()
-    }
-
-    fun workTimeProperty(): ObjectProperty<WorkTime> {
-        return workTime
-    }
-
-    fun setWorkTime(workTime: WorkTime) {
-        this.workTime.set(workTime)
-    }
-
-    fun getOperate(): Set<OperateEnum> {
-        return operates.get()
-    }
-
-    fun operateProperty(): ObjectProperty<Set<OperateEnum>> {
-        return operates
-    }
-
-    fun setOperate(operates: Set<OperateEnum>) {
-        this.operates.set(operates)
-    }
-
-    fun isEnable(): Boolean {
-        return enable.get()
-    }
-
-    fun enableProperty(): BooleanProperty {
-        return enable
-    }
-
-    fun setEnable(isEnable: Boolean) {
-        this.enable.set(isEnable)
-    }
-
-    fun getStrategyId(): String? {
-        return strategyId.get()
-    }
-
-    fun strategyIdProperty(): StringProperty {
-        return strategyId
-    }
-
-    fun setStrategyId(strategyId: String?) {
-        this.strategyId.set(strategyId)
+    constructor(
+        workTime: WorkTime,
+        operates: Set<OperateEnum>,
+        runMode: RunModeEnum,
+        strategyId: String,
+        deckPos: Set<Int>,
+        enable: Boolean
+    ) {
+        this.workTime = workTime
+        this.operates = operates
+        this.runMode = runMode
+        this.strategyId = strategyId
+        this.deckPos = deckPos
+        this.enable = enable
     }
 
     public override fun clone(): WorkTimeRule {
         val clone = WorkTimeRule()
-        clone.workTime.set(this.workTime.get().clone())
-        clone.operates.set(this.operates.get().toSet())
-        clone.enable.set(this.enable.get())
+        clone.workTime = this.workTime.clone()
+        clone.operates = this.operates.toSet()
+        clone.runMode = this.runMode
+        clone.strategyId = this.strategyId
+        clone.deckPos = this.deckPos.toSet()
+        clone.enable = this.enable
         return clone
     }
 

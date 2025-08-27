@@ -1,13 +1,13 @@
 package club.xiaojiawei.hsscript.listener.log
 
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import java.time.Duration
 import java.time.LocalTime
@@ -33,11 +33,13 @@ object ScreenLogListener :
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSS")
 
     override fun dealOldLog() {
-        var line: String
-        var index: Int
+        var line: String?
+        var index = 0
         var finalCurrMode: ModeEnum? = null
         var finalNextMode: ModeEnum? = null
-        while ((innerLogFile!!.readLine().also { line = it }) != null) {
+        while (true) {
+            line = innerLogFile!!.readLine()
+            if (line == null) break
             if ((line.indexOf(CURR_MODE_STR).also { index = it }) != -1) {
                 finalCurrMode = ModeEnum.fromString(line.substring(index + CURR_MODE_STR_LEN))
                 finalNextMode = null

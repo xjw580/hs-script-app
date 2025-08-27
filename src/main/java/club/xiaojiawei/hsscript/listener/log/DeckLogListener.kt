@@ -4,6 +4,7 @@ import club.xiaojiawei.hsscript.bean.Deck
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.PowerLogUtil
+import club.xiaojiawei.hsscriptbase.config.log
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -39,9 +40,11 @@ object DeckLogListener : AbstractLogListener("Decks.log", 0, 1500L, TimeUnit.MIL
 
     private fun dealReceived() {
         DECKS.clear()
-        var line: String
+        var line: String?
         var filePointer = innerLogFile!!.filePointer
-        while ((innerLogFile!!.readLine().also { line = it }) != null) {
+        while (true) {
+            line = innerLogFile!!.readLine()
+            if (line == null ) break
             if (!line.contains("#")) {
                 innerLogFile!!.seek(filePointer)
                 break

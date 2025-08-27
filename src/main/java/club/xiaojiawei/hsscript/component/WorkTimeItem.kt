@@ -33,13 +33,13 @@ class WorkTimeItem(val workTimeRule: WorkTimeRule, val changeId: String) : HBox(
     }
 
     private fun afterLoaded() {
-        startTime.time = workTimeRule.getWorkTime().startTime
-        endTime.time = workTimeRule.getWorkTime().endTime
-        enableCheckBox.isSelected = workTimeRule.isEnable()
+        startTime.time = workTimeRule.workTime.startTime
+        endTime.time = workTimeRule.workTime.endTime
+        enableCheckBox.isSelected = workTimeRule.enable
 
         startTime.readOnlyTimeProperty().addListener { observable, oldValue, newValue ->
             newValue ?: return@addListener
-            workTimeRule.setWorkTime(WorkTime(WorkTime.pattern.format(newValue), workTimeRule.getWorkTime().endTime))
+            workTimeRule.workTime = WorkTime(WorkTime.pattern.format(newValue), workTimeRule.workTime.endTime)
             if (newValue > endTime.localTime) {
                 endTime.localTime = newValue
             }
@@ -49,7 +49,7 @@ class WorkTimeItem(val workTimeRule: WorkTimeRule, val changeId: String) : HBox(
 
         endTime.readOnlyTimeProperty().addListener { observable, oldValue, newValue ->
             newValue ?: return@addListener
-            workTimeRule.setWorkTime(WorkTime(workTimeRule.getWorkTime().startTime, WorkTime.pattern.format(newValue)))
+            workTimeRule.workTime = WorkTime(workTimeRule.workTime.startTime, WorkTime.pattern.format(newValue))
             if (newValue < startTime.localTime) {
                 startTime.localTime = newValue
             }
@@ -57,7 +57,7 @@ class WorkTimeItem(val workTimeRule: WorkTimeRule, val changeId: String) : HBox(
         }
 
         enableCheckBox.selectedProperty().addListener { observable, oldValue, newValue ->
-            workTimeRule.setEnable(newValue)
+            workTimeRule.enable = newValue
             WorkTimeStatus.storeWorkTimeRuleSet(changeId = changeId)
         }
     }

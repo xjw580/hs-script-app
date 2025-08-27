@@ -29,13 +29,6 @@
                                        hideIcon="true" prefWidth="${fieldWidth}"/>
                 </HBox>
                 <HBox styleClass="h-box">
-                    <Text text="鼠标整体移动速度"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigNumberField config="PAUSE_STEP"
-                                       styleClass="text-field-ui, text-field-ui-small"
-                                       hideIcon="true" prefWidth="${fieldWidth}"/>
-                </HBox>
-                <HBox styleClass="h-box">
                     <Text text="随机事件"/>
                     <TipNode text="我方回合结束后，可能触发点击卡牌等事件"/>
                     <HBox HBox.hgrow="ALWAYS"/>

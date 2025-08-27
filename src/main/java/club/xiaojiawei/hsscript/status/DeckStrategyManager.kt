@@ -1,13 +1,15 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
-import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PluginManager.DECK_STRATEGY_PLUGINS
 import club.xiaojiawei.hsscript.status.PluginManager.loadDeckProperty
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
+import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
@@ -25,10 +27,27 @@ object DeckStrategyManager {
      * 当前卡组策略
      */
     val currentDeckStrategyProperty: ObjectProperty<DeckStrategy?> = SimpleObjectProperty()
+    val currentRunModeProperty: ObjectProperty<RunModeEnum?> = SimpleObjectProperty()
 
     var currentDeckStrategy
         set(value) = currentDeckStrategyProperty.set(value)
-        get() = currentDeckStrategyProperty.get()
+        get():DeckStrategy? {
+            if (ConfigUtil.getBoolean(ConfigEnum.WORK_TIME_RULE_HIGH_PRIORITY)) {
+                return WorkTimeListener.closestWorkTimeRule?.strategyId?.let { strategyId ->
+                    deckStrategies.find { it.id() == strategyId }
+                }
+            }
+            return currentDeckStrategyProperty.get()
+        }
+
+    var currentRunMode
+        set(value) = currentRunModeProperty.set(value)
+        get():RunModeEnum? {
+            if (ConfigUtil.getBoolean(ConfigEnum.WORK_TIME_RULE_HIGH_PRIORITY)) {
+                return WorkTimeListener.closestWorkTimeRule?.runMode
+            }
+            return currentRunModeProperty.get()
+        }
 
     /**
      * 所有卡组策略
@@ -42,7 +61,7 @@ object DeckStrategyManager {
             } else if (ConfigUtil.getString(ConfigEnum.DEFAULT_DECK_STRATEGY) != newStrategy.id()
             ) {
                 ConfigUtil.putString(ConfigEnum.DEFAULT_DECK_STRATEGY, newStrategy.id())
-                val text = "挂机策略改为: ${newStrategy.name()}，模式: ${newStrategy.runModes[0].comment}"
+                val text = "挂机策略改为: ${newStrategy.name()}，模式: ${currentRunMode?.comment}"
                 SystemUtil.notice(text)
                 log.info { text }
                 if (newStrategy.deckCode().isNotBlank()) {

@@ -11,10 +11,10 @@ import java.util.*
 class WorkTimeRuleSet : Cloneable {
     var id: String = ""
 
-    private val name: ObjectProperty<String> = SimpleObjectProperty<String>("")
+    private val name: ObjectProperty<String> = SimpleObjectProperty("")
 
     private val workTimeRules: ObjectProperty<List<WorkTimeRule>> =
-        SimpleObjectProperty<List<WorkTimeRule>>(emptyList<WorkTimeRule>())
+        SimpleObjectProperty(emptyList())
 
     constructor() {}
 

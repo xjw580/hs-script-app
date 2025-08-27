@@ -136,6 +136,11 @@
                                 <Label text="MPL 2.0"/>
                             </HBox>
                             <HBox styleClass="h-box">
+                                <UrlLabel text="javafx-kt" url="https://github.com/xjw580/javafx-kt"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Label text="MPL 2.0"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <UrlLabel text="jintellitype" url="https://github.com/melloware/jintellitype"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <Label text="Apache 2.0"/>

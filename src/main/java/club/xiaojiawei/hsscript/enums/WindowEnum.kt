@@ -73,6 +73,7 @@ enum class WindowEnum(
     TIME_SETTINGS(
         "timeSettings.fxml",
         formatTitle("工作时间设置"),
+        alwaysOnTop = true,
         cache = false
     ),
     CARD_ACTION_EDITOR("cardActionEditor.fxml"), STARTUP(

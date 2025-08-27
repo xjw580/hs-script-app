@@ -40,17 +40,17 @@ object StatisticsListener {
     }
 
 }
-
-fun main() {
-    val recordDao = RecordDaoEx.RECORD_DAO
-    recordDao.insert(
-        Record(
-            strategyId = "fdf",
-            strategyName = "fdsf",
-            runMode = RunModeEnum.WILD,
-            result = WarEx.isWin,
-            experience = WarEx.aEXP.toInt(),
-            startTime = LocalDateTime.now(),
-            endTime = LocalDateTime.now().plusHours(1),
-        ))
-}
+//
+//fun main() {
+//    val recordDao = RecordDaoEx.RECORD_DAO
+//    recordDao.insert(
+//        Record(
+//            strategyId = "fdf",
+//            strategyName = "fdsf",
+//            runMode = RunModeEnum.WILD,
+//            result = WarEx.isWin,
+//            experience = WarEx.aEXP.toInt(),
+//            startTime = LocalDateTime.now(),
+//            endTime = LocalDateTime.now().plusHours(1),
+//        ))
+//}

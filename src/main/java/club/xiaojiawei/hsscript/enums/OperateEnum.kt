@@ -1,12 +1,13 @@
 package club.xiaojiawei.hsscript.enums
 
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
+import com.sun.jna.platform.win32.Kernel32
 
 /**
  * @author 肖嘉威
@@ -54,13 +55,16 @@ enum class OperateEnum(val value: String, val exec: () -> Boolean, val order: In
                 break
             }
             CSystemDll.INSTANCE.sleepSystem()
-            println("sleep")
         } while (false)
 
         res
     }, order = 4),
     SHUTDOWN("关机", {
-        SystemUtil.shutdownSystem()
+        val res = SystemUtil.shutdownSystem()
+        if (!res) {
+            log.error { Kernel32.INSTANCE.GetLastError() }
+        }
+        res
     }, order = 3),
     LOCK_SCREEN("锁屏", {
         SystemUtil.lockScreen()

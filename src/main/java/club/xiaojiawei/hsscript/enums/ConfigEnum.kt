@@ -13,21 +13,26 @@ import com.melloware.jintellitype.JIntellitype
  * @date 2023/7/5 11:26
  */
 
-const val INIT_CONFIG_GROUP = "init"
+@JvmInline
+value class ConfigGroup(val name: String)
 
-const val PLUGIN_CONFIG_GROUP = "plugin"
-const val OTHER_CONFIG_GROUP = "other"
-const val TIME_CONFIG_GROUP = "time"
+val INIT_CONFIG_GROUP = ConfigGroup("init")
 
-const val STRATEGY_CONFIG_GROUP = "strategy"
+val PLUGIN_CONFIG_GROUP = ConfigGroup("plugin")
+val OTHER_CONFIG_GROUP = ConfigGroup("other")
+val TIME_CONFIG_GROUP = ConfigGroup("time")
 
-const val BEHAVIOR_CONFIG_GROUP = "behavior"
-const val SYSTEM_CONFIG_GROUP = "system"
-const val VERSION_CONFIG_GROUP = "version"
+val STRATEGY_CONFIG_GROUP = ConfigGroup("strategy")
 
-const val DEV_CONFIG_GROUP = "dev"
+val MOUSE_CONFIG_GROUP = ConfigGroup("mouse")
+val WINDOW_CONFIG_GROUP = ConfigGroup("window")
+val BEHAVIOR_CONFIG_GROUP = ConfigGroup("behavior")
+val SYSTEM_CONFIG_GROUP = ConfigGroup("system")
+val VERSION_CONFIG_GROUP = ConfigGroup("version")
 
-const val WEIGHT_CONFIG_GROUP = "weight"
+val DEV_CONFIG_GROUP = ConfigGroup("dev")
+
+val WEIGHT_CONFIG_GROUP = ConfigGroup("weight")
 
 private const val WORK_TIME_RULE_PRESETS_ONE = "presets-one"
 
@@ -35,19 +40,31 @@ private const val WORK_TIME_RULE_PRESETS_EMPTY = ""
 
 private const val WORK_TIME_RULE_PRESETS_TWO = "presets-two"
 
-private val operations by lazy {
+val DEFAULT_WORK_TIME by lazy {
+    WorkTime("00:00", "23:59")
+}
+
+val DEFAULT_OPERATIONS by lazy {
     setOf(
         OperateEnum.CLOSE_GAME,
         OperateEnum.CLOSE_PLATFORM,
     )
 }
 
+val DEFAULT_RUN_MODE_ENUM = RunModeEnum.STANDARD
+
+val DEFAULT_DECK_POS by lazy {
+    listOf(1)
+}
+
+const val DEFAULT_DECK_STRATEGY_ID = "e71234fa-1-radical-deck-97e9-1f4e126cd33b"
+
 private const val FALSE_STR = false.toString()
 
 private const val TRUE_STR = true.toString()
 
 enum class ConfigEnum(
-    val group: String = "",
+    val group: ConfigGroup,
     private var defaultValueInitializer: (() -> String)? = null,
     val service: Service<*>? = null,
     val isEnable: Boolean = true,
@@ -79,23 +96,35 @@ enum class ConfigEnum(
                         "预设1",
                         listOf(
                             WorkTimeRule(
-                                WorkTime("00:00", "23:59"),
-                                operations.toSet(),
+                                DEFAULT_WORK_TIME.clone(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 true,
                             ),
                             WorkTimeRule(
                                 WorkTime("00:00", "06:30"),
-                                operations.toSet(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 false,
                             ),
                             WorkTimeRule(
                                 WorkTime("12:30", "13:50"),
-                                operations.toSet(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 false,
                             ),
                             WorkTimeRule(
                                 WorkTime("20:00", "23:59"),
-                                operations.toSet(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 false,
                             ),
                         ),
@@ -105,18 +134,27 @@ enum class ConfigEnum(
                         "预设2",
                         listOf(
                             WorkTimeRule(
-                                WorkTime("00:00", "23:59"),
-                                operations.toSet(),
+                                DEFAULT_WORK_TIME.clone(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 true,
                             ),
                             WorkTimeRule(
                                 WorkTime("00:00", "08:00"),
-                                operations.toSet(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 false,
                             ),
                             WorkTimeRule(
                                 WorkTime("18:00", "23:59"),
-                                operations.toSet(),
+                                DEFAULT_OPERATIONS.toSet(),
+                                DEFAULT_RUN_MODE_ENUM,
+                                DEFAULT_DECK_STRATEGY_ID,
+                                DEFAULT_DECK_POS.toSet(),
                                 false,
                             ),
                         ),
@@ -151,6 +189,14 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 工作时间规则高优先
+     */
+    WORK_TIME_RULE_HIGH_PRIORITY(
+        group = TIME_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR }
+    ),
+
+    /**
      * 更新源
      */
     UPDATE_SOURCE(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "Gitee" }),
@@ -177,16 +223,21 @@ enum class ConfigEnum(
     /**
      * 鼠标控制模式
      */
-    MOUSE_CONTROL_MODE(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { MouseControlModeEnum.MESSAGE.name }),
+    MOUSE_CONTROL_MODE(group = MOUSE_CONFIG_GROUP, defaultValueInitializer = { MouseControlModeEnum.MESSAGE.name }),
 
     /**
      * 置顶游戏窗口
      */
     TOP_GAME_WINDOW(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { MOUSE_CONTROL_MODE.defaultValue },
         service = TopGameWindowService,
     ),
+
+    /**
+     * 鼠标移动暂停间隔，值越小越慢，最小为1
+     */
+    PAUSE_STEP(group = MOUSE_CONFIG_GROUP, defaultValueInitializer = { "7" }, service = PauseStepService),
 
     /**
      * 阻止游戏的反作弊
@@ -197,7 +248,7 @@ enum class ConfigEnum(
      * 限制鼠标范围
      */
     LIMIT_MOUSE_RANGE(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = MOUSE_CONFIG_GROUP,
         defaultValueInitializer = { FALSE_STR },
         service = LimitMouseRangeService
     ),
@@ -211,7 +262,7 @@ enum class ConfigEnum(
      * 游戏窗口不透明度(0~255)
      */
     GAME_WINDOW_OPACITY(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { "255" },
         service = GameWindowOpacityService
     ),
@@ -220,7 +271,7 @@ enum class ConfigEnum(
      * 战网平台窗口不透明度(0~255)
      */
     PLATFORM_WINDOW_OPACITY(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { "255" },
         service = PlatformWindowOpacityService,
     ),
@@ -229,7 +280,7 @@ enum class ConfigEnum(
      * 游戏窗口缩小倍数
      */
     GAME_WINDOW_REDUCTION_FACTOR(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { "0" },
         service = GameWindowReductionFactorService,
     ),
@@ -238,7 +289,7 @@ enum class ConfigEnum(
      * 战网窗窗口缩小倍数
      */
     PLATFORM_WINDOW_REDUCTION_FACTOR(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { "0" },
         service = PlatformWindowReductionFactorService,
     ),
@@ -247,7 +298,7 @@ enum class ConfigEnum(
      * 更新游戏窗口信息
      */
     UPDATE_GAME_WINDOW(
-        group = BEHAVIOR_CONFIG_GROUP,
+        group = WINDOW_CONFIG_GROUP,
         defaultValueInitializer = { TRUE_STR },
         service = UpdateGameWindowService,
     ),
@@ -314,7 +365,7 @@ enum class ConfigEnum(
      */
     DEFAULT_DECK_STRATEGY(
         group = OTHER_CONFIG_GROUP,
-        defaultValueInitializer = { "e71234fa-1-radical-deck-97e9-1f4e126cd33b" }),
+        defaultValueInitializer = { DEFAULT_DECK_STRATEGY_ID }),
 
     /**
      * 默认运行模式
@@ -339,11 +390,6 @@ enum class ConfigEnum(
      * 适配畸变模式
      */
     DISTORTION(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
-
-    /**
-     * 鼠标移动暂停间隔，值越小越慢，最小为1
-     */
-    PAUSE_STEP(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { "7" }, service = PauseStepService),
 
     /**
      * 随机事件

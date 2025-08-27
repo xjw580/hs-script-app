@@ -14,7 +14,7 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            prefHeight="770"
-           prefWidth="1300"
+           prefWidth="700"
            fx:id="rootPane"
            fx:controller="club.xiaojiawei.hsscript.controller.javafx.StatisticsController">
     <ScrollPane styleClass="scroll-pane-item">

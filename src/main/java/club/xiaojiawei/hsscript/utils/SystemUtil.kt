@@ -500,7 +500,7 @@ object SystemUtil {
      */
     fun shutdownSystem(): Boolean =
         User32.INSTANCE
-            .ExitWindowsEx(WinDef.UINT((EWX_SHUTDOWN xor EWX_FORCE).toLong()), WinDef.DWORD(0))
+            .ExitWindowsEx(WinDef.UINT((EWX_SHUTDOWN or EWX_FORCE).toLong()), WinDef.DWORD(0))
             .booleanValue()
 
     /**

@@ -53,23 +53,13 @@ object AdventureModeStrategy : AbstractModeStrategy<Any?>() {
 
     override fun afterEnter(t: Any?) {
         if (WorkTimeListener.canWork()) {
-            val deckStrategy =
-                DeckStrategyManager.currentDeckStrategy ?: let {
-                    SystemUtil.notice("未配置卡组策略")
-                    log.warn { "未配置卡组策略" }
-                    PauseStatus.isPause = true
+            val runMode = DeckStrategyManager.currentRunMode
+            if (runMode === RunModeEnum.PRACTICE) {
+                if (!runMode.isEnable){
+                    log.warn { "${runMode.comment}未启用" }
+                    PauseStatus.isPause = false
                     return
                 }
-            var runModeEnum: RunModeEnum
-            if ((
-                        (
-                                deckStrategy.runModes[0].also {
-                                    runModeEnum = it
-                                }
-                                ) == RunModeEnum.PRACTICE
-                        ) &&
-                runModeEnum.isEnable
-            ) {
                 if (!PowerLogListener.checkPowerLogSize()) {
                     return
                 }

@@ -8,6 +8,8 @@ import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import javafx.animation.PauseTransition
 import javafx.application.Platform
+import javafx.beans.property.Property
+import javafx.beans.value.WritableValue
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.Node
@@ -16,6 +18,8 @@ import javafx.scene.control.Tooltip
 import javafx.scene.input.MouseEvent
 import javafx.util.Duration
 import java.util.concurrent.Future
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 /**
  * @author 肖嘉威
@@ -63,6 +67,18 @@ inline fun runUI(crossinline block: () -> Unit) {
         Platform.runLater(LRunnable { block() })
     }
 }
+
+/**
+ * 为 Property<T> 创建委托，直接操作其值
+ */
+operator fun <T> WritableValue<T>.getValue(thisRef: Any?, property: KProperty<*>): T {
+    return this.value
+}
+
+operator fun <T> WritableValue<T>.setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+    this.value = value
+}
+
 
 object FXUtil {
 

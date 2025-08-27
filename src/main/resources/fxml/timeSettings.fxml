@@ -7,13 +7,14 @@
 <?import club.xiaojiawei.controls.NotificationManager?>
 <?import club.xiaojiawei.factory.NotificationFactory?>
 <?import club.xiaojiawei.controls.ProgressModal?>
+<?import club.xiaojiawei.hsscript.component.TipNode?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            style="-fx-background-color: white"
            fx:controller="club.xiaojiawei.hsscript.controller.javafx.TimeSettingsController"
            fx:id="rootPane"
            stylesheets="@css/tableview.css, @css/timeSettings.css"
-           prefHeight="600.0" prefWidth="950.0">
+           prefHeight="600.0" prefWidth="1000.0">
     <VBox>
         <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane-item"
                     style="-fx-background: white;">
@@ -24,7 +25,7 @@
                         <fx:define>
                             <Double fx:id="icoScale" fx:value="1"/>
                         </fx:define>
-                        <SplitPane dividerPositions="0.25" styleClass="split-pane-line" VBox.vgrow="ALWAYS">
+                        <SplitPane dividerPositions="0.20" styleClass="split-pane-line" VBox.vgrow="ALWAYS">
                             <VBox spacing="5" alignment="CENTER" style="-fx-padding: 15;" minWidth="0">
                                 <TableView fx:id="workTimeRuleSetTable" VBox.vgrow="ALWAYS"
                                            styleClass="table-view-idea, table-view-idea-tiny, table-view-idea-upright">
@@ -64,8 +65,22 @@
                                     <columns>
                                         <TableColumn fx:id="selectedTimeCol" text="时间" minWidth="170" maxWidth="170"
                                                      sortable="false"/>
-                                        <TableColumn fx:id="selectedAfterOperationCol" text="完成后执行"
+                                        <TableColumn fx:id="selectedAfterOperationCol" text="完成后执行" prefWidth="250"
                                                      sortable="false"/>
+                                        <TableColumn fx:id="selectedRunModeCol" text="模式" prefWidth="115"
+                                                     sortable="false"/>
+                                        <TableColumn fx:id="selectedStrategyCol" text="策略" prefWidth="115"
+                                                     sortable="false"/>
+                                        <TableColumn fx:id="selectedDeckPosCol" prefWidth="155"
+                                                     sortable="false">
+                                            <graphic>
+                                                <Label text="卡组位" contentDisplay="RIGHT">
+                                                    <graphic>
+                                                        <TipNode text="每次选择的卡组在当前页的第几号位，多选则随机选择"/>
+                                                    </graphic>
+                                                </Label>
+                                            </graphic>
+                                        </TableColumn>
                                         <TableColumn fx:id="selectedEnableCol" text="启用" maxWidth="40" minWidth="40"/>
                                     </columns>
                                 </TableView>

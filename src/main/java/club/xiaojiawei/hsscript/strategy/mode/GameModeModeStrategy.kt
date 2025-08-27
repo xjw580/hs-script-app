@@ -1,16 +1,16 @@
 package club.xiaojiawei.hsscript.strategy.mode
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
-import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import java.util.concurrent.TimeUnit
 
 /**
@@ -37,7 +37,7 @@ object GameModeModeStrategy : AbstractModeStrategy<Any?>() {
         addWantEnterTask(EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
             if (PauseStatus.isPause) {
                 cancelAllWantEnterTasks()
-            } else if (Mode.currMode == ModeEnum.HUB) {
+            } else if (Mode.currMode === ModeEnum.HUB) {
                 OTHER_MODE_RECT.lClick()
             } else {
                 cancelAllWantEnterTasks()
@@ -46,34 +46,24 @@ object GameModeModeStrategy : AbstractModeStrategy<Any?>() {
     }
 
     override fun afterEnter(t: Any?) {
-        DeckStrategyManager.currentDeckStrategy?.let {
-            if (it.runModes.isEmpty()) {
-                SystemUtil.notice("当前卡组策略不允许运行在任何模式中")
-                log.warn { "当前卡组策略不允许运行在任何模式中" }
-                PauseStatus.isPause = true
+        val runMode = DeckStrategyManager.currentRunMode
+        if (runMode === RunModeEnum.PRACTICE) {
+            if (!runMode.isEnable) {
+                log.warn { "${runMode.comment}未启用" }
+                PauseStatus.isPause = false
                 return
             }
-            when (it.runModes[0]) {
-                RunModeEnum.PRACTICE -> {
-                    enterAdventureMode()
+            enterAdventureMode()
+        } else {
+            addEnteredTask(EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
+                if (PauseStatus.isPause) {
+                    cancelAllEnteredTasks()
+                } else if (Mode.currMode === ModeEnum.GAME_MODE) {
+                    BACK_RECT.lClick()
+                } else {
+                    cancelAllEnteredTasks()
                 }
-
-                else -> {
-                    addEnteredTask(EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
-                        if (PauseStatus.isPause) {
-                            cancelAllEnteredTasks()
-                        } else if (Mode.currMode === ModeEnum.GAME_MODE) {
-                            BACK_RECT.lClick()
-                        } else {
-                            cancelAllEnteredTasks()
-                        }
-                    }, 0, 1000, TimeUnit.MILLISECONDS))
-                }
-            }
-        }?:let {
-            SystemUtil.notice("未配置卡组策略")
-            log.warn { "未配置卡组策略" }
-            PauseStatus.isPause = true
+            }, 0, 1000, TimeUnit.MILLISECONDS))
         }
     }
 

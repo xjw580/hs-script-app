@@ -24,6 +24,7 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
@@ -110,22 +111,30 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
     }
 
     private var forbidSetToggle = false
-    private var versionMaxY = 0.0
-    private var versionMinY = 0.0
+    private var mouseMaxY = 0.0
+    private var mouseMinY = 0.0
+    private var windowMaxY = 0.0
+    private var windowMinY = 0.0
     private var behaviorMaxY = 0.0
     private var behaviorMinY = 0.0
     private var systemMaxY = 0.0
     private var systemMinY = 0.0
+    private var versionMaxY = 0.0
+    private var versionMinY = 0.0
 
 
     private fun updateY() {
         val diffH = titledRootPane.height - scrollPane.viewportBounds.height
-        versionMaxY = versionPane.boundsInParent.maxY / diffH
-        versionMinY = versionPane.boundsInParent.minY / diffH
+        mouseMaxY = mousePane.boundsInParent.maxY / diffH
+        mouseMinY = mousePane.boundsInParent.minY / diffH
+        windowMaxY = windowPane.boundsInParent.maxY / diffH
+        windowMinY = windowPane.boundsInParent.minY / diffH
         behaviorMaxY = behaviorPane.boundsInParent.maxY / diffH
         behaviorMinY = behaviorPane.boundsInParent.minY / diffH
         systemMaxY = systemPane.boundsInParent.maxY / diffH
         systemMinY = systemPane.boundsInParent.minY / diffH
+        versionMaxY = versionPane.boundsInParent.maxY / diffH
+        versionMinY = versionPane.boundsInParent.minY / diffH
     }
 
     private fun listen() {
@@ -147,9 +156,17 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
                     navigationBarToggle.selectToggle(versionNavigation)
                 } else if (newV > behaviorMaxY) {
                     navigationBarToggle.selectToggle(systemNavigation)
+                } else if (newV > windowMaxY) {
+                    navigationBarToggle.selectToggle(behaviorNavigation)
+                } else if (newV > mouseMaxY) {
+                    navigationBarToggle.selectToggle(windowNavigation)
                 }
             } else {
-                if (newV <= behaviorMinY) {
+                if (newV <= mouseMinY) {
+                    navigationBarToggle.selectToggle(mouseNavigation)
+                } else if (newV <= windowMinY) {
+                    navigationBarToggle.selectToggle(windowNavigation)
+                } else if (newV <= behaviorMinY) {
                     navigationBarToggle.selectToggle(behaviorNavigation)
                 } else if (newV <= systemMinY) {
                     navigationBarToggle.selectToggle(systemNavigation)
@@ -267,8 +284,13 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
     }
 
     @FXML
-    protected fun scrollVersion(actionEvent: ActionEvent) {
-        scrollTo(versionPane)
+    protected fun scrollMouse(actionEvent: ActionEvent) {
+        scrollTo(mousePane)
+    }
+
+    @FXML
+    protected fun scrollWindow(actionEvent: ActionEvent) {
+        scrollTo(windowPane)
     }
 
     @FXML
@@ -279,6 +301,11 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
     @FXML
     protected fun scrollSystem(actionEvent: ActionEvent) {
         scrollTo(systemPane)
+    }
+
+    @FXML
+    protected fun scrollVersion(actionEvent: ActionEvent) {
+        scrollTo(versionPane)
     }
 
     @FXML

@@ -44,7 +44,7 @@ object ScriptStatus {
         set(value) = gameHWNDInner.set(value)
         get() {
             var hWND = gameHWNDInner.get()
-            if (!User32.INSTANCE.IsWindow(hWND)) {
+            if (!User32.INSTANCE.IsWindow(hWND) && !PauseStatus.isPause) {
                 if (hWND != null) {
                     log.info { "${GAME_CN_NAME}窗口句柄已经失效，尝试更新句柄" }
                 }
@@ -69,7 +69,7 @@ object ScriptStatus {
         set(value) = platformHWNDInner.set(value)
         get() {
             var hWND = platformHWNDInner.get()
-            if (!User32.INSTANCE.IsWindow(hWND)) {
+            if (!User32.INSTANCE.IsWindow(hWND) && !PauseStatus.isPause) {
                 if (hWND != null) {
                     log.info { "${PLATFORM_CN_NAME}窗口句柄已经失效，尝试更新句柄" }
                 }

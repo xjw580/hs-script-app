@@ -5,6 +5,7 @@ import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
@@ -15,7 +16,7 @@ import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.isFalse
-import club.xiaojiawei.hsscriptbase.util.randomSelect
+import club.xiaojiawei.hsscriptbase.util.randomSelectOrNull
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import com.sun.jna.WString
 import com.sun.jna.platform.win32.Kernel32
@@ -363,12 +364,18 @@ object GameUtil {
      * 左击套牌位置
      */
     fun lClickDeckPos(count: Int = 1) {
-        val chooseDeckPos = ConfigExUtil.getChooseDeckPos()
+        val chooseDeckPos = if (ConfigUtil.getBoolean(ConfigEnum.WORK_TIME_RULE_HIGH_PRIORITY)) {
+            WorkTimeListener.getCurrentWorkTimeRule()?.deckPos?.toMutableList() ?: ConfigExUtil.getChooseDeckPos()
+        } else ConfigExUtil.getChooseDeckPos()
+
         if (chooseDeckPos.isEmpty()) return
-        val deckPos = chooseDeckPos.randomSelect()
-        DECK_POS_RECTS.getOrNull(deckPos - 1)?.let {
-            for (i in 0 until count) {
-                it.lClick()
+        val deckPos = chooseDeckPos.randomSelectOrNull() ?: let {
+            log.warn { "没有设置可用卡组位" }
+            return
+        }
+        DECK_POS_RECTS.getOrNull(deckPos - 1)?.let { rect ->
+            repeat(count) {
+                rect.lClick()
                 SystemUtil.delayTiny()
             }
         }

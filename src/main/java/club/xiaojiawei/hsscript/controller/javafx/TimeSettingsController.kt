@@ -11,14 +11,21 @@ import club.xiaojiawei.hsscript.bean.WorkTimeRule
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.bean.tableview.NumCallback
 import club.xiaojiawei.hsscript.bean.tableview.TableDragCallback
-import club.xiaojiawei.hsscript.enums.OperateEnum
+import club.xiaojiawei.hsscript.enums.*
 import club.xiaojiawei.hsscript.interfaces.StageHook
+import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.WorkTimeStatus
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscript.utils.runUI
+import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
+import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
+import club.xiaojiawei.kt.dsl.StyleSize
+import club.xiaojiawei.kt.dsl.comboBox
+import club.xiaojiawei.kt.dsl.hbox
 import club.xiaojiawei.tablecell.TextFieldTableCellUI
 import javafx.beans.property.DoubleProperty
+import javafx.beans.value.ChangeListener
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -48,6 +55,7 @@ private const val SELECTED_OPERATION_STYLE_CLASS = "label-ui-success"
 class TimeSettingsController :
     Initializable,
     StageHook {
+
     @FXML
     protected lateinit var accordion: Accordion
 
@@ -106,6 +114,15 @@ class TimeSettingsController :
     protected lateinit var selectedAfterOperationCol: TableColumn<WorkTimeRule, Set<OperateEnum>?>
 
     @FXML
+    protected lateinit var selectedDeckPosCol: TableColumn<WorkTimeRule, Set<Int>?>
+
+    @FXML
+    protected lateinit var selectedRunModeCol: TableColumn<WorkTimeRule, RunModeEnum?>
+
+    @FXML
+    protected lateinit var selectedStrategyCol: TableColumn<WorkTimeRule, String?>
+
+    @FXML
     protected lateinit var selectedEnableCol: TableColumn<WorkTimeRule, Boolean>
 
     @FXML
@@ -118,6 +135,13 @@ class TimeSettingsController :
     private val dateComboBoxList = mutableListOf<ComboBox<WorkTimeRuleSet?>>()
 
     private var isInit = false
+
+    private val EDIT_STYLE =
+        "-fx-border-radius:10;-fx-background-color: transparent;-fx-border-width: 1;-fx-border-color:gray;-fx-background-insets: 0"
+
+    private val runModeMap: MutableMap<RunModeEnum, MutableList<DeckStrategy>> = EnumMap(RunModeEnum::class.java)
+
+    private val runModeListener = mutableMapOf<WorkTimeRule, ChangeListener<RunModeEnum>>()
 
     override fun initialize(
         p0: URL?,
@@ -133,10 +157,30 @@ class TimeSettingsController :
         loadWorkTimeSetting()
     }
 
+    private fun reloadDeck() {
+        runModeMap.clear()
+        for (deckStrategy in DeckStrategyManager.deckStrategies) {
+            for (runModeEnum in deckStrategy.runModes) {
+                val strategies = runModeMap.getOrDefault(runModeEnum, ArrayList())
+                strategies.add(deckStrategy)
+                runModeMap[runModeEnum] = strategies
+            }
+        }
+    }
+
+    override fun onHidden() {
+        for (entry in runModeListener) {
+            entry.key.runModeProperty.removeListener(entry.value)
+        }
+        runModeListener.clear()
+        runModeMap.clear()
+    }
+
     override fun onShowing() {
         super.onShowing()
         if (isInit) {
             reloadData()
+            reloadDeck()
             return
         }
         workTimeRuleSetTable.rowFactory = TableDragCallback<WorkTimeRuleSet, WorkTimeRuleSet>()
@@ -178,6 +222,7 @@ class TimeSettingsController :
         )
         go {
             reloadData()
+            reloadDeck()
             runUI {
                 if (workTimeRuleSetTable.items.isNotEmpty()) {
                     workTimeRuleSetTable.selectionModel.selectFirst()
@@ -291,17 +336,32 @@ class TimeSettingsController :
     private fun initSelectedTimeRuleTable() {
         selectedWorkTimeRuleTable.isEditable = true
 
-        selectedTimeCol.setCellValueFactory { cellData -> cellData.value.workTimeProperty() }
+        selectedTimeCol.setCellValueFactory { cellData -> cellData.value.workTimeProperty }
         selectedTimeCol.setCellFactory { p ->
             ColTableCell { index -> buildTimePane(selectedWorkTimeRuleTable.items[index]) }
         }
 
-        selectedAfterOperationCol.setCellValueFactory { cellData -> cellData.value.operateProperty() }
+        selectedAfterOperationCol.setCellValueFactory { cellData -> cellData.value.operatesProperty }
         selectedAfterOperationCol.setCellFactory { p ->
             ColTableCell { index -> buildOperationPane(selectedWorkTimeRuleTable.items[index]) }
         }
 
-        selectedEnableCol.setCellValueFactory { cellData -> cellData.value.enableProperty() }
+        selectedRunModeCol.setCellValueFactory { cellData -> cellData.value.runModeProperty }
+        selectedRunModeCol.setCellFactory { p ->
+            ColTableCell { index -> buildRunModePane(selectedWorkTimeRuleTable.items[index]) }
+        }
+
+        selectedStrategyCol.setCellValueFactory { cellData -> cellData.value.strategyIdProperty }
+        selectedStrategyCol.setCellFactory { p ->
+            ColTableCell { index -> buildStrategyPane(selectedWorkTimeRuleTable.items[index]) }
+        }
+
+        selectedDeckPosCol.setCellValueFactory { cellData -> cellData.value.deckPosProperty }
+        selectedDeckPosCol.setCellFactory { p ->
+            ColTableCell { index -> buildDeckPosPane(selectedWorkTimeRuleTable.items[index]) }
+        }
+
+        selectedEnableCol.setCellValueFactory { cellData -> cellData.value.enableProperty }
         selectedEnableCol.setCellFactory { p ->
             object : CheckBoxTableCell<WorkTimeRule, Boolean>() {
                 override fun updateItem(
@@ -355,10 +415,10 @@ class TimeSettingsController :
         val pane =
             HBox(
                 startTime.apply {
-                    localTime = item.getWorkTime().parseStartTime()
+                    localTime = item.workTime.parseStartTime()
                     readOnlyTimeProperty().addListener { _, _, newValue ->
                         newValue ?: return@addListener
-                        item.getWorkTime().startTime = WorkTime.pattern.format(newValue)
+                        item.workTime.startTime = WorkTime.pattern.format(newValue)
                         if (newValue > endTime.localTime) {
                             endTime.localTime = newValue
                         }
@@ -366,10 +426,10 @@ class TimeSettingsController :
                 },
                 Text("-"),
                 endTime.apply {
-                    localTime = item.getWorkTime().parseEndTime()
+                    localTime = item.workTime.parseEndTime()
                     readOnlyTimeProperty().addListener { _, _, newValue ->
                         newValue ?: return@addListener
-                        item.getWorkTime().endTime = WorkTime.pattern.format(newValue)
+                        item.workTime.endTime = WorkTime.pattern.format(newValue)
                         if (newValue < startTime.localTime) {
                             startTime.localTime = newValue
                         }
@@ -384,12 +444,98 @@ class TimeSettingsController :
         return pane
     }
 
+    private fun buildRunModePane(item: WorkTimeRule): Node {
+        return comboBox(runModeMap.keys.toList()) {
+            styleNormal(StyleSize.SMALL)
+            value(item.runMode)
+            converter {
+                it?.comment
+            }
+            addValueListener { _, _, newValue ->
+                item.runMode = newValue
+            }
+        }
+    }
+
+    private fun buildStrategyPane(item: WorkTimeRule): Node {
+        val comboBox = comboBox() {
+            runModeMap[item.runMode]?.let { strategies ->
+                items(strategies)
+                value(strategies.find { it.id() == item.strategyId })
+            }
+            styleNormal(StyleSize.SMALL)
+            converter {
+                it?.name()
+            }
+            addValueListener { _, _, newValue ->
+                item.strategyId = newValue?.id() ?: ""
+            }
+        }
+
+        val listener = ChangeListener<RunModeEnum> { _, _, newValue ->
+            runModeMap[item.runMode]?.let { strategies ->
+                comboBox.items.setAll(strategies)
+                comboBox.value = strategies.find { it.id() == item.strategyId }
+            }
+        }
+        runModeListener[item]?.let {
+            item.runModeProperty.removeListener(it)
+        }
+        runModeListener[item] = listener
+        item.runModeProperty.addListener(listener)
+        return comboBox
+    }
+
+    private fun buildDeckPosPane(item: WorkTimeRule): Pane {
+        return hbox {
+            alignCenter()
+            spacing(5.0)
+            text(item.deckPos.sorted().joinToString(","))
+            label {
+                graphic(club.xiaojiawei.kt.dsl.button {
+                    style(EDIT_STYLE)
+                    cursor(Cursor.HAND)
+                    graphic(EditIco("main-color"))
+                    onAction {
+                        handleEditDeckPos(item)
+                    }
+                })
+            }
+        }
+    }
+
+    private fun handleEditDeckPos(item: WorkTimeRule) {
+        val deckPosCopy = item.deckPos.toMutableSet()
+        Modal(
+            rootPane,
+            "设置卡组位", hbox {
+                spacing(10.0)
+                for (i in 1..9) {
+                    checkBox("$i") {
+                        style("-fx-text-fill: black;")
+                        styleMain()
+                        selected(item.deckPos.contains(i))
+                        addSelectedListener { _, _, newValue ->
+                            if (newValue) {
+                                deckPosCopy += i
+                            } else {
+                                deckPosCopy -= i
+                            }
+                        }
+                    }
+                }
+            }, {
+                item.deckPos = deckPosCopy
+            }
+        ).show()
+    }
+
     private fun buildOperationPane(item: WorkTimeRule): Pane {
         val pane =
             HBox().apply {
                 children.addAll(
                     item
-                        .getOperate()
+                        .operates
                         .toMutableList()
                         .apply { sortBy { it.order } }
                         .map {
@@ -432,11 +578,10 @@ class TimeSettingsController :
     private fun buildOperationEditBtn(item: WorkTimeRule): Button =
         Button().apply {
             graphic = EditIco("main-color")
-            style =
-                "-fx-border-radius:10;-fx-background-color: transparent;-fx-border-width: 1;-fx-border-color:gray;-fx-background-insets: 0"
+            style = EDIT_STYLE
             cursor = Cursor.HAND
 
-            val operates = item.getOperate()
+            val operates = item.operates
             val selectedOperateEnums = mutableSetOf<OperateEnum>()
 
             onAction =
@@ -445,7 +590,7 @@ class TimeSettingsController :
                         FlowPane().apply {
                             val selectAllLabel = Label("全选")
                             val isSelectAll: () -> Unit = {
-                                if (selectedOperateEnums.size == OperateEnum.values().size) {
+                                if (selectedOperateEnums.size == OperateEnum.entries.size) {
                                     if (!selectAllLabel.styleClass.contains(SELECTED_OPERATION_STYLE_CLASS)) {
                                         selectAllLabel.styleClass.add(SELECTED_OPERATION_STYLE_CLASS)
                                     }
@@ -454,8 +599,7 @@ class TimeSettingsController :
                                 }
                             }
                             children.addAll(
-                                OperateEnum
-                                    .values()
+                                OperateEnum.entries
                                     .toMutableList()
                                     .apply { sortBy { it.order } }
                                     .map { operation ->
@@ -506,7 +650,7 @@ class TimeSettingsController :
                             vgap = 5.0
                         }
                     Modal(rootPane, "修改", content, {
-                        item.setOperate(selectedOperateEnums)
+                        item.operates = selectedOperateEnums
                     }, {})
                         .apply {
                             isMaskClosable = true
@@ -573,8 +717,11 @@ class TimeSettingsController :
         }
         val workTimeRule =
             WorkTimeRule(
-                WorkTime("00:00", "23:59"),
-                setOf<OperateEnum>(OperateEnum.CLOSE_GAME, OperateEnum.CLOSE_PLATFORM),
+                DEFAULT_WORK_TIME,
+                DEFAULT_OPERATIONS.toSet(),
+                DEFAULT_RUN_MODE_ENUM,
+                DEFAULT_DECK_STRATEGY_ID,
+                DEFAULT_DECK_POS.toSet(),
                 true,
             )
         workTimeRuleSet.setTimeRules(workTimeRuleSet.getTimeRules() + workTimeRule)

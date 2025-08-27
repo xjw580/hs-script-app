@@ -175,8 +175,9 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
         val oldWidth = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val oldHeight = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
         val width = 3840
-        val middleRation = (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO)/ 2
-        val height = (width.toDouble() / middleRation ).toInt()
+        val middleRation =
+            (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2
+        val height = (width.toDouble() / middleRation).toInt()
 
         log.info { "调整${GAME_CN_NAME}窗口大小" }
         SystemUtil.changeWindowSize(ScriptStatus.gameHWND, width, height)
@@ -289,19 +290,15 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
             SystemUtil.delayShortMedium()
         }, 5, 2, TimeUnit.SECONDS))
 
-        DeckStrategyManager.currentDeckStrategy?.let {
-            if (it.runModes.isEmpty()) {
-                SystemUtil.notice("当前卡组策略不允许运行在任何模式中")
-                log.warn { "当前卡组策略不允许运行在任何模式中" }
-                PauseStatus.isPause = true
+        val runMode = DeckStrategyManager.currentRunMode
+        if (runMode != null){
+            if (!runMode.isEnable){
+                log.warn { "${runMode.comment}未启用" }
+                PauseStatus.isPause = false
                 return
             }
             log.info { "准备进入指定模式" }
-            it.runModes[0].modeEnum.modeStrategy?.wantEnter()
-        } ?: let {
-            SystemUtil.notice("未配置卡组策略")
-            log.warn { "未配置卡组策略" }
-            PauseStatus.isPause = true
+            runMode.modeEnum.modeStrategy?.wantEnter()
         }
     }
 
