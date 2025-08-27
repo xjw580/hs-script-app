@@ -15,11 +15,9 @@ import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
-import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
-import javax.imageio.ImageIO
 
 /**
  * 主界面
@@ -132,7 +130,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
             for (rect in GameUtil.DAILY_TASK_DESC_RECTS) {
                 result = instance.doOCR(fullImage.cropImage(rect), "dailyDesc")
                     .replace("\\s".toRegex(), "")
-                if (result.isNotBlank()) {
+                if (result.length > 5) {
                     dailyTask.add(GameTaskBase(result))
                 }
             }
@@ -140,7 +138,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
             for (rect in GameUtil.WEEKLY_TASK_DESC_RECTS) {
                 result = instance.doOCR(fullImage.cropImage(rect), "weeklyDesc")
                     .replace("\\s".toRegex(), "")
-                if (result.isNotBlank()) {
+                if (result.length > 5) {
                     weeklyTask.add(GameTaskBase(result))
                 }
             }
@@ -157,9 +155,18 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
         val canRefreshWeeklyTask = gameTask.refreshWeeklyTime.isBefore(LocalDate.now())
         if (!canRefreshDailyTask && !canRefreshWeeklyTask) return
 
+        val day = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+        val latestDay = if (day > gameTask.updateTime) {
+            day
+        } else gameTask.updateTime
+
         val records =
-            RecordDaoEx.RECORD_DAO.queryByDateRange(gameTask.updateTime, LocalDateTime.now().plusDays(1))
-        if (records.size < 5) return
+            RecordDaoEx.RECORD_DAO.queryByDateRange(latestDay, LocalDateTime.now().plusDays(1))
+        val minWarCount = 5
+        if (records.size < minWarCount) {
+            log.info { "对局数小于${minWarCount}把，放弃识别任务" }
+            return
+        }
 
         log.info { "准备识别${GAME_CN_NAME}任务" }
 
@@ -168,7 +175,8 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
         val oldWidth = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val oldHeight = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
         val width = 3840
-        val height = (width.toDouble() / GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO - 1).toInt()
+        val middleRation = (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO)/ 2
+        val height = (width.toDouble() / middleRation ).toInt()
 
         log.info { "调整${GAME_CN_NAME}窗口大小" }
         SystemUtil.changeWindowSize(ScriptStatus.gameHWND, width, height)
@@ -219,7 +227,6 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
                     val desc = newDailyTask[dailyIndex].desc
                     log.info { "刷新每日任务[${dailyIndex + 1}]: $desc" }
                     gameTask.refreshDailyTime = LocalDate.now()
-
                 }
             }
             gameTask.updateTime = LocalDateTime.now()
@@ -234,10 +241,9 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
                 }
                 if (weeklyIndex != -1) {
                     WEEKLY_TASK_REFRESH_RECTS[weeklyIndex].lClick(false)
-                    val desc = newDailyTask[weeklyIndex].desc
+                    val desc = newWeeklyTask[weeklyIndex].desc
                     log.info { "刷新每周任务[${weeklyIndex + 1}]: $desc" }
                     gameTask.refreshWeeklyTime = LocalDate.now()
-
                 }
             }
 
