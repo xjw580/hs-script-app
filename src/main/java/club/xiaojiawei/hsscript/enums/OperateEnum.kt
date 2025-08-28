@@ -60,11 +60,7 @@ enum class OperateEnum(val value: String, val exec: () -> Boolean, val order: In
         res
     }, order = 4),
     SHUTDOWN("关机", {
-        val res = SystemUtil.shutdownSystem()
-        if (!res) {
-            log.error { Kernel32.INSTANCE.GetLastError() }
-        }
-        res
+        SystemUtil.shutdownSystem()
     }, order = 3),
     LOCK_SCREEN("锁屏", {
         SystemUtil.lockScreen()

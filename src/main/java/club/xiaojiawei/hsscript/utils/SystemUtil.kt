@@ -1,7 +1,5 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.custom.MouseClickListener
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -17,8 +15,9 @@ import club.xiaojiawei.hsscript.enums.RegCommonNameEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.initializer.ServiceInitializer
 import club.xiaojiawei.hsscript.status.PauseStatus
-import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.SystemUtil.delay
+import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.WString
@@ -29,12 +28,14 @@ import java.awt.datatransfer.StringSelection
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.io.File
+import java.io.IOException
 import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 import java.util.*
 import java.util.function.Consumer
 import kotlin.system.exitProcess
+
 
 /**
  * 系统工具类
@@ -498,10 +499,68 @@ object SystemUtil {
     /**
      * 系统关机
      */
-    fun shutdownSystem(): Boolean =
-        User32.INSTANCE
-            .ExitWindowsEx(WinDef.UINT((EWX_SHUTDOWN or EWX_FORCE).toLong()), WinDef.DWORD(0))
-            .booleanValue()
+    fun shutdownSystem(): Boolean {
+        val shutdown = shutdown@{
+            // 获取当前进程的访问令牌
+            val tokenHandle = WinNT.HANDLEByReference()
+            if (!Advapi32.INSTANCE.OpenProcessToken(
+                    Kernel32.INSTANCE.GetCurrentProcess(),
+                    WinNT.TOKEN_ADJUST_PRIVILEGES or WinNT.TOKEN_QUERY,
+                    tokenHandle
+                )
+            ) {
+                return@shutdown false
+            }
+
+            // 查找关机特权
+            val luid = WinNT.LUID()
+            if (!Advapi32.INSTANCE.LookupPrivilegeValue(
+                    null,
+                    WinNT.SE_SHUTDOWN_NAME,
+                    luid
+                )
+            ) {
+                Kernel32.INSTANCE.CloseHandle(tokenHandle.value)
+                return@shutdown false
+            }
+
+            // 启用关机特权
+            val tp = WinNT.TOKEN_PRIVILEGES(1)
+            tp.Privileges[0] = WinNT.LUID_AND_ATTRIBUTES(
+                luid,
+                WinDef.DWORD(WinNT.SE_PRIVILEGE_ENABLED.toLong())
+            )
+
+            if (!Advapi32.INSTANCE.AdjustTokenPrivileges(
+                    tokenHandle.value,
+                    false,
+                    tp,
+                    0,
+                    null,
+                    null
+                )
+            ) {
+                Kernel32.INSTANCE.CloseHandle(tokenHandle.value)
+                return@shutdown false
+            }
+
+            val res = User32.INSTANCE
+                .ExitWindowsEx(WinDef.UINT((EWX_SHUTDOWN or EWX_FORCE).toLong()), WinDef.DWORD(0))
+                .booleanValue()
+            if (!res) {
+                log.warn { Kernel32.INSTANCE.GetLastError() }
+            }
+            return@shutdown res
+        }
+        if (!shutdown()) {
+            try {
+                Runtime.getRuntime().exec("shutdown /s /t 0")
+            } catch (e: IOException) {
+                log.error(e) {}
+            }
+        }
+        return true
+    }
 
     /**
      * 锁屏
