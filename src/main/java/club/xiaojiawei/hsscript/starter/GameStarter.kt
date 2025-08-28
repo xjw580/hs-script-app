@@ -43,7 +43,7 @@ class GameStarter : AbstractStarter() {
                 {
                     do {
                         val diffTime = System.currentTimeMillis() - startTime
-                        if (diffTime > 25_000) {
+                        if (diffTime > 30_000) {
                             log.warn { "启动${GAME_CN_NAME}失败次数过多，重新执行启动器链" }
                             stopTask()
                             startTime = System.currentTimeMillis()
@@ -65,7 +65,7 @@ class GameStarter : AbstractStarter() {
                                 }
                             }
                         } else {
-                            if (diffTime > 5_000) {
+                            if (diffTime > 10_000) {
                                 if (firstLogSecondaryLaunch) {
                                     firstLogSecondaryLaunch = false
                                     log.info { "更改${GAME_CN_NAME}启动方式" }

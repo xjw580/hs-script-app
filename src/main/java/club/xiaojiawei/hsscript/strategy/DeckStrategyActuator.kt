@@ -1,11 +1,5 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.hsscriptcardsdk.bean.Card
-import club.xiaojiawei.hsscriptcardsdk.bean.isValid
-import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
@@ -15,10 +9,16 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.go
-import club.xiaojiawei.hsscriptcardsdk.status.WAR
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 
 /**
  * 卡牌策略执行器
@@ -29,9 +29,11 @@ object DeckStrategyActuator {
 
     private val war = WAR
 
-    fun reset() {
-        DeckStrategyManager.currentDeckStrategy?.reset()
+    private var outCardErrorHandle = false
 
+    fun reset() {
+        outCardErrorHandle = false
+        DeckStrategyManager.currentDeckStrategy?.reset()
         checkSurrender()
     }
 
@@ -135,8 +137,11 @@ object DeckStrategyActuator {
 
         if (Mode.currMode !== ModeEnum.GAMEPLAY) {
             log.warn { "没有处于${ModeEnum.GAMEPLAY.comment}，但试图执行出牌方法，如脚本运行不正常请提交issue并附带游戏日志" }
-            ScreenLogListener.logFilePath?.let {
-                SystemUtil.openFile(it)
+            if (!outCardErrorHandle) {
+                outCardErrorHandle = true
+                ScreenLogListener.logFilePath?.let {
+                    SystemUtil.openFile(it)
+                }
             }
         }
 
