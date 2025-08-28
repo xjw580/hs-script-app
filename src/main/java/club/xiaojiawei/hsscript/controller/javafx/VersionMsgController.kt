@@ -7,8 +7,11 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.layout.AnchorPane
+import java.io.File
+import java.net.URI
 import java.net.URL
 import java.util.*
+
 
 /**
  * @author 肖嘉威
@@ -33,18 +36,14 @@ class VersionMsgController : Initializable {
         versionDescription.text =
             """
             🚀 新功能
-            1. 允许设置开机自启
-            
-            🐛 Bug修复
-            1. 修复插件重复加载的问题
-            2. 修复添加突袭词条不被识别的问题
+            1. 实现抉择功能
+            2. 工作时间增加模式，策略，卡组位的设置
+            3. 增加自动刷新游戏任务功能
+            4. 增加实时读取游戏画面的功能
+            5. 增加开机自启后自动运行功能
             
             🔧 重构与优化
-            1. 优化激进策略的硬币使用
-            2. 优化只打人机功能
-            3. 优化游戏进程查找
-            4. 更新卡牌数据库
-            5. 补丁更新
+            1. 避免以管理员权限启动游戏
             """.trimIndent()
     }
 
