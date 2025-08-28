@@ -266,6 +266,15 @@ class CommonCardAction : CardAction(false) {
         return false
     }
 
+    override fun execChooseOne(index: Int): Boolean {
+        val gameRect = GameUtil.getChooseOneCardRect(index)
+        if (gameRect.isValid()) {
+            gameRect.lClick()
+            return true
+        }
+        return false
+    }
+
     override fun execTrade(): Boolean {
         val cardRect = getCardRect(belongCard)
         if (cardRect.isValid()) {
