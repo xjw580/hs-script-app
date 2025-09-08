@@ -1,8 +1,5 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -11,6 +8,9 @@ import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
@@ -42,17 +42,18 @@ class GameStarter : AbstractStarter() {
             LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay(
                 {
                     do {
+                        if (startTime == -1L) break
                         val diffTime = System.currentTimeMillis() - startTime
                         if (diffTime > 30_000) {
                             log.warn { "启动${GAME_CN_NAME}失败次数过多，重新执行启动器链" }
-                            stopTask()
-                            startTime = System.currentTimeMillis()
+                            startTime = -1L
                             EXTRA_THREAD_POOL.schedule({
                                 GameUtil.killGame(true)
                                 GameUtil.killLoginPlatform()
                                 GameUtil.killPlatform()
                                 StarterConfig.starter.start()
                             }, 1, TimeUnit.SECONDS)
+                            stopTask()
                             break
                         }
                         if (GameUtil.isAliveOfGame()) {

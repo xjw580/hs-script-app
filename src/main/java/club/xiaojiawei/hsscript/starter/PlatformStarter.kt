@@ -29,7 +29,7 @@ class PlatformStarter : AbstractStarter() {
 
         var startTime = System.currentTimeMillis()
         addTask(
-            LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
+            LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay( {
                 if (System.currentTimeMillis() - startTime >= 10 * 1000 && !GameUtil.isAliveOfPlatform()) {
                     startTime = System.currentTimeMillis()
                     GameUtil.killPlatform()

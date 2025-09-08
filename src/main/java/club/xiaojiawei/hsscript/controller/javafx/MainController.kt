@@ -510,6 +510,7 @@ class MainController : MainView() {
 
     @FXML
     protected fun start() {
+        log.info { "手动开始" }
         submitExtra {
             PauseStatus.setPauseReturn(false).isTrue {
                 runUI {
@@ -521,6 +522,7 @@ class MainController : MainView() {
 
     @FXML
     protected fun pause() {
+        log.info { "手动暂停" }
         submitExtra {
             PauseStatus.setPauseReturn(true).isFalse {
                 runUI {

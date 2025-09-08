@@ -9,6 +9,7 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.event.KeyEvent
@@ -32,7 +33,8 @@ class LoginPlatformStarter : AbstractStarter() {
         }
         var startTime = System.currentTimeMillis()
         addTask(
-            EXTRA_THREAD_POOL.scheduleWithFixedDelay({
+            LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay({
+                if (startTime == -1L)return@scheduleWithFixedDelay
                 var loginPlatformHWND: HWND?
                 if ((GameUtil.findLoginPlatformHWND().also { loginPlatformHWND = it }) == null || GameUtil.isAliveOfGame()) {
                     startNextStarter()
@@ -40,13 +42,13 @@ class LoginPlatformStarter : AbstractStarter() {
                     val diffTime = System.currentTimeMillis() - startTime
                     if (diffTime > 60_000) {
                         log.warn { "登录${PLATFORM_CN_NAME}失败次数过多，重新执行启动器链" }
-                        stopTask()
-                        startTime = System.currentTimeMillis()
-                        EXTRA_THREAD_POOL.schedule({
+                        startTime = -1L
+                        LAUNCH_PROGRAM_THREAD_POOL.schedule({
                             GameUtil.killLoginPlatform()
                             GameUtil.killPlatform()
                             StarterConfig.starter.start()
                         }, 1, TimeUnit.SECONDS)
+                        stopTask()
                         return@scheduleWithFixedDelay
                     }
                     input(loginPlatformHWND)
