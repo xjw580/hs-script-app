@@ -1,15 +1,10 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.hsscript.consts.GAME_PROGRAM_NAME
-import club.xiaojiawei.hsscript.consts.GAME_US_NAME
-import club.xiaojiawei.hsscript.consts.INJECT_UTIL_FILE
-import club.xiaojiawei.hsscript.consts.LIB_HS_FILE
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
-import club.xiaojiawei.hsscript.status.ScriptStatus
-import club.xiaojiawei.hsscript.utils.*
-import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.ConfigUtil
 
 
 /**
@@ -28,6 +23,9 @@ class InjectedAfterStarter : AbstractStarter() {
         }
         if (ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)) {
             CSystemDll.INSTANCE.limitMouseRange(true)
+        }
+        if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1) {
+            CSystemDll.INSTANCE.logHook(true)
         }
         startNextStarter()
     }

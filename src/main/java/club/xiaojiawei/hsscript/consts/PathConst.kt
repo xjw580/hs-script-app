@@ -58,6 +58,8 @@ val LIB_BN_FILE = ResourceFile("bn.dll")
 
 val LIB_CAPTURE_READER_FILE = ResourceFile("capture_reader.dll")
 
+val LIB_LOG_READER_FILE = ResourceFile("log_reader.dll")
+
 const val GAME_WAR_LOG_NAME = "Power.log"
 
 const val GAME_MODE_LOG_NAME = "LoadingScreen.log"

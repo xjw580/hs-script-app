@@ -23,6 +23,7 @@ class InjectStarter : AbstractStarter() {
         val mouseControlMode = ConfigExUtil.getMouseControlMode()
         val acHook = ConfigUtil.getBoolean(ConfigEnum.PREVENT_AC)
         val mouseHook = mouseControlMode === MouseControlModeEnum.MESSAGE
+        val logHook = ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1
         val limitMouseRange = ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)
         val autoRefreshGameTask = ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)
 
@@ -31,7 +32,8 @@ class InjectStarter : AbstractStarter() {
         if (mouseHook ||
             acHook ||
             limitMouseRange ||
-            autoRefreshGameTask
+            autoRefreshGameTask ||
+            logHook
         ) {
             if (ScriptStatus.gameHWND == null || !injectCheck()) {
                 pause()

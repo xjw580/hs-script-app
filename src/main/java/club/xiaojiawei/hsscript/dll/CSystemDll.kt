@@ -4,6 +4,9 @@ import club.xiaojiawei.hsscript.config.DRIVER_LOCK
 import club.xiaojiawei.hsscript.consts.ARG_PAUSE
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.consts.ROOT_PATH
+import club.xiaojiawei.hsscript.starter.AbstractStarter
+import club.xiaojiawei.hsscript.starter.GameStarter
+import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
@@ -182,6 +185,8 @@ interface CSystemDll : Library {
 
     fun mouseHook(enable: Boolean)
 
+    fun logHook(enable: Boolean)
+
     fun acHook(enable: Boolean)
 
     fun limitMouseRange(enable: Boolean)
@@ -354,4 +359,18 @@ interface CSystemDll : Library {
             Native.load("dll/csystem", CSystemDll::class.java)
         }
     }
+}
+
+fun main() {
+    val starter = GameStarter()
+    starter.setNextStarter(InjectStarter().apply {
+        setNextStarter(object : AbstractStarter(){
+            override fun execStart() {
+                CSystemDll.INSTANCE.logHook(true)
+                println("logHook")
+            }
+        })
+    })
+    starter.start()
+    Thread.sleep(1000000)
 }

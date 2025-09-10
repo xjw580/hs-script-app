@@ -109,19 +109,19 @@ class GameStarter : AbstractStarter() {
 
     private fun next(gameHWND: HWND) {
         log.info { GAME_CN_NAME + "正在运行" }
-        if (latestLogDir != null) {
-            log.info { "等待${GAME_CN_NAME}创建最新日志文件夹" }
-            while (!PauseStatus.isPause) {
-                val currentLatestLogDir = GameUtil.getLatestLogDir()
-                if (currentLatestLogDir != null) {
-                    if (currentLatestLogDir > latestLogDir) {
-                        log.info { "${GAME_CN_NAME}已创建最新日志文件夹：${currentLatestLogDir.absolutePath}" }
-                        break
-                    }
-                }
-                Thread.sleep(200)
-            }
-        }
+//        if (latestLogDir != null) {
+//            log.info { "等待${GAME_CN_NAME}创建最新日志文件夹" }
+//            while (!PauseStatus.isPause) {
+//                val currentLatestLogDir = GameUtil.getLatestLogDir()
+//                if (currentLatestLogDir != null) {
+//                    if (currentLatestLogDir > latestLogDir) {
+//                        log.info { "${GAME_CN_NAME}已创建最新日志文件夹：${currentLatestLogDir.absolutePath}" }
+//                        break
+//                    }
+//                }
+//                Thread.sleep(200)
+//            }
+//        }
         updateGameMsg(gameHWND)
         startNextStarter()
     }
