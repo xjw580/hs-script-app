@@ -4,6 +4,7 @@ import club.xiaojiawei.hsscript.consts.LIB_LOG_READER_FILE
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 
+
 /**
  * @author 肖嘉威
  * @date 2025/8/21 8:39
@@ -23,29 +24,38 @@ object LogReader {
     }
 
     external fun init(): Boolean
-    external fun readLineBlocking(): String?
-    external fun readLineNonBlocking(): String?
+    external fun readLines(maxLines: Int): Array<String?>?
+    external fun readLineBlocking(timeoutMs: Long): String?
+    external fun getStatus(): LogReaderStatus?
     external fun getReadPosition(): Long
-    external fun setReadPosition(newPos: Long): Long
+    external fun setReadPosition(pos: Long)
+    external fun reset()
     external fun close()
+
+    class LogReaderStatus
+        (val dataSize: Long, val bufferSize: Long, val usage: Float)
 
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
         val reader = LogReader
         if (!reader.init()) {
-            println("初始化失败")
+            System.err.println("Failed to initialize")
             return
         }
-        var readPos: Long = 0
-        while (true) {
-            val line = reader.readLineBlocking() // 阻塞读取
-            if (line != null) {
-                println("line:${line}")
-                readPos = reader.getReadPosition()
-                println("pos:${readPos}")
+
+
+        // 批量读取
+        val lines = reader.readLines(100)
+        if (lines != null) {
+            for (line in lines) {
+                println(line)
             }
-            Thread.sleep(100)
         }
+
+
+        // 检查状态
+        val status: LogReaderStatus = getStatus()!!
+        println("Buffer usage: " + status.usage + "%")
     }
 }
