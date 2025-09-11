@@ -6,6 +6,7 @@ import club.xiaojiawei.hsscript.bean.PureCard
  * @author 肖嘉威 xjw580@qq.com
  * @date 2023/11/5 22:03
  */
+@Deprecated("")
 object CommonBaseDeck {
 //    val 火舌图腾: PureCard = PureCard("EX1_565")
 //    val 南海船长: PureCard = PureCard("NEW1_027")

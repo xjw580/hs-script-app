@@ -1,11 +1,14 @@
 package club.xiaojiawei.hsscript.starter
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.controller.javafx.MainController
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.GameLogModeEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 
 /**
@@ -14,8 +17,9 @@ import club.xiaojiawei.hsscriptbase.util.isFalse
  * @date 2023/7/6 10:46
  */
 
-class CheckWarningStarter : AbstractStarter() {
-    public override fun execStart() {
+class PrepareStarter : AbstractStarter() {
+
+    private fun checkConfig() {
         val notificationManager =
             WindowUtil.getController(WindowEnum.MAIN)?.let {
                 it as MainController
@@ -40,6 +44,23 @@ class CheckWarningStarter : AbstractStarter() {
                 notificationManager?.showWarn(text, "", closeTime)
             }
         }
+    }
+
+    private fun checkGameLogMode() {
+        ScriptStatus.gameLogMode = if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) < 0) {
+            GameUtil.getLatestLogDir()?.let {
+                val modeLog = it.resolve(GAME_MODE_LOG_NAME)
+                if (modeLog.exists() && FileUtil.isFileLocked(modeLog.absolutePath) && modeLog.length() < 200) {
+                    GameLogModeEnum.DISK
+                } else GameLogModeEnum.MEMORY
+            } ?: GameLogModeEnum.MEMORY
+        } else GameLogModeEnum.DISK
+        log.info { "游戏日志读取模式: ${ScriptStatus.gameLogMode}" }
+    }
+
+    override fun execStart() {
+        checkGameLogMode()
+        checkConfig()
         startNextStarter()
     }
 }

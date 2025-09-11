@@ -28,6 +28,6 @@ object AutoRefreshGameTaskService : Service<Boolean>() {
     }
 
     override fun getStatus(value: Boolean?): Boolean {
-        return value ?: ConfigUtil.getBoolean(ConfigEnum.ONLY_ROBOT)
+        return value ?: ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)
     }
 }

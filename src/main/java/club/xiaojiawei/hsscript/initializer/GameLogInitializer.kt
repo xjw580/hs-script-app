@@ -85,7 +85,9 @@ class GameLogInitializer : AbstractInitializer() {
         val clientIni = Ini(clientConfigFile)
 
         val logLimitSize = clientIni.get("Log", "FileSizeLimit.Int")
-        val shouldLogLimitSize = ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT)
+        val shouldLogLimitSize = ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT).let {
+            if (it < 0) 10240 else it
+        }
         if (logLimitSize == null || logLimitSize.toIntOrNull() == null
             || logLimitSize.toInt() != shouldLogLimitSize
         ) {

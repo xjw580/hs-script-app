@@ -6,6 +6,7 @@ import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.GameRationConst
 import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.statistics.RecordDaoEx
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
@@ -174,7 +175,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
 
         val oldWidth = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val oldHeight = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
-        val width = 3840
+        val width = SCREEN_WIDTH.toInt()
         val middleRation =
             (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2
         val height = (width.toDouble() / middleRation).toInt()

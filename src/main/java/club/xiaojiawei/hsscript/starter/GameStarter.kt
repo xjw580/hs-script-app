@@ -2,8 +2,11 @@ package club.xiaojiawei.hsscript.starter
 
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
+import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.GameLogModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
@@ -18,6 +21,7 @@ import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Point
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.io.path.Path
 
 /**
  * 启动游戏
@@ -25,7 +29,6 @@ import java.util.concurrent.TimeUnit
  * @date 2023/7/5 14:38
  */
 class GameStarter : AbstractStarter() {
-    private var latestLogDir: File? = null
 
     public override fun execStart() {
         log.info { "开始检查$GAME_CN_NAME" }
@@ -34,7 +37,6 @@ class GameStarter : AbstractStarter() {
             next(gameHWND)
             return
         }
-        latestLogDir = GameUtil.getLatestLogDir()
         var startTime = System.currentTimeMillis()
         var firstLogLaunch = true
         var firstLogSecondaryLaunch = true
@@ -109,19 +111,6 @@ class GameStarter : AbstractStarter() {
 
     private fun next(gameHWND: HWND) {
         log.info { GAME_CN_NAME + "正在运行" }
-//        if (latestLogDir != null) {
-//            log.info { "等待${GAME_CN_NAME}创建最新日志文件夹" }
-//            while (!PauseStatus.isPause) {
-//                val currentLatestLogDir = GameUtil.getLatestLogDir()
-//                if (currentLatestLogDir != null) {
-//                    if (currentLatestLogDir > latestLogDir) {
-//                        log.info { "${GAME_CN_NAME}已创建最新日志文件夹：${currentLatestLogDir.absolutePath}" }
-//                        break
-//                    }
-//                }
-//                Thread.sleep(200)
-//            }
-//        }
         updateGameMsg(gameHWND)
         startNextStarter()
     }

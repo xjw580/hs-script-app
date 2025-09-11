@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.strategy
 
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.listener.log.PowerLogListener
 import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.Mode
@@ -29,10 +30,7 @@ object DeckStrategyActuator {
 
     private val war = WAR
 
-    private var outCardErrorHandle = false
-
     fun reset() {
-        outCardErrorHandle = false
         DeckStrategyManager.currentDeckStrategy?.reset()
         checkSurrender()
     }
@@ -136,13 +134,7 @@ object DeckStrategyActuator {
         if (!canExec()) return
 
         if (Mode.currMode !== ModeEnum.GAMEPLAY) {
-            log.warn { "没有处于${ModeEnum.GAMEPLAY.comment}，但试图执行出牌方法，如脚本运行不正常请提交issue并附带游戏日志" }
-            if (!outCardErrorHandle) {
-                outCardErrorHandle = true
-                ScreenLogListener.logFilePath?.let {
-                    SystemUtil.openFile(it)
-                }
-            }
+            log.warn { "没有处于${ModeEnum.GAMEPLAY.comment}，但试图执行出牌方法，如脚本运行不正常请提交issue并附带游戏日志【${PowerLogListener.logFile?.path()}】" }
         }
 
         val surrenderNumber = ConfigUtil.getInt(ConfigEnum.OVER_TURN_SURRENDER)

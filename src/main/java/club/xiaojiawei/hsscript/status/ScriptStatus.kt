@@ -1,18 +1,21 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.GameLogModeEnum
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.go
+import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
+import java.io.File
+import java.io.RandomAccessFile
 
 /**
  * @author 肖嘉威
@@ -34,6 +37,11 @@ object ScriptStatus {
      * 战网程序路径是否有效
      */
     var isValidPlatformProgramPath = true
+
+    /**
+     * 使用哪种模式读取游戏日志
+     */
+    var gameLogMode: GameLogModeEnum = GameLogModeEnum.DISK
 
     private val gameHWNDInner = ReadOnlyObjectWrapper<HWND?>(null)
 

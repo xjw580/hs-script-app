@@ -12,7 +12,7 @@ object StarterConfig {
 
     val starter: AbstractStarter = ClearStarter().also {
         TaskManager.addTask(it)
-        it.setNextStarter(CheckWarningStarter())
+        it.setNextStarter(PrepareStarter())
             .setNextStarter(PlatformStarter().apply { TaskManager.addTask(this) })
             .setNextStarter(LoginPlatformStarter().apply { TaskManager.addTask(this) })
             .setNextStarter(GameStarter().apply { TaskManager.addTask(this) })

@@ -1,11 +1,11 @@
 package club.xiaojiawei.hsscript.status
 
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.go
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -32,7 +32,11 @@ object Mode {
         go {
             while (true) {
                 val (currMode1, newMode) = modeQueue.take()
-                AbstractModeStrategy.cancelAllTask()
+                runCatching {
+                    AbstractModeStrategy.cancelAllTask()
+                }.onFailure {
+                    log.error(it) { "" }
+                }
                 go {
                     currMode1?.modeStrategy?.afterLeave()
                     AbstractModeStrategy.cancelAllTask()

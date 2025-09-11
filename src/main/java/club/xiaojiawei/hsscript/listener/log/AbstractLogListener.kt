@@ -1,15 +1,21 @@
 package club.xiaojiawei.hsscript.listener.log
 
-import club.xiaojiawei.hsscriptbase.config.LISTEN_LOG_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscript.DiskLogFile
+import club.xiaojiawei.hsscript.bean.MemoryLogFile
+import club.xiaojiawei.hsscript.dll.LogReader
+import club.xiaojiawei.hsscript.enums.GameLogModeEnum
+import club.xiaojiawei.hsscript.interfaces.LogFile
 import club.xiaojiawei.hsscript.interfaces.closer.ScheduledCloser
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PauseStatus
+import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.status.TaskManager
+import club.xiaojiawei.hsscript.utils.FileUtil
+import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscriptbase.config.LISTEN_LOG_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import java.io.File
-import java.io.FileWriter
-import java.io.RandomAccessFile
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -29,12 +35,8 @@ abstract class AbstractLogListener(
         TaskManager.addTask(this)
     }
 
-    protected var innerLogFile: RandomAccessFile? = null
-
-    val logFile: RandomAccessFile?
-        get() = innerLogFile
-
-    var logFilePath: String? = null
+    var logFile: LogFile? = null
+        private set
 
     private var logScheduledFuture: ScheduledFuture<*>? = null
 
@@ -52,8 +54,55 @@ abstract class AbstractLogListener(
         nextLogListener?.listen()
     }
 
+    private fun waitLogCreated(maxWaitMillisTime: Long = 15_000): LogFile? {
+        doWhileBlock@ do {
+            val start = System.currentTimeMillis()
+            if (ScriptStatus.gameLogMode === GameLogModeEnum.DISK) {
+                log.info { "等待创建【${logFileName}】日志" }
+                var latestLogDir = GameUtil.getLatestLogDir()
+
+                while (true) {
+                    latestLogDir?.listFiles()?.let {
+                        for (file in it) {
+                            if (FileUtil.isFileLocked(file.absolutePath)) {
+                                val createLogFile = createLogFile(latestLogDir)
+                                log.info { "已创建游戏【${logFileName}】日志, $createLogFile" }
+                                return DiskLogFile(createLogFile.absolutePath)
+                            }
+                        }
+                    }
+                    if (PauseStatus.isPause) {
+                        break@doWhileBlock
+                    }
+                    if (System.currentTimeMillis() - start > maxWaitMillisTime) {
+                        break@doWhileBlock
+                    }
+                    Thread.sleep(50)
+                    latestLogDir = GameUtil.getLatestLogDir()
+                }
+            } else if (ScriptStatus.gameLogMode === GameLogModeEnum.MEMORY) {
+                log.info { "等待创建游戏【${logFileName}】日志缓冲区" }
+                LogReader.nativeInit()
+                while (!LogReader.existChannel(logFileName)) {
+                    if (PauseStatus.isPause) {
+                        break@doWhileBlock
+                    }
+                    if (System.currentTimeMillis() - start > maxWaitMillisTime) {
+                        break@doWhileBlock
+                    }
+                    Thread.sleep(50)
+                }
+                log.info { "已创建游戏【${logFileName}】日志缓冲区" }
+                return MemoryLogFile(logFileName)
+            } else {
+                log.error { "不支持的日志模式: ${ScriptStatus.gameLogMode}" }
+            }
+        } while (false)
+        return null
+    }
+
     fun listen() {
-        synchronized(this){
+        synchronized(this) {
             logScheduledFuture?.let {
                 if (!it.isDone) {
                     log.warn { logFileName + "正在被监听，无法再次被监听" }
@@ -62,14 +111,16 @@ abstract class AbstractLogListener(
                 }
             }
             closeLogFile()
-            val logFile = createLogFile()
-            logFile ?: let {
-                log.error { logFileName + "初始化失败" }
+            val waitLogFile = waitLogCreated()
+            if (waitLogFile == null){
+                log.error { "$logFileName 日志创建失败" }
+                PauseStatus.isPause = true
                 return
+            }else{
+                logFile = waitLogFile
             }
-            log.info { "开始监听日志$logFileName" }
+            log.info { "开始监听日志: $logFileName" }
             try {
-                this.innerLogFile = RandomAccessFile(logFile, "r")
                 dealOldLog()
             } catch (e: Exception) {
                 log.error(e) {}
@@ -92,25 +143,17 @@ abstract class AbstractLogListener(
         }
     }
 
-    private fun createLogFile(): File? {
-        return logPath?.let {
-            val logFile = it.resolve(logFileName)
-            logFile.exists().isFalse {
-                FileWriter(logFile).use { fileWriter ->
-                    fileWriter.write("")
-                }
-            }
-            logFilePath = logFile.absolutePath
-            logFile
-        }
+    private fun createLogFile(logPath: File): File {
+        val logFile = logPath.resolve(logFileName)
+        logFile.createNewFile()
+        return logFile
     }
 
     private fun closeLogFile() {
         synchronized(this) {
-            innerLogFile?.let {
+            logFile?.let {
                 it.close()
-                innerLogFile = null
-                logFilePath = null
+                logFile = null
             }
         }
     }
@@ -127,10 +170,6 @@ abstract class AbstractLogListener(
 
     override fun stopAll() {
         closeLogListener()
-    }
-
-    companion object {
-        var logPath: File? = null
     }
 
 }

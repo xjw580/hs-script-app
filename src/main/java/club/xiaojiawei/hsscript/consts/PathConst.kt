@@ -64,6 +64,8 @@ const val GAME_WAR_LOG_NAME = "Power.log"
 
 const val GAME_MODE_LOG_NAME = "LoadingScreen.log"
 
+const val GAME_DECKS_LOG_NAME = "Decks.log"
+
 const val COMMON_CSS_PATH = "/fxml/css/common.css"
 
 private fun getPath(relativePath: String): String {

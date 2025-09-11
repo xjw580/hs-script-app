@@ -163,7 +163,7 @@
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="游戏日志大小限制/KB"/>
-                                <TipNode text="当游戏日志文件超过此值将重启游戏"/>
+                                <TipNode text="游戏日志文件超过此值将重启游戏,设为-1将禁用大小限制,设置后重启游戏生效"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigNumberField config="GAME_LOG_LIMIT"
                                                    styleClass="text-field-ui, text-field-ui-small"

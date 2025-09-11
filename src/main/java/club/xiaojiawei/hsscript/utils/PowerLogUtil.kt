@@ -1,12 +1,5 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptcardsdk.bean.Card
-import club.xiaojiawei.hsscriptcardsdk.bean.Entity
-import club.xiaojiawei.hsscriptcardsdk.bean.area.SetasideArea
-import club.xiaojiawei.hsscriptcardsdk.bean.isValid
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.CommonCardAction
 import club.xiaojiawei.hsscript.bean.DiscoverCardThread
 import club.xiaojiawei.hsscript.bean.FixedSizeStack
@@ -20,15 +13,24 @@ import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.core.Core.restart
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
+import club.xiaojiawei.hsscript.enums.GameLogModeEnum
 import club.xiaojiawei.hsscript.enums.TagEnum
+import club.xiaojiawei.hsscript.interfaces.LogFile
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
 import club.xiaojiawei.hsscript.utils.CardUtil.exchangeAreaOfCard
 import club.xiaojiawei.hsscript.utils.CardUtil.setCardAction
 import club.xiaojiawei.hsscript.utils.CardUtil.updateCardByExtraEntity
-import club.xiaojiawei.hsscriptcardsdk.status.WAR
+import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.Entity
+import club.xiaojiawei.hsscriptcardsdk.bean.area.SetasideArea
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.Future
@@ -51,11 +53,11 @@ object PowerLogUtil {
     /**
      * 更新entity
      * @param line
-     * @param accessFile
+     * @param logFile
      * @return
      */
-    fun dealShowEntity(line: String, accessFile: RandomAccessFile): ExtraEntity {
-        val extraEntity: ExtraEntity = parseExtraEntity(line, accessFile, SHOW_ENTITY)
+    fun dealShowEntity(line: String, logFile: LogFile): ExtraEntity {
+        val extraEntity: ExtraEntity = parseExtraEntity(line, logFile, SHOW_ENTITY)
         val card = war.cardMap[extraEntity.entityId]
 
         if (extraEntity.extraCard.zone === extraEntity.zone || extraEntity.extraCard.zone === null) {
@@ -71,10 +73,10 @@ object PowerLogUtil {
     /**
      * 生成entity
      * @param line
-     * @param accessFile
+     * @param logFiLE
      */
-    fun dealFullEntity(line: String, accessFile: RandomAccessFile): ExtraEntity {
-        val extraEntity: ExtraEntity = parseExtraEntity(line, accessFile, FULL_ENTITY)
+    fun dealFullEntity(line: String, logFiLE: LogFile): ExtraEntity {
+        val extraEntity: ExtraEntity = parseExtraEntity(line, logFiLE, FULL_ENTITY)
         if (war.cardMap[extraEntity.entityId] == null) {
 //            生成卡牌
             val card = Card(CommonCardAction.DEFAULT).apply {
@@ -171,11 +173,11 @@ object PowerLogUtil {
     /**
      * 交换entity
      * @param line
-     * @param accessFile
+     * @param logFile
      * @return
      */
-    fun dealChangeEntity(line: String, accessFile: RandomAccessFile): ExtraEntity {
-        val extraEntity: ExtraEntity = parseExtraEntity(line, accessFile, CHANGE_ENTITY)
+    fun dealChangeEntity(line: String, logFile: LogFile): ExtraEntity {
+        val extraEntity: ExtraEntity = parseExtraEntity(line, logFile, CHANGE_ENTITY)
         val card = war.cardMap[extraEntity.entityId]
         log.info {
             String.format(
@@ -291,10 +293,7 @@ object PowerLogUtil {
         }
         tagChangeEntity.value = value
         if (index < 100) {
-            tagChangeEntity.entity =
-                iso88591ToUtf8(
-                    line.substring(line.indexOf(club.xiaojiawei.hsscript.consts.ENTITY) + 7, tagIndex).trim()
-                )
+            tagChangeEntity.entity = line.substring(line.indexOf(club.xiaojiawei.hsscript.consts.ENTITY) + 7, tagIndex).trim()
         } else {
             parseCommonEntity(tagChangeEntity, line)
         }
@@ -305,34 +304,41 @@ object PowerLogUtil {
      * 处理只有tag和value的日志
      * 如：tag=ZONE value=DECK
      * @param line
-     * @param accessFile
+     * @param logFile
      * @return
      */
-    private fun parseExtraEntity(line: String, accessFile: RandomAccessFile, logType: String): ExtraEntity {
+    private fun parseExtraEntity(line: String, logFile: LogFile, logType: String): ExtraEntity {
         var l = line
         val extraEntity = ExtraEntity()
         extraEntity.logType = logType
         parseCommonEntity(extraEntity, l)
-        var mark = accessFile.filePointer
+        var mark = logFile.getPosition()
         var tagIndex: Int
         while (true) {
-            if ((accessFile.readLine().also { l = it }) == null) {
+            val line = logFile.readLine()
+            if (line == null) {
                 SystemUtil.delay(1000)
-            } else if ((l.indexOf(TAG).also { tagIndex = it }) >= 0 && tagIndex < 70) {
-                val valueIndex = l.lastIndexOf(VALUE)
-                val value = l.substring(tagIndex + 4, valueIndex - 1).trim()
-                if (log.isDebugEnabled()) {
-                    log.debug { l }
-                    log.debug { "tag:" + TagEnum.fromString(value).name }
-                    log.debug { "extraEntity:$extraEntity" }
-                }
-                TagEnum.fromString(value).extraEntityHandler?.handle(extraEntity, l.substring(valueIndex + 6).trim())
             } else {
-                log.debug { l }
-                accessFile.seek(mark)
-                break
+                l = line
+                if ((l.indexOf(TAG).also { tagIndex = it }) >= 0 && tagIndex < 70) {
+                    val valueIndex = l.lastIndexOf(VALUE)
+                    val value = l.substring(tagIndex + 4, valueIndex - 1).trim()
+                    if (log.isDebugEnabled()) {
+                        log.debug { l }
+                        log.debug { "tag:" + TagEnum.fromString(value).name }
+                        log.debug { "extraEntity:$extraEntity" }
+                    }
+                    TagEnum.fromString(value).extraEntityHandler?.handle(
+                        extraEntity,
+                        l.substring(valueIndex + 6).trim()
+                    )
+                } else {
+                    log.debug { l }
+                    logFile.seek(mark)
+                    break
+                }
             }
-            mark = accessFile.filePointer
+            mark = logFile.getPosition()
         }
         return extraEntity
     }
@@ -359,12 +365,10 @@ object PowerLogUtil {
             zone = ZoneEnum.valueOf(line.substring(zoneIndex + 5, zonePosIndex).trim())
             zonePos = line.substring(zonePosIndex + 8, cardIdIndex).trim().toInt()
             entityId = line.substring(entityIdIndex + 3, zoneIndex).trim()
-            entityName = iso88591ToUtf8(
-                line.substring(
-                    entityNameIndex + 11,
-                    if (cardTypeIndex == -1) entityIdIndex else cardTypeIndex - 1
-                ).trim()
-            )
+            entityName = line.substring(
+                entityNameIndex + 11,
+                if (cardTypeIndex == -1) entityIdIndex else cardTypeIndex - 1
+            ).trim()
         }
     }
 
@@ -406,8 +410,7 @@ object PowerLogUtil {
             val cardIdUIndex = line.indexOf(CARD_ID_U, endIndex)
 
             // 解析 entityName
-            commonEntity.entityName =
-                iso88591ToUtf8(line.substring(entityNameIndex + ENTITY_NAME.length, idIndex - 1).trim())
+            commonEntity.entityName =line.substring(entityNameIndex + ENTITY_NAME.length, idIndex - 1).trim()
 
             // 解析 id
             commonEntity.entityId = line.substring(idIndex + ID.length, zoneIndex - 1).trim()
@@ -429,11 +432,6 @@ object PowerLogUtil {
             // 解析 player
             commonEntity.playerId = line.substring(playerIndex + PLAYER.length, endIndex).trim()
         }
-    }
-
-
-    fun iso88591ToUtf8(s: String): String {
-        return String(s.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
     }
 
     fun isRelevance(l: String): Boolean {

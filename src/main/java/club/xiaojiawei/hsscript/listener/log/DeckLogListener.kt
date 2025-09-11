@@ -1,10 +1,10 @@
 package club.xiaojiawei.hsscript.listener.log
 
 import club.xiaojiawei.hsscript.bean.Deck
+import club.xiaojiawei.hsscript.consts.GAME_DECKS_LOG_NAME
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.PowerLogUtil
-import club.xiaojiawei.hsscriptbase.config.log
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * @date 2023/9/20 16:43
  */
 
-object DeckLogListener : AbstractLogListener("Decks.log", 0, 1500L, TimeUnit.MILLISECONDS) {
+object DeckLogListener : AbstractLogListener(GAME_DECKS_LOG_NAME, 0, 1500L, TimeUnit.MILLISECONDS) {
 
     val DECKS = LinkedList<Deck>()
 
@@ -23,7 +23,7 @@ object DeckLogListener : AbstractLogListener("Decks.log", 0, 1500L, TimeUnit.MIL
     override fun dealOldLog() {
         if (dealing) return
         dealing = true
-        innerLogFile?.let { file ->
+        logFile?.let { file ->
             var line: String?
             while (!PauseStatus.isPause && WorkTimeListener.working) {
                 line = file.readLine()
@@ -41,21 +41,22 @@ object DeckLogListener : AbstractLogListener("Decks.log", 0, 1500L, TimeUnit.MIL
     private fun dealReceived() {
         DECKS.clear()
         var line: String?
-        var filePointer = innerLogFile!!.filePointer
+        var filePointer = logFile!!.getPosition()
         while (true) {
-            line = innerLogFile!!.readLine()
+            line = logFile!!.readLine()
             if (line == null ) break
             if (!line.contains("#")) {
-                innerLogFile!!.seek(filePointer)
+                logFile!!.seek(filePointer)
                 break
             }
             DECKS.addFirst(createDeck(line))
-            filePointer = innerLogFile!!.filePointer
+            filePointer = logFile!!.getPosition()
         }
     }
 
     private fun dealEditing() {
-        val deck = createDeck(innerLogFile!!.readLine())
+        val line = logFile?.readLine() ?: return
+        val deck = createDeck(line)
         var exist = false
         for (d in DECKS) {
             if (d.id == deck.id) {
@@ -75,9 +76,9 @@ object DeckLogListener : AbstractLogListener("Decks.log", 0, 1500L, TimeUnit.MIL
     private fun createDeck(line: String): Deck {
         var l = line
         return Deck(
-            PowerLogUtil.iso88591ToUtf8(l.substring(l.indexOf("#") + 4)),
-            (innerLogFile!!.readLine().also { l = it }).substring(l.indexOf("#") + 11),
-            (innerLogFile!!.readLine().also { l = it }).substring(l.lastIndexOf(" ") + 1)
+            l.substring(l.indexOf("#") + 4),
+            (logFile!!.readLine()!!.also { l = it }).substring(l.indexOf("#") + 11),
+            (logFile!!.readLine()!!.also { l = it }).substring(l.lastIndexOf(" ") + 1)
         )
     }
 

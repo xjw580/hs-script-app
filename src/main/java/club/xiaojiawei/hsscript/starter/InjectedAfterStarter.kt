@@ -15,17 +15,17 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 class InjectedAfterStarter : AbstractStarter() {
 
     override fun execStart() {
-        if (ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)) {
-            CSystemDll.INSTANCE.capture(true)
+        if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1) {
+            CSystemDll.INSTANCE.logHook(true)
         }
         if (ConfigExUtil.getMouseControlMode() === MouseControlModeEnum.MESSAGE) {
             CSystemDll.INSTANCE.mouseHook(true)
         }
+        if (ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)) {
+            CSystemDll.INSTANCE.capture(true)
+        }
         if (ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)) {
             CSystemDll.INSTANCE.limitMouseRange(true)
-        }
-        if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1) {
-            CSystemDll.INSTANCE.logHook(true)
         }
         startNextStarter()
     }

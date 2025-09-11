@@ -48,8 +48,8 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
     }
 
     private fun dealLog(line: String) {
-        val accessFile = PowerLogListener.logFile
-        accessFile ?: return
+        val logFile = PowerLogListener.logFile
+        logFile ?: return
         var l: String? = line
         while (WorkTimeListener.working) {
             try {
@@ -65,15 +65,15 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
                             break
                         }
                     } else if (l.contains(SHOW_ENTITY)) {
-                        if (dealShowEntityThenIsOver(l, dealShowEntity(l, accessFile))) {
+                        if (dealShowEntityThenIsOver(l, dealShowEntity(l, logFile))) {
                             break
                         }
                     } else if (l.contains(FULL_ENTITY)) {
-                        if (dealFullEntityThenIsOver(l, dealFullEntity(l, accessFile))) {
+                        if (dealFullEntityThenIsOver(l, dealFullEntity(l, logFile))) {
                             break
                         }
                     } else if (l.contains(CHANGE_ENTITY)) {
-                        if (dealChangeEntityThenIsOver(l, dealChangeEntity(l, accessFile))) {
+                        if (dealChangeEntityThenIsOver(l, dealChangeEntity(l, logFile))) {
                             break
                         }
                     } else if (l.contains(BLOCK_TYPE) || l.contains(BLOCK_START_NULL)) {
@@ -90,7 +90,7 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
                         }
                     }
                 }
-                l = accessFile.readLine()
+                l = logFile.readLine()
             } catch (e: IOException) {
                 throw RuntimeException(e)
             }

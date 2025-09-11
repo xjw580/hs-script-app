@@ -38,7 +38,7 @@ object ScreenLogListener :
         var finalCurrMode: ModeEnum? = null
         var finalNextMode: ModeEnum? = null
         while (true) {
-            line = innerLogFile!!.readLine()
+            line = logFile!!.readLine()
             if (line == null) break
             if ((line.indexOf(CURR_MODE_STR).also { index = it }) != -1) {
                 finalCurrMode = ModeEnum.fromString(line.substring(index + CURR_MODE_STR_LEN))
@@ -64,7 +64,7 @@ object ScreenLogListener :
     override fun dealNewLog() {
         if (dealing) return
         dealing = true
-        innerLogFile?.let {
+        logFile?.let {
             var line: String?
             while (!PauseStatus.isPause && WorkTimeListener.working) {
                 line = it.readLine()
@@ -81,12 +81,16 @@ object ScreenLogListener :
         line?.let { l ->
             var index: Int
             if ((l.indexOf(CURR_MODE_STR).also { index = it }) != -1) {
-                val logTime = LocalTime.parse(line.substring(2, 18), formatter)
-                val nowTime = LocalTime.now()
-                val logDiffTime =
-                    Duration.between(logTime, nowTime).toMillis()
-                if (logDiffTime > 1500) {
-                    log.warn { "${GAME_MODE_LOG_NAME}日志实际打印时间与输出时间相差过大，diff:${logDiffTime}，log:${line}，logTime:${logTime}，nowTime:${nowTime}" }
+                runCatching {
+                    val logTime = LocalTime.parse(l.substring(2, 18), formatter)
+                    val nowTime = LocalTime.now()
+                    val logDiffTime =
+                        Duration.between(logTime, nowTime).toMillis()
+                    if (logDiffTime > 1500) {
+                        log.warn { "${GAME_MODE_LOG_NAME}日志实际打印时间与输出时间相差过大，diff:${logDiffTime}，log:${l}，logTime:${logTime}，nowTime:${nowTime}" }
+                    }
+                }.onFailure {
+                    log.warn { "日志打印时间解析出错" }
                 }
                 Mode.currMode = ModeEnum.fromString(l.substring(index + CURR_MODE_STR_LEN))
             } else if ((l.indexOf(NEXT_MODE_STR).also { index = it }) != -1) {
