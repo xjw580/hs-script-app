@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.xjw580.Hearthstone-Script</groupId>
         <artifactId>hs-script</artifactId>
-        <version>v4.9.0.1-DEV</version>
+        <version>v4.10.0-GA</version>
     </parent>
 
     <groupId>com.github.xjw580</groupId>
@@ -115,14 +115,9 @@
             <groupId>com.github.xjw580</groupId>
             <artifactId>javafx-ui</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.xjw580</groupId>-->
-<!--            <artifactId>javafx-kt</artifactId>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>club.xiaojiawei</groupId>
+            <groupId>com.github.xjw580</groupId>
             <artifactId>javafx-kt</artifactId>
-            <version>${javafx-kt-version}</version>
         </dependency>
         <!--base-->
         <dependency>

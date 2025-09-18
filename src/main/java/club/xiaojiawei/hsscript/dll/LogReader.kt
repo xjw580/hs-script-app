@@ -26,21 +26,27 @@ object LogReader {
 
     external fun nativeOpenChannel(filename: String): Int
 
-    external fun nativeReadLine(channelId: Int): String?
+    external fun nativeReadLine(readId: Int): String?
 
-    external fun nativeReadLines(channelId: Int, maxLines: Int): Array<String>?
+    external fun nativeReadLines(readId: Int, maxLines: Int): Array<String>?
 
-    external fun nativeGetPosition(channelId: Int): Long
+    external fun nativeGetPosition(readId: Int): Long
 
-    external fun nativeGetWritePos(channelId: Int): Long
+    external fun nativeGetWritePos(readId: Int): Long
 
-    external fun nativeSetPosition(channelId: Int, position: Long)
+    external fun nativeSetPosition(readId: Int, position: Long)
 
-    external fun nativeGetAvailable(channelId: Int): Long
+    external fun nativeGetAvailable(readId: Int): Long
 
-    external fun nativeReset(channelId: Int)
+    external fun nativeReset(readId: Int)
 
-    external fun nativeCloseChannel(channelId: Int)
+    external fun nativeCloseChannel(readId: Int)
+
+    external fun nativeGetChannelName(readId: Int): String?
+
+    external fun nativeGetChannelId(filename: String): Int
+
+    external fun nativeGetActiveChannels(): Array<String>?
 
     external fun nativeCleanup()
 

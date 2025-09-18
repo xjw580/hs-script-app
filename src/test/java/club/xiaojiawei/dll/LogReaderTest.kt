@@ -1,6 +1,7 @@
 package club.xiaojiawei.dll
 
 import club.xiaojiawei.hsscript.bean.MemoryLogFile
+import club.xiaojiawei.hsscript.consts.GAME_DECKS_LOG_NAME
 import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.consts.GAME_WAR_LOG_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -36,20 +37,27 @@ class LogReaderTest {
         countDownLatch.await()
     }
 
-    private val waitTime = 20000L
-
-    @Test
-    fun testReadPowerLog() {
+    private fun testReadLog(logName: String) {
+        val waitTime = 10000L
         val start = System.currentTimeMillis()
         while (System.currentTimeMillis() - start < waitTime) {
-            if (LogReader.existChannel(GAME_WAR_LOG_NAME)){
+            if (LogReader.existChannel(logName)){
                 break
             }
-            Thread.sleep(200)
+            Thread.sleep(100)
         }
-        println("wait end")
-        val memoryLogFile = MemoryLogFile(GAME_WAR_LOG_NAME)
+        println("all active channel ========================================================")
+        LogReader.nativeGetActiveChannels()?.let {
+            for (string in it) {
+                println(string)
+            }
+        }
+        println("get channel id ========================================================")
+        println("log channel id: "+LogReader.nativeGetChannelId(logName))
+        val memoryLogFile = MemoryLogFile(logName)
+        println("read all log ========================================================")
         memoryLogFile.readAll().forEach { println(it) }
+        println("sustain read ========================================================")
         while (true) {
             memoryLogFile.readLine()?.let {
                 println(it)
@@ -60,24 +68,18 @@ class LogReaderTest {
     }
 
     @Test
+    fun testReadPowerLog() {
+        testReadLog(GAME_WAR_LOG_NAME)
+    }
+
+    @Test
     fun testReadLoadingScreenLog() {
-        val start = System.currentTimeMillis()
-        while (System.currentTimeMillis() - start < waitTime) {
-            if (LogReader.existChannel(GAME_MODE_LOG_NAME)){
-                break
-            }
-            Thread.sleep(200)
-        }
-        println("wait end")
-        val memoryLogFile = MemoryLogFile(GAME_MODE_LOG_NAME)
-        memoryLogFile.readAll().forEach { println(it) }
-        while (true) {
-            memoryLogFile.readLine()?.let {
-                println(it)
-            } ?: let {
-                Thread.sleep(100)
-            }
-        }
+        testReadLog(GAME_MODE_LOG_NAME)
+    }
+
+    @Test
+    fun testReadDecksLog() {
+        testReadLog(GAME_DECKS_LOG_NAME)
     }
 
 }

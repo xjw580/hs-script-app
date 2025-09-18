@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.listener.log
 
-import club.xiaojiawei.hsscript.DiskLogFile
+import club.xiaojiawei.hsscript.bean.DiskLogFile
 import club.xiaojiawei.hsscript.bean.MemoryLogFile
 import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.enums.GameLogModeEnum
@@ -82,7 +82,10 @@ abstract class AbstractLogListener(
                 }
             } else if (ScriptStatus.gameLogMode === GameLogModeEnum.MEMORY) {
                 log.info { "等待创建游戏【${logFileName}】日志缓冲区" }
-                LogReader.nativeInit()
+                if (!LogReader.nativeInit()){
+                    log.error { "日志读取器初始化失败" }
+                    break@doWhileBlock
+                }
                 while (!LogReader.existChannel(logFileName)) {
                     if (PauseStatus.isPause) {
                         break@doWhileBlock

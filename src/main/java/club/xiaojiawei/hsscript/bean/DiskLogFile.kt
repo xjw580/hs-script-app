@@ -1,4 +1,4 @@
-package club.xiaojiawei.hsscript
+package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.interfaces.LogFile
 import java.io.ByteArrayOutputStream
@@ -66,7 +66,7 @@ class DiskLogFile(val filepath: String, val mode: String = "r") : LogFile {
                         bufferPos++
                     }
 
-                    // ✅ 不需要 seek！下次 fillBuffer 会从正确位置继续读
+                    // 不需要 seek！下次 fillBuffer 会从正确位置继续读
                     return line.toString(Charsets.UTF_8)
                 }
                 bufferPos++

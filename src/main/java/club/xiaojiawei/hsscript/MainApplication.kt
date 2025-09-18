@@ -9,6 +9,7 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.dll.KernelExDll
 import club.xiaojiawei.hsscript.dll.KernelExDll.Companion.FILE_MAP_READ
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
 import club.xiaojiawei.hsscript.listener.StatisticsListener

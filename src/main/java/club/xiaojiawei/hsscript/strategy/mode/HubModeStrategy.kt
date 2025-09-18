@@ -4,6 +4,7 @@ import club.xiaojiawei.hsscript.bean.*
 import club.xiaojiawei.hsscript.consts.CHI_SIM_DATA
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.GameRationConst
+import club.xiaojiawei.hsscript.consts.SCREEN_SCALE
 import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
@@ -16,6 +17,9 @@ import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
+import com.sun.jna.platform.win32.User32
+import com.sun.jna.platform.win32.WinDef
+import com.sun.jna.platform.win32.WinUser.SWP_NOZORDER
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
@@ -175,14 +179,25 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
 
         val oldWidth = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val oldHeight = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
-        val width = SCREEN_WIDTH.toInt()
+        val width = SCREEN_WIDTH.toInt() * SCREEN_SCALE
         val middleRation =
             (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2
         val height = (width.toDouble() / middleRation).toInt()
 
+        val gameWindowRECT = WinDef.RECT()
+        User32.INSTANCE.GetWindowRect(ScriptStatus.gameHWND, gameWindowRECT)
+
         log.info { "调整${GAME_CN_NAME}窗口大小" }
-        SystemUtil.changeWindowSize(ScriptStatus.gameHWND, width, height)
-        Thread.sleep(1000L)
+        User32.INSTANCE.SetWindowPos(
+            ScriptStatus.gameHWND,
+            null,
+            0,
+            0,
+            width.toInt(),
+            height.toInt(),
+            SWP_NOZORDER
+        )
+        Thread.sleep(2000L)
         GameUtil.updateGameRect()
         val frameReader = FrameReader().apply {
             initialize()
@@ -190,7 +205,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
 
         try {
             HIDE_TASK_RECT.lClick(false)
-            Thread.sleep(1000L)
+            Thread.sleep(2000L)
             log.info { "进入任务界面" }
             TASK_RECT.lClick(false)
             Thread.sleep(4000L)
@@ -267,10 +282,22 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
             log.error(e) {}
         } finally {
             frameReader.close()
-            SystemUtil.changeWindowSize(ScriptStatus.gameHWND, oldWidth, oldHeight)
-            Thread.sleep(1000L)
-            GameUtil.updateGameRect()
-            HIDE_TASK_RECT.lClick(false)
+
+            User32.INSTANCE.SetWindowPos(
+                ScriptStatus.gameHWND,
+                null,
+                gameWindowRECT.left,
+                gameWindowRECT.top,
+                oldWidth,
+                oldHeight,
+                SWP_NOZORDER
+            )
+
+            for (i in 0 until 2) {
+                Thread.sleep(2000L)
+                GameUtil.updateGameRect()
+                HIDE_TASK_RECT.lClick(false)
+            }
             ConfigExUtil.storeGameTask(gameTask)
         }
     }
@@ -292,8 +319,8 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
         }, 5, 2, TimeUnit.SECONDS))
 
         val runMode = DeckStrategyManager.currentRunMode
-        if (runMode != null){
-            if (!runMode.isEnable){
+        if (runMode != null) {
+            if (!runMode.isEnable) {
                 log.warn { "${runMode.comment}未启用" }
                 PauseStatus.isPause = false
                 return
