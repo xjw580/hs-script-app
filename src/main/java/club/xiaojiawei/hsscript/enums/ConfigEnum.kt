@@ -204,7 +204,7 @@ enum class ConfigEnum(
     /**
      * 更新开发版
      */
-    UPDATE_DEV(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }),
+    UPDATE_DEV(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
 
     /**
      * 自动更新
@@ -343,6 +343,16 @@ enum class ConfigEnum(
         group = BEHAVIOR_CONFIG_GROUP,
         defaultValueInitializer = {
             JSON.toJSONString(GameTask())
+        }
+    ),
+
+    /**
+     * 避免以管理员权限启动游戏
+     */
+    PREVENT_ADMIN_LAUNCH_GAME(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            FALSE_STR
         }
     ),
 
