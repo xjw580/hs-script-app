@@ -31,9 +31,9 @@
                     <ConfigSwitch notificationManager="${notificationManager}" config="STRATEGY"/>
                 </HBox>
                 <HBox styleClass="h-box">
-                    <Text text="显示游戏控件位置"/>
+                    <Text text="显示游戏控件位置" onMouseClicked="#enableDisplayGameRectPos"/>
                     <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="DISPLAY_GAME_RECT_POS"/>
+                    <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}" config="DISPLAY_GAME_RECT_POS"/>
                 </HBox>
                 <HBox styleClass="h-box">
                     <Text text="保存OCR图片"/>
@@ -58,6 +58,12 @@
                             </FXCollections>
                         </items>
                     </ComboBox>
+                </HBox>
+                <HBox styleClass="h-box">
+                    <Button text="启动控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#openConsole"/>
+                    <Button text="关闭控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#closeConsole"/>
                 </HBox>
                 <HBox styleClass="h-box">
                     <Button text="测量游戏控件" styleClass="btn-ui, btn-ui-normal, btn-ui-small"

@@ -451,16 +451,7 @@ object GameUtil {
             } else {
                 """"$platformPath" --exec="launch WTCG""""
             }
-            val process =Runtime.getRuntime().exec(command)
-            val output = process.inputStream.bufferedReader().use { it.readText() }
-            if (output.isNotBlank()) {
-                log.info { "启动${PLATFORM_CN_NAME}或${GAME_CN_NAME}输出: $output" }
-            }
-
-            val errorOutput = process.errorStream.bufferedReader().use { it.readText() }
-            if (errorOutput.isNotBlank()) {
-                log.info { "启动${PLATFORM_CN_NAME}或${GAME_CN_NAME}错误输出: $output" }
-            }
+            Runtime.getRuntime().exec(command)
         } catch (e: IOException) {
             log.error(e) { "启动${PLATFORM_CN_NAME}及${GAME_CN_NAME}异常" }
         }

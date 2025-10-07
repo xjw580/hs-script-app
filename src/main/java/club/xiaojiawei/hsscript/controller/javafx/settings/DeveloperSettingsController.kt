@@ -7,11 +7,15 @@ import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.controls.ico.FileIco
 import club.xiaojiawei.hsscript.bean.FrameData
 import club.xiaojiawei.hsscript.bean.FrameReader
+import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.starter.AbstractStarter
+import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.PlatformStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
@@ -32,6 +36,7 @@ import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
 import javafx.scene.image.WritableImage
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
@@ -54,6 +59,9 @@ class DeveloperSettingsController : Initializable {
 
     @FXML
     protected lateinit var progressModal: ProgressModal
+
+    @FXML
+    protected lateinit var displayGameRectPosSwitch: ConfigSwitch
 
     @FXML
     protected lateinit var rootPane: StackPane
@@ -147,16 +155,50 @@ class DeveloperSettingsController : Initializable {
     }
 
     @FXML
+    protected fun enableDisplayGameRectPos(mouseEvent: MouseEvent) {
+        if (mouseEvent.clickCount >= 3) {
+            displayGameRectPosSwitch.isDisable = !displayGameRectPosSwitch.isDisable
+        }
+    }
+
+    @FXML
     protected fun openMeasureUtil(actionEvent: ActionEvent?) {
 //        MeasureApplication.startStage(new Stage());
         showStage(WindowEnum.MEASURE_GAME, null)
     }
 
     @FXML
-    protected fun captureGameFrame(){
+    protected fun openConsole(actionEvent: ActionEvent?) {
+        if (GameUtil.isAliveOfGame()) {
+            CSystemDll.INSTANCE.developer(true)
+        } else {
+            WindowUtil.createAlert("${GAME_CN_NAME}没有启动", "是否启动", {
+                val starter = PlatformStarter()
+                starter.setNextStarter(GameStarter()).setNextStarter(InjectStarter().apply {
+                    setNextStarter(object : AbstractStarter() {
+                        override fun execStart() {
+                            CSystemDll.INSTANCE.developer(true)
+                        }
+                    })
+                })
+                starter.start()
+            }, {}, WindowEnum.SETTINGS, "是", "否").show()
+
+        }
+    }
+
+    @FXML
+    protected fun closeConsole(actionEvent: ActionEvent?) {
+        CSystemDll.INSTANCE.developer(false)
+    }
+
+    @FXML
+    protected fun captureGameFrame() {
         showStage(WindowEnum.GAME_FRAME)
     }
+
     private var imageView: ImageView? = null
+
     @FXML
     protected fun openGameDataAnalysis(actionEvent: ActionEvent?) {
         showStage(WindowEnum.GAME_DATA_ANALYSIS, null)

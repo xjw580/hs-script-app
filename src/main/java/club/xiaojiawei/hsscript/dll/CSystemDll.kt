@@ -10,11 +10,13 @@ import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
+import com.sun.jna.platform.win32.WinDef.BOOL
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.CountDownLatch
+
 
 /**
  * 系统相关功能
@@ -196,6 +198,8 @@ interface CSystemDll : Library {
     fun writeCapture()
 
     fun saveCapture()
+
+    fun developer(enable: Boolean)
 
     fun isConnected(): Boolean
 
