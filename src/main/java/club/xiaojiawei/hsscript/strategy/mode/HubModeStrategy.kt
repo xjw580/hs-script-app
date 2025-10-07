@@ -156,7 +156,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
     }
 
     private fun handleTask() {
-        if (File(TESS_DATA_PATH).listFiles().isNotEmpty()) {
+        if (File(TESS_DATA_PATH).listFiles().isEmpty()) {
             log.warn { "tess数据集文件不存在，无法使用自动刷新任务功能" }
             return
         }
