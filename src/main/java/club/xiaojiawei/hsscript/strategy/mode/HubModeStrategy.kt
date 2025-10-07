@@ -20,6 +20,7 @@ import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinUser.SWP_NOZORDER
+import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
@@ -155,6 +156,10 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
     }
 
     private fun handleTask() {
+        if (File(TESS_DATA_PATH).listFiles().isNotEmpty()) {
+            log.warn { "tess数据集文件不存在，无法使用自动刷新任务功能" }
+            return
+        }
         val gameTask = ConfigExUtil.getGameTask()
         val canRefreshDailyTask = gameTask.refreshDailyTime.isBefore(LocalDate.now())
         val canRefreshWeeklyTask = gameTask.refreshWeeklyTime.isBefore(LocalDate.now())

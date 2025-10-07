@@ -11,7 +11,6 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
-import java.net.URI
 
 class ResumeDownloader(
     val urlStr: String,
@@ -38,21 +37,17 @@ class ResumeDownloader(
         val conn = NetUtil.buildConnection(urlStr) as HttpURLConnection
         conn.requestMethod = "GET"
 
-        // ✅ 设置请求头必须在 connect() 之前
         if (downloadedBytes > 0) {
             conn.setRequestProperty("Range", "bytes=$downloadedBytes-")
         }
 
-        // ✅ 建立连接（此时才开始访问服务端响应）
         conn.connect()
 
-        // ✅ 响应码检查
         val responseCode = conn.responseCode
         if (responseCode != HttpURLConnection.HTTP_PARTIAL && responseCode != HttpURLConnection.HTTP_OK) {
             error("服务器不支持断点续传或链接失效，返回码: $responseCode，url: $urlStr")
         }
 
-        // ✅ 获取总大小（必须在 connect() 之后）
         this.totalSize = when {
             conn.getHeaderField("Content-Range") != null -> {
                 val contentRange = conn.getHeaderField("Content-Range")
@@ -66,7 +61,6 @@ class ResumeDownloader(
             else -> -1L
         }
 
-        // ✅ 开始下载
         conn.inputStream.use { inputStream ->
             BufferedOutputStream(FileOutputStream(tempFile, true)).use { outputStream ->
                 val buffer = ByteArray(8192)
@@ -101,7 +95,6 @@ class ResumeDownloader(
                 downloadThread = null
             }
         }
-        // ✅ 重命名文件
         if (!tempFile.renameTo(outputFile)) {
             error("下载完成但重命名[${outputPath}]失败")
         }
@@ -111,20 +104,3 @@ class ResumeDownloader(
         downloadThread?.interrupt()
     }
 }
-
-//fun main() {
-//    val url = "https://gitee.com/zergqueen/Hearthstone-Script/releases/download/v4.8.0-GA/hs-script_v4.8.0-GA.zip"
-////    val url = "https://github.com/xjw580/Hearthstone-Script/releases/download/v4.8.0-GA/hs-script_v4.8.0-GA.zip"
-//    val output = "hs-script_v4.8.0-GA.zip"
-//    val resumeDownloader = ResumeDownloader(url, output)
-//    val thread = Thread {
-//        println("download")
-//        resumeDownloader.download { progress: Double, totalSize: Long, downloadedBytes: Long ->
-//            println("progress: $progress, totalSize: $totalSize, downloadedBytes: $downloadedBytes")
-//        }
-//    }
-//    thread.start()
-//    Thread.sleep(3000)
-//    resumeDownloader.pause()
-//    println("pause")
-//}

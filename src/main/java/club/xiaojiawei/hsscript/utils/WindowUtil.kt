@@ -71,6 +71,24 @@ object WindowUtil {
         return popup
     }
 
+    fun createAlert(
+        headerText: String?,
+        contentText: String?,
+        okHandler: EventHandler<ActionEvent?>?,
+        cancelHandler: EventHandler<ActionEvent?>? = null,
+        windowEnum: WindowEnum,
+        okText: String = "确认",
+        cancelText: String = "取消",
+    ): Stage {
+        return createAlert(
+            headerText,
+            contentText,
+            okHandler,
+            cancelHandler,
+            getStage(windowEnum), okText, cancelText
+        )
+    }
+
     /**
      * 创建对话框
      * @param headerText
@@ -379,7 +397,7 @@ object WindowUtil {
      * @param windowEnum
      * @return
      */
-    fun getStage(windowEnum: WindowEnum): Stage? = STAGE_MAP[windowEnum]
+    fun getStage(windowEnum: WindowEnum?): Stage? = if (windowEnum == null) null else STAGE_MAP[windowEnum]
 
     fun hideLaunchPage() {
         findHWND("ZLaunch Class", null)?.let { launchWindow ->

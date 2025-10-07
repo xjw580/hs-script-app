@@ -442,12 +442,25 @@ object GameUtil {
     fun launchPlatformAndGame() {
         try {
             val platformPath = ConfigUtil.getString(ConfigEnum.PLATFORM_PATH)
+            if (platformPath.isBlank()) {
+                log.error { PLATFORM_CN_NAME+"路径为空" }
+                return
+            }
             val command = if (ConfigUtil.getBoolean(ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME)) {
                 """runas /trustlevel:0x20000 "$platformPath --exec=\"launch WTCG\"""""
             } else {
                 """"$platformPath" --exec="launch WTCG""""
             }
-            Runtime.getRuntime().exec(command)
+            val process =Runtime.getRuntime().exec(command)
+            val output = process.inputStream.bufferedReader().use { it.readText() }
+            if (output.isNotBlank()) {
+                log.info { "启动${PLATFORM_CN_NAME}或${GAME_CN_NAME}输出: $output" }
+            }
+
+            val errorOutput = process.errorStream.bufferedReader().use { it.readText() }
+            if (errorOutput.isNotBlank()) {
+                log.info { "启动${PLATFORM_CN_NAME}或${GAME_CN_NAME}错误输出: $output" }
+            }
         } catch (e: IOException) {
             log.error(e) { "启动${PLATFORM_CN_NAME}及${GAME_CN_NAME}异常" }
         }

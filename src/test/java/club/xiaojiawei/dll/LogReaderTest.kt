@@ -9,6 +9,7 @@ import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.PlatformStarter
 import org.junit.jupiter.api.BeforeEach
 import java.util.concurrent.CountDownLatch
 import kotlin.test.Test
@@ -21,9 +22,9 @@ class LogReaderTest {
 
     @BeforeEach
     fun setup() {
-        val starter = GameStarter()
+        val starter = PlatformStarter()
         val countDownLatch = CountDownLatch(1)
-        starter.setNextStarter(InjectStarter().apply {
+        starter.setNextStarter(GameStarter()).setNextStarter(InjectStarter().apply {
             setNextStarter(object : AbstractStarter() {
                 override fun execStart() {
                     CSystemDll.INSTANCE.logHook(true)

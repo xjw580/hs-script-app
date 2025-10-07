@@ -256,7 +256,7 @@ enum class ConfigEnum(
     /**
      * 游戏日志大小限制/KB，游戏默认10240，当小于0时将阻止游戏写入日志到磁盘
      */
-    GAME_LOG_LIMIT(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "-1" }, service = GameLogLimitService),
+    GAME_LOG_LIMIT(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "51200" }, service = GameLogLimitService),
 
     /**
      * 游戏窗口不透明度(0~255)
@@ -521,7 +521,6 @@ enum class ConfigEnum(
      * 当前版本
      */
     CURRENT_VERSION(group = OTHER_CONFIG_GROUP, defaultValueInitializer = { "0.0.0-GA" }),
-
     ;
 
     val defaultValue: String by lazy {
