@@ -69,17 +69,19 @@ class GameStarter : AbstractStarter() {
                             }
                         } else {
                             if (diffTime > 10_000) {
+                                val startupModeEnum = ConfigExUtil.getGameStartupMode().last()
                                 if (firstLogSecondaryLaunch) {
                                     firstLogSecondaryLaunch = false
-                                    log.info { "更改${GAME_CN_NAME}启动方式" }
+                                    log.info { "以${startupModeEnum.name}方式启动$GAME_CN_NAME" }
                                 }
-                                GameUtil.launchPlatformAndGame()
+                                startupModeEnum.exec()
                             } else {
+                                val startupModeEnum = ConfigExUtil.getGameStartupMode().first()
                                 if (firstLogLaunch) {
                                     firstLogLaunch = false
-                                    log.info { "正在启动$GAME_CN_NAME" }
+                                    log.info { "以${startupModeEnum.name}方式启动$GAME_CN_NAME" }
                                 }
-                                launchGameBySendMessage()
+                                startupModeEnum.exec()
                             }
                             Thread.sleep(500)
                         }
@@ -89,23 +91,6 @@ class GameStarter : AbstractStarter() {
                 500,
                 TimeUnit.MILLISECONDS,
             ),
-        )
-    }
-
-    private fun launchGameBySendMessage() {
-        val platformHWND = GameUtil.findPlatformHWND()
-        val rect = WinDef.RECT()
-        SystemUtil.updateRECT(platformHWND, rect)
-        MouseUtil.leftButtonClick(
-            Point(145, rect.bottom - rect.top - 150),
-            platformHWND,
-            MouseControlModeEnum.MESSAGE.code,
-        )
-        SystemUtil.delayShort()
-        MouseUtil.leftButtonClick(
-            Point(145, rect.bottom - rect.top - 130),
-            platformHWND,
-            MouseControlModeEnum.MESSAGE.code,
         )
     }
 

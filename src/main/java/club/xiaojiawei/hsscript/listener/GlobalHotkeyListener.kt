@@ -1,11 +1,13 @@
 package club.xiaojiawei.hsscript.listener
 
+import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import com.melloware.jintellitype.HotkeyListener
 import com.melloware.jintellitype.JIntellitype
+import com.melloware.jintellitype.JIntellitypeConstants
 
 /**
  * 热键监听器
@@ -17,6 +19,8 @@ object GlobalHotkeyListener : HotkeyListener {
     private const val HOT_KEY_EXIT = 111
 
     private const val HOT_KEY_PAUSE = 222
+
+    private const val HOT_KEY_CONSOLE = 333
 
     init {
         JIntellitype.getInstance().addHotKeyListener(this)
@@ -43,6 +47,8 @@ object GlobalHotkeyListener : HotkeyListener {
                     log.info { "开始/暂停热键：$it" }
                 }
             }
+            JIntellitype.getInstance()
+                .registerHotKey(HOT_KEY_CONSOLE, JIntellitypeConstants.MOD_ALT, 'A'.code)
         } else {
             log.warn { "当前系统不支持设置热键" }
         }
@@ -80,6 +86,10 @@ object GlobalHotkeyListener : HotkeyListener {
                         PauseStatus.isPause = false
                     }
                 }
+            }
+
+            HOT_KEY_CONSOLE -> {
+                CSystemDll.INSTANCE.developer(true)
             }
         }
     }

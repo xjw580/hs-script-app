@@ -7,6 +7,7 @@ import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
@@ -74,6 +75,9 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
         val isDrive = mouseControlModeComboBox.value === MouseControlModeEnum.DRIVE
         refreshDriver.isVisible = isDrive
         refreshDriver.isManaged = isDrive
+
+        gameStartupModeComboBox.items.addAll(GameStartupModeEnum.entries.toTypedArray())
+        gameStartupModeComboBox.value = ConfigExUtil.getGameStartupMode().first()
 
         val pauseKey = getPauseHotKey()
         if (pauseKey != null) {
@@ -187,6 +191,9 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
                 topGameWindow.status =
                     (newValue === MouseControlModeEnum.EVENT || newValue === MouseControlModeEnum.DRIVE)
             }
+        gameStartupModeComboBox.valueProperty().addListener { _, _, newValue ->
+            ConfigExUtil.storeGameStartupMode(GameStartupModeEnum.entries.sortedBy { if (it == newValue) 0 else 1 })
+        }
 
         pauseHotKey.onKeyPressed =
             EventHandler { event: KeyEvent ->

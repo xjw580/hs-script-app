@@ -129,6 +129,12 @@
                                               config="AUTO_REFRESH_GAME_TASK"/>
                             </HBox>
                             <HBox styleClass="h-box">
+                                <Text text="游戏启动方式偏好"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <ComboBox fx:id="gameStartupModeComboBox"
+                                          styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <Text text="避免以管理员权限启动游戏"/>
                                 <TipNode text="部分系统不支持，自行尝试"/>
                                 <HBox HBox.hgrow="ALWAYS"/>

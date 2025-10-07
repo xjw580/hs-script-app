@@ -2,6 +2,7 @@ package club.xiaojiawei.hsscript.controller.javafx.settings.view
 
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.component.ConfigSwitch
+import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import javafx.fxml.FXML
 import javafx.scene.Group
@@ -105,5 +106,8 @@ open class AdvancedSettingsView {
 
     @FXML
     protected lateinit var refreshDriver: Button
+
+    @FXML
+    protected lateinit var gameStartupModeComboBox: ComboBox<GameStartupModeEnum>
 
 }

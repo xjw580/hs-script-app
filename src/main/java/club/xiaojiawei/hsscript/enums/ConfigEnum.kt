@@ -357,6 +357,16 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 游戏启动方式
+     */
+    GAME_STARTUP_MODE(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            JSON.toJSONString(arrayOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD))
+        }
+    ),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(

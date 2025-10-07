@@ -195,7 +195,11 @@ class MainApplication : Application() {
                 LThread(
                     {
                         CSystemDll.INSTANCE.removeSystemTray()
-                        CSystemDll.INSTANCE.uninstall()
+//                        CSystemDll.INSTANCE.uninstall()
+                        CSystemDll.INSTANCE.capture(false)
+                        CSystemDll.INSTANCE.limitMouseRange(false)
+                        CSystemDll.INSTANCE.mouseHook(false)
+                        CSystemDll.INSTANCE.acHook(false)
                         log.info { "软件已关闭" }
                     },
                     "ShutdownHook Thread",

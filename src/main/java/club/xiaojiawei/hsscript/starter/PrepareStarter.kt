@@ -50,9 +50,9 @@ class PrepareStarter : AbstractStarter() {
         ScriptStatus.gameLogMode = if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) < 0) {
             GameUtil.getLatestLogDir()?.let {
                 val modeLog = it.resolve(GAME_MODE_LOG_NAME)
-                if (modeLog.exists() && FileUtil.isFileLocked(modeLog.absolutePath) && modeLog.length() < 200) {
-                    GameLogModeEnum.DISK
-                } else GameLogModeEnum.MEMORY
+                if (!modeLog.exists() || !FileUtil.isFileLocked(modeLog.absolutePath) || modeLog.length() < 200) {
+                    GameLogModeEnum.MEMORY
+                } else GameLogModeEnum.DISK
             } ?: GameLogModeEnum.MEMORY
         } else GameLogModeEnum.DISK
         log.info { "游戏日志读取模式: ${ScriptStatus.gameLogMode}" }

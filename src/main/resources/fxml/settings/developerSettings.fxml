@@ -61,7 +61,11 @@
                 </HBox>
                 <HBox styleClass="h-box">
                     <Button text="启动控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#openConsole"/>
+                            onAction="#openConsole" contentDisplay="RIGHT">
+                        <graphic>
+                            <TipNode text="快捷键Alt+A"/>
+                        </graphic>
+                    </Button>
                     <Button text="关闭控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
                             onAction="#closeConsole"/>
                 </HBox>

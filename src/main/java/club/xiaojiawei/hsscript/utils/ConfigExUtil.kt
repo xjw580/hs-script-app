@@ -11,6 +11,7 @@ import club.xiaojiawei.hsscript.consts.GAME_PROGRAM_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_PROGRAM_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.fileLogLevel
 import club.xiaojiawei.hsscript.initializer.DriverInitializer
@@ -188,6 +189,17 @@ object ConfigExUtil {
      */
     fun storeWorkTimeSetting(workTimeSetting: List<String>) {
         ConfigUtil.putString(ConfigEnum.WORK_TIME_SETTING, JSON.toJSONString(workTimeSetting))
+    }
+
+    fun getGameStartupMode(): MutableList<GameStartupModeEnum> {
+        return ConfigUtil.getArray(
+            ConfigEnum.GAME_STARTUP_MODE,
+            GameStartupModeEnum::class.java,
+        ) ?: mutableListOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD)
+    }
+
+    fun storeGameStartupMode(gameStartupModeEnums: List<GameStartupModeEnum>) {
+        ConfigUtil.putString(ConfigEnum.GAME_STARTUP_MODE, JSON.toJSONString(gameStartupModeEnums))
     }
 
     fun getChooseDeckPos(): MutableList<Int> {

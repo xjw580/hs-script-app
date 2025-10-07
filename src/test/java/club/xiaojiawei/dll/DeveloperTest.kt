@@ -1,16 +1,10 @@
 package club.xiaojiawei.dll
 
-import club.xiaojiawei.hsscript.bean.MemoryLogFile
-import club.xiaojiawei.hsscript.consts.GAME_DECKS_LOG_NAME
-import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
-import club.xiaojiawei.hsscript.consts.GAME_WAR_LOG_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
-import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
-import org.junit.jupiter.api.BeforeEach
 import java.util.concurrent.CountDownLatch
 import kotlin.test.Test
 

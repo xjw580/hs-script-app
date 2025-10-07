@@ -212,7 +212,7 @@ object VersionListener {
                     latestRelease = repository.getLatestRelease(updateDev)
                 } catch (e: Exception) {
                     latestRelease = null
-                    log.error(e) { "${repository.getDomain()}检查最新版异常" }
+                    log.error { "${repository.getDomain()}检查最新版异常, ${e.message}" }
                     continue
                 }
                 break

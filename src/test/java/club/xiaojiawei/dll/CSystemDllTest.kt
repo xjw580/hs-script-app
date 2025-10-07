@@ -15,4 +15,9 @@ class CSystemDllTest {
         assertFalse ("dll不能以debug打包"){ CSystemDll.INSTANCE.isDebug() }
     }
 
+    @Test
+    fun testUninstall() {
+        CSystemDll.INSTANCE.uninstall()
+    }
+
 }
