@@ -463,6 +463,9 @@ object SystemUtil {
         openFile(file.absolutePath)
     }
 
+    fun isStartupByJar() = Objects.requireNonNull(javaClass.getResource(""))
+        .protocol == "jar"
+
     /**
      * 关闭显示器
      */
@@ -566,4 +569,11 @@ object SystemUtil {
      * 锁屏
      */
     fun lockScreen(): Boolean = User32.INSTANCE.LockWorkStation().booleanValue()
+
+    fun getCurrentJarFile(): File = File(
+        SystemUtil.javaClass.protectionDomain
+            .codeSource
+            .location
+            .toURI()
+    )
 }

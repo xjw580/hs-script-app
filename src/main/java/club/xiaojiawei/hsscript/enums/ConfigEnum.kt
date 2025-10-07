@@ -367,6 +367,16 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 首次创建aot缓存
+     */
+    INIT_CREATE_AOT_CACHE(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            FALSE_STR
+        }
+    ),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(

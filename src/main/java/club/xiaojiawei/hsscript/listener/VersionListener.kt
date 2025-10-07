@@ -191,8 +191,7 @@ object VersionListener {
      */
     fun checkVersion() {
 //        以IDEA启动不检查更新
-        if (Objects.requireNonNull(javaClass.getResource(""))
-                .protocol != "jar" && !PROGRAM_ARGS.contains("--update")
+        if (!SystemUtil.isStartupByJar() && !PROGRAM_ARGS.contains("--update")
         ) {
             return
         }

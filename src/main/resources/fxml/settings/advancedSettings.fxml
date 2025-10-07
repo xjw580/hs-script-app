@@ -11,6 +11,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.util.Duration?>
 <?import java.lang.Double?>
+<?import club.xiaojiawei.controls.ico.FailIco?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/advancedSettings.css"
@@ -223,6 +224,17 @@
                                 <TextField fx:id="exitHotKey" styleClass="text-field-ui, text-field-ui-small"
                                            prefWidth="${fieldWidth}"
                                            editable="false"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
+                                <Label fx:id="aotCacheLabel" text="AOT缓存: " contentDisplay="RIGHT"/>
+                                <Button text="刷新" onAction="#refreshAOTCache" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
+                                <Button text="打开" onAction="#openAOTCacheDir" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Button text="创建AOT缓存" onAction="#createAOTCache" contentDisplay="RIGHT" styleClass="btn-ui, btn-ui-normal, btn-ui-small">
+                                    <graphic>
+                                        <TipNode text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
+                                    </graphic>
+                                </Button>
                             </HBox>
                         </VBox>
                     </TitledPane>

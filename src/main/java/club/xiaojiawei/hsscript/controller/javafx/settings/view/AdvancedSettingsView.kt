@@ -110,4 +110,7 @@ open class AdvancedSettingsView {
     @FXML
     protected lateinit var gameStartupModeComboBox: ComboBox<GameStartupModeEnum>
 
+    @FXML
+    protected lateinit var aotCacheLabel: Label
+
 }

@@ -349,6 +349,10 @@ object WindowUtil {
         }
     }
 
+    fun getLoader(windowEnum: WindowEnum): FXMLLoader {
+        return FXMLLoader(WindowUtil::class.java.getResource(FXML_DIR + windowEnum.fxmlName))
+    }
+
     private fun createStage(windowEnum: WindowEnum): Stage {
         val stage = Stage()
         try {

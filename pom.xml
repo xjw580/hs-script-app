@@ -211,7 +211,7 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>resources/</Class-Path>
+<!--                            <Class-Path>resources/</Class-Path>-->
                             <Created-By>Maven</Created-By>
                         </manifestEntries>
                     </archive>

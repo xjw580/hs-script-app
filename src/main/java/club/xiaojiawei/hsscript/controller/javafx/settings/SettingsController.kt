@@ -1,7 +1,8 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import club.xiaojiawei.hsscript.enums.WindowEnum
-import club.xiaojiawei.hsscript.utils.WindowUtil.loadRoot
+import club.xiaojiawei.hsscript.interfaces.StageHook
+import club.xiaojiawei.hsscript.utils.WindowUtil
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -81,7 +82,12 @@ class SettingsController : Initializable {
     private fun loadTab(tab: Tab) {
         val windowEnum = tab.userData
         if (windowEnum is WindowEnum && tab.content == null) {
-            tab.content = loadRoot(windowEnum)
+            val loader = WindowUtil.getLoader(windowEnum)
+            tab.content = loader.load()
+            val controller = loader.getController<Any>()
+            if (controller is StageHook){
+                controller.onShown()
+            }
         }
 //        if (advancedTab === tab) {
 //            if (advancedTab.content == null) {

@@ -58,6 +58,9 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 import java.util.prefs.Preferences
 import javax.swing.AbstractAction
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import kotlin.system.exitProcess
 
 /**
  * javaFX启动器
@@ -423,8 +426,11 @@ class MainApplication : Application() {
     private fun checkArg() {
         val args = this.parameters.raw
         var pause: String? = ""
+        var aoting = false
         for (arg in args) {
-            if (arg.startsWith(ARG_PAUSE)) {
+            if (arg.startsWith(ARG_AOT)) {
+                aoting = true
+            } else if (arg.startsWith(ARG_PAUSE)) {
                 val split: Array<String?> = arg.split("=".toRegex(), limit = 2).toTypedArray()
                 if (split.size > 1) {
                     pause = split[1]
@@ -452,6 +458,12 @@ class MainApplication : Application() {
             }
             preferences.put(key, "true")
         }
+        if (aoting) {
+            go {
+                Thread.sleep(1000)
+                exitProcess(0)
+            }
+        }
     }
 
     private fun checkSystem() {
@@ -465,6 +477,34 @@ class MainApplication : Application() {
             if (it.size > 1) {
                 log.info { "检测到多台显示器，开始运行后${GAME_CN_NAME}窗口不要移动到其他显示器" }
             }
+        }
+        if (!ConfigUtil.getBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE) && SystemUtil.isStartupByJar()) {
+            runUI {
+                WindowUtil.createAlert(
+                    "AOT缓存检测",
+                    "是否创建AOT缓存，用于提高软件启动速度",
+                    {
+                        val aotBatch = Path(AOT_BATCH_NAME)
+                        if (aotBatch.exists()) {
+                            File(AOT_PATH).mkdirs()
+                            val startCMD =
+                                "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}\" \"${MainApplication::class.java.packageName}.MainKt\""
+                            CMDUtil.directExec(
+                                arrayOf(
+                                    "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
+                                )
+                            ).waitFor()
+                        } else {
+                            SystemUtil.notice("$aotBatch 不存在", "无法创建AOT缓存")
+                        }
+                    },
+                    {},
+                    WindowEnum.MAIN,
+                    "是",
+                    "否"
+                ).show()
+            }
+            ConfigUtil.putBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE, true)
         }
     }
 

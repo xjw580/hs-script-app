@@ -1,15 +1,26 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
+import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.HelpIco
+import club.xiaojiawei.controls.ico.OKIco
+import club.xiaojiawei.hsscript.MainApplication
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.component.ConfigSwitch
+import club.xiaojiawei.hsscript.consts.AOT_BATCH_NAME
+import club.xiaojiawei.hsscript.consts.AOT_DIR
+import club.xiaojiawei.hsscript.consts.AOT_FILE_PATH
+import club.xiaojiawei.hsscript.consts.AOT_PATH
+import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
+import club.xiaojiawei.hsscript.consts.ROOT_PATH
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
+import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
+import club.xiaojiawei.hsscript.utils.CMDUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.getExitHotKey
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.getPauseHotKey
@@ -17,6 +28,9 @@ import club.xiaojiawei.hsscript.utils.ConfigExUtil.storeExitHotKey
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storeMouseControlMode
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storePauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigUtil.putString
+import club.xiaojiawei.hsscript.utils.FileUtil
+import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
 import com.melloware.jintellitype.JIntellitypeConstants
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
@@ -32,18 +46,26 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
 import javafx.util.Duration
+import java.io.File
 import java.net.URL
 import java.util.*
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import kotlin.system.exitProcess
 
 /**
  * @author 肖嘉威
  * @date 2023/9/10 15:07
  */
-class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
+class AdvancedSettingsController : AdvancedSettingsView() , StageHook, Initializable {
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         initValue()
         listen()
+    }
+
+    override fun onShown() {
+        refreshAOTCache()
     }
 
     private fun initValue() {
@@ -87,6 +109,8 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
         if (exitKey != null) {
             exitHotKey.text = exitKey.toString()
         }
+
+        refreshAOTCache()
     }
 
     private fun scrollTo(pane: Node) {
@@ -323,6 +347,32 @@ class AdvancedSettingsController : AdvancedSettingsView(), Initializable {
         } else {
             notificationManager.showError("刷新驱动失败", 2)
         }
+    }
+
+    @FXML
+    protected fun createAOTCache() {
+        val aotBatch = Path(AOT_BATCH_NAME)
+        if (aotBatch.exists()){
+            File(AOT_PATH).mkdirs()
+            val startCMD = "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}\" \"${MainApplication::class.java.packageName}.MainKt\""
+            log.info { "cmd: $startCMD" }
+            CMDUtil.directExec(arrayOf(
+                "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
+            )).waitFor()
+            refreshAOTCache()
+        }else{
+            notificationManager.showError("无法创建AOT缓存","$aotBatch 不存在", 3)
+        }
+    }
+
+    @FXML
+    protected fun refreshAOTCache(action: ActionEvent? = null) {
+        aotCacheLabel.graphic = if (File(AOT_FILE_PATH).exists()) OKIco() else FailIco()
+    }
+
+    @FXML
+    protected fun openAOTCacheDir(){
+        SystemUtil.openFile(AOT_PATH)
     }
 
 }

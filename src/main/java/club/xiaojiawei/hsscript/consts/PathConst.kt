@@ -1,9 +1,11 @@
 package club.xiaojiawei.hsscript.consts
 
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.exists
+import kotlin.math.log
 
 /**
  * @author 肖嘉威
@@ -15,6 +17,14 @@ val ROOT_PATH by lazy { System.getProperty("user.dir") }
 val TEMP_VERSION_PATH: String by lazy { Path.of(ROOT_PATH, "new_version_temp").toString() }
 
 val LOG_PATH: String by lazy { Path.of(ROOT_PATH, "log").toString() }
+
+const val AOT_DIR = "aot"
+
+const val AOT_BATCH_NAME = "create-aot.bat"
+
+val AOT_PATH: String by lazy { Path.of(ROOT_PATH, AOT_DIR).toString() }
+
+val AOT_FILE_PATH: String by lazy { Path.of(AOT_PATH, "${PROGRAM_NAME}.aot").toString() }
 
 val LIBRARY_PATH: String by lazy { Path.of(ROOT_PATH, "lib").toString() }
 val DLL_PATH: String by lazy { Path.of(LIBRARY_PATH, "dll").toString() }
@@ -69,12 +79,8 @@ const val GAME_DECKS_LOG_NAME = "Decks.log"
 const val COMMON_CSS_PATH = "/fxml/css/common.css"
 
 private fun getPath(relativePath: String): String {
-    val jarDir = File(
-        SystemUtil.javaClass.getProtectionDomain()
-            .codeSource
-            .location
-            .toURI()
-    )
+    val jarDir = SystemUtil.getCurrentJarFile()
+
     var path = Path.of(
         jarDir.path, relativePath
     )
