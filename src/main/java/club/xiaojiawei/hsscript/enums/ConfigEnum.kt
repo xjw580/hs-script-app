@@ -541,6 +541,11 @@ enum class ConfigEnum(
      * 当前版本
      */
     CURRENT_VERSION(group = OTHER_CONFIG_GROUP, defaultValueInitializer = { "0.0.0-GA" }),
+
+    /**
+     * 最后一次检查软件更新的时间
+     */
+    LAST_CHECK_VERSION_TIME(group = OTHER_CONFIG_GROUP, defaultValueInitializer = { System.currentTimeMillis().toString() }),
     ;
 
     val defaultValue: String by lazy {

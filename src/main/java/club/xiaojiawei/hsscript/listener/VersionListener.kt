@@ -95,7 +95,11 @@ object VersionListener {
         if (checkVersionTask != null) return@lazy
 
         checkVersionTask = EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
-            checkVersion()
+            if (System.currentTimeMillis() - ConfigUtil.getLong(ConfigEnum.LAST_CHECK_VERSION_TIME) > 1000 * 60 * 60 &&
+                (SystemUtil.isStartupByJar() || PROGRAM_ARGS.contains(ARG_UPDATE))
+            ) {
+                checkVersion()
+            }
         }, 500, 1000 * 60 * 60 * 2, TimeUnit.MILLISECONDS)
         log.info { "版本更新检测已启动" }
     }
@@ -190,11 +194,7 @@ object VersionListener {
      * 检查最新版本
      */
     fun checkVersion() {
-//        以IDEA启动不检查更新
-        if (!SystemUtil.isStartupByJar() && !PROGRAM_ARGS.contains("--update")
-        ) {
-            return
-        }
+        ConfigUtil.putLong(ConfigEnum.LAST_CHECK_VERSION_TIME, System.currentTimeMillis())
         synchronized(canUpdateProperty) {
             val updateDev = ConfigUtil.getBoolean(ConfigEnum.UPDATE_DEV)
             val repositoryList = ConfigExUtil.getUpdateSourceList()
