@@ -68,6 +68,12 @@
                     </Button>
                     <Button text="关闭控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
                             onAction="#closeConsole"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <Label text="启用热键" contentDisplay="RIGHT">
+                        <graphic>
+                            <ConfigSwitch config="ENABLE_CONSOLE_HOTKEY"/>
+                        </graphic>
+                    </Label>
                 </HBox>
                 <HBox styleClass="h-box">
                     <Button text="测量游戏控件" styleClass="btn-ui, btn-ui-normal, btn-ui-small"

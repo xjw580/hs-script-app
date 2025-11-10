@@ -1,9 +1,12 @@
 package club.xiaojiawei.hsscript.listener
 
+import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import com.melloware.jintellitype.HotkeyListener
 import com.melloware.jintellitype.JIntellitype
@@ -47,8 +50,12 @@ object GlobalHotkeyListener : HotkeyListener {
                     log.info { "开始/暂停热键：$it" }
                 }
             }
-            JIntellitype.getInstance()
-                .registerHotKey(HOT_KEY_CONSOLE, JIntellitypeConstants.MOD_ALT, 'A'.code)
+            if (ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY)){
+                val hotKey = HotKey(JIntellitypeConstants.MOD_ALT, 'A'.code)
+                JIntellitype.getInstance()
+                    .registerHotKey(HOT_KEY_CONSOLE, hotKey.modifier, hotKey.keyCode)
+                log.info { "控制台热键：${hotKey}" }
+            }
         } else {
             log.warn { "当前系统不支持设置热键" }
         }

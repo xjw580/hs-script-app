@@ -537,6 +537,14 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 启用控制台热键
+     */
+    ENABLE_CONSOLE_HOTKEY(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR },
+    ),
+
+    /**
      * 启用换牌权重
      */
     ENABLE_CHANGE_WEIGHT(
