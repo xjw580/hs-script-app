@@ -1,6 +1,5 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscript.bean.isDiscoverCardThread
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.config.DRIVER_LOCK
@@ -9,6 +8,7 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.ScriptStatus
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Point
 
@@ -125,7 +125,7 @@ object MouseUtil {
     private fun validateEnv(hwnd: HWND?): Boolean {
         if (ScriptStatus.testMode) return true
 //        选择卡牌时间只让特定线程执行
-        if (WarEx.war.isChooseCardTime && !isDiscoverCardThread()) return false
+        if (WarEx.war.isChooseCardTime && !Thread.currentThread().isDiscoverCardThread()) return false
         hwnd ?: return false
         return ConfigUtil.getBoolean(ConfigEnum.ENABLE_MOUSE) && WorkTimeListener.working
     }

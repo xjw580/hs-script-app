@@ -456,6 +456,14 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 胜率限制
+     */
+    MAXIMUM_WIN_RATE_LIMIT(
+        group = STRATEGY_CONFIG_GROUP,
+        defaultValueInitializer = { "100" },
+    ),
+
+    /**
      * 开机自启
      */
     POWER_BOOT(

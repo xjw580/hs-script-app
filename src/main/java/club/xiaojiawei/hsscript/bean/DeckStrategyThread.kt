@@ -7,19 +7,19 @@ import club.xiaojiawei.hsscriptbase.bean.LThread
  * @date 2024/10/15 21:36
  */
 
-fun isDeckStrategyThread():Boolean{
+fun Thread.isDeckStrategyThread():Boolean{
     return Thread.currentThread() is DeckStrategyThread
 }
 
-fun isOutCardThread():Boolean{
+fun Thread.isOutCardThread():Boolean{
     return Thread.currentThread() is OutCardThread
 }
 
-fun isDiscoverCardThread():Boolean{
+fun Thread.isDiscoverCardThread():Boolean{
     return Thread.currentThread() is DiscoverCardThread
 }
 
-fun isChangeCardThread():Boolean{
+fun Thread.isChangeCardThread():Boolean{
     return Thread.currentThread() is ChangeCardThread
 }
 

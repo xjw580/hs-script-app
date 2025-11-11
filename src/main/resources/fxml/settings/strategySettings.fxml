@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.Double?>
-<?import javafx.scene.control.Tooltip?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/strategySettings.css"
@@ -70,6 +69,14 @@
                     <HBox HBox.hgrow="ALWAYS"/>
                     <ConfigNumberField notificationManager="${notificationManager}" config="WAR_TIMEOUT_SURRENDER"
                                        prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
+                                       styleClass="text-field-ui, text-field-ui-small"/>
+                </HBox>
+                <HBox styleClass="h-box">
+                    <Text text="最大胜率"/>
+                    <TipNode text="超过最大胜率将直接投降"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <ConfigNumberField notificationManager="${notificationManager}" config="MAXIMUM_WIN_RATE_LIMIT"
+                                       prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="100"
                                        styleClass="text-field-ui, text-field-ui-small"/>
                 </HBox>
             </VBox>

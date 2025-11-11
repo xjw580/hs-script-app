@@ -1,13 +1,17 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.hsscriptbase.enums.StepEnum
-import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.ChangeCardThread
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
+import club.xiaojiawei.hsscript.bean.single.WarEx
+import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.MulliganStateEnum
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator.changeCard
+import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 
 /**
  * 换牌阶段
@@ -26,7 +30,14 @@ object ReplaceCardPhaseStrategy : AbstractPhaseStrategy() {
                 cancelAllTask()
 //                执行换牌策略
                 (ChangeCardThread {
-                    changeCard()
+                    if (WarEx.warCount != 0
+                        && (WarEx.winCount * 100.0 / WarEx.warCount) > ConfigUtil.getInt(ConfigEnum.MAXIMUM_WIN_RATE_LIMIT)
+                            .toDouble()
+                    ) {
+                        GameUtil.surrender()
+                    } else {
+                        changeCard()
+                    }
                 }.also { addTask(it) }).start()
             }
         } else if (tagChangeEntity.tag == TagEnum.NEXT_STEP && StepEnum.MAIN_READY.name == tagChangeEntity.value) {
