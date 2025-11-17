@@ -488,7 +488,7 @@ class MainApplication : Application() {
                         if (aotBatch.exists()) {
                             File(AOT_PATH).mkdirs()
                             val startCMD =
-                                "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}\" \"${MainApplication::class.java.packageName}.MainKt\""
+                                "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}_${BuildInfo.VERSION}\" \"${MainApplication::class.java.packageName}.MainKt\""
                             CMDUtil.directExec(
                                 arrayOf(
                                     "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
