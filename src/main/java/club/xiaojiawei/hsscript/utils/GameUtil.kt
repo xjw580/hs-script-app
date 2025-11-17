@@ -443,7 +443,7 @@ object GameUtil {
         try {
             val platformPath = ConfigUtil.getString(ConfigEnum.PLATFORM_PATH)
             if (platformPath.isBlank()) {
-                log.error { PLATFORM_CN_NAME+"路径为空" }
+                log.error { PLATFORM_CN_NAME + "路径为空" }
                 return
             }
             val command = if (ConfigUtil.getBoolean(ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME)) {
@@ -628,7 +628,7 @@ object GameUtil {
                         null,
                         0,
                         0,
-                        (height * GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO).toInt() + 1,
+                        (height * (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2.0).toInt(),
                         height,
                         SWP_NOMOVE or SWP_NOZORDER
                     )

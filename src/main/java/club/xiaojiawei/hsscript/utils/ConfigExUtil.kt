@@ -3,6 +3,7 @@ package club.xiaojiawei.hsscript.utils
 import ch.qos.logback.classic.Level
 import club.xiaojiawei.hsscript.bean.GameTask
 import club.xiaojiawei.hsscript.bean.HotKey
+import club.xiaojiawei.hsscript.bean.WindowConfig
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.bean.single.repository.AbstractRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
@@ -220,6 +221,15 @@ object ConfigExUtil {
 
     fun storeGameTask(gameTaskStatus: GameTask) {
         ConfigUtil.putString(ConfigEnum.GAME_TASK_STATUS, JSON.toJSONString(gameTaskStatus))
+    }
+
+    fun getWindowConfig(): MutableList<WindowConfig> {
+        return ConfigUtil.getArray(ConfigEnum.WINDOW_CONFIG, WindowConfig::class.java)
+            ?: mutableListOf()
+    }
+
+    fun storeWindowConfig(windowConfigs: List<WindowConfig>) {
+        ConfigUtil.putString(ConfigEnum.WINDOW_CONFIG, JSON.toJSONString(windowConfigs))
     }
 
 }

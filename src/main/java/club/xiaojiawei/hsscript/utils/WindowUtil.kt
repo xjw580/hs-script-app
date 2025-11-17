@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.JavaFXUI
+import club.xiaojiawei.hsscript.bean.WindowConfig
 import club.xiaojiawei.hsscript.consts.COMMON_CSS_PATH
 import club.xiaojiawei.hsscript.consts.FXML_DIR
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
@@ -41,6 +42,10 @@ object WindowUtil {
     private const val CONTROLLER_KEY = "controller"
 
     private val STAGE_MAP: MutableMap<WindowEnum, Stage> = mutableMapOf()
+
+    private val windowConfig by lazy {
+        ConfigExUtil.getWindowConfig().associateBy { it.windowEnum }.toMutableMap()
+    }
 
     private fun addIcon(stage: Stage) {
         stage.icons.add(
@@ -326,6 +331,62 @@ object WindowUtil {
                     controller.onCloseRequest(event)
                 }
             }
+            stage.xProperty().addListener { _, _, newValue ->
+                windowConfig[windowEnum]?.let {
+                    it.x = newValue.toInt()
+                } ?: let {
+                    windowConfig[windowEnum] =
+                        WindowConfig(
+                            newValue.toInt(),
+                            stage.y.toInt(),
+                            stage.width.toInt(),
+                            stage.height.toInt(),
+                            windowEnum
+                        )
+                }
+            }
+            stage.yProperty().addListener { _, _, newValue ->
+                windowConfig[windowEnum]?.let {
+                    it.y = newValue.toInt()
+                } ?: let {
+                    windowConfig[windowEnum] =
+                        WindowConfig(
+                            newValue.toInt(),
+                            stage.y.toInt(),
+                            stage.width.toInt(),
+                            stage.height.toInt(),
+                            windowEnum
+                        )
+                }
+            }
+            stage.widthProperty().addListener { _, _, newValue ->
+                windowConfig[windowEnum]?.let {
+                    it.width = newValue.toInt()
+                } ?: let {
+                    windowConfig[windowEnum] =
+                        WindowConfig(
+                            newValue.toInt(),
+                            stage.y.toInt(),
+                            stage.width.toInt(),
+                            stage.height.toInt(),
+                            windowEnum
+                        )
+                }
+            }
+            stage.heightProperty().addListener { _, _, newValue ->
+                windowConfig[windowEnum]?.let {
+                    it.height = newValue.toInt()
+                } ?: let {
+                    windowConfig[windowEnum] =
+                        WindowConfig(
+                            newValue.toInt(),
+                            stage.y.toInt(),
+                            stage.width.toInt(),
+                            stage.height.toInt(),
+                            windowEnum
+                        )
+                }
+            }
 
             if (!windowEnum.cache) {
                 stage.showingProperty().addListener { o, oldV, newV ->
@@ -337,6 +398,10 @@ object WindowUtil {
         }
         stage.scene.stylesheets.add(COMMON_CSS_PATH)
         return stage
+    }
+
+    fun saveConfig() {
+        ConfigExUtil.storeWindowConfig(windowConfig.map { it.value })
     }
 
     fun loadRoot(windowEnum: WindowEnum): Node {
@@ -365,23 +430,30 @@ object WindowUtil {
             stage.title = windowEnum.title
             addIcon(stage)
 
-            (windowEnum.width > 0).isTrue {
-                stage.width = windowEnum.width
-                stage.minWidth = windowEnum.width
-            }
-            (windowEnum.height > 0).isTrue {
-                stage.height = windowEnum.height
-                stage.minHeight = windowEnum.height
-            }
-            if (windowEnum.initXY && windowEnum.x == -1.0 && windowEnum.y == -1.0 && windowEnum.width > 0 && windowEnum.height > 0) {
-                stage.x = (SCREEN_WIDTH - windowEnum.width) / 2.0
-                stage.y = (SCREEN_HEIGHT - windowEnum.height) / 2.0
-            } else {
-                if (windowEnum.x != -1.0) {
-                    stage.x = windowEnum.x
+            windowConfig[windowEnum]?.let {
+                stage.width = it.width.toDouble()
+                stage.height = it.height.toDouble()
+                stage.x = it.x.toDouble()
+                stage.y = it.y.toDouble()
+            }?:let {
+                (windowEnum.width > 0).isTrue {
+                    stage.width = windowEnum.width
+                    stage.minWidth = windowEnum.width
                 }
-                if (windowEnum.y != -1.0) {
-                    stage.y = windowEnum.y
+                (windowEnum.height > 0).isTrue {
+                    stage.height = windowEnum.height
+                    stage.minHeight = windowEnum.height
+                }
+                if (windowEnum.initXY && windowEnum.x == -1.0 && windowEnum.y == -1.0 && windowEnum.width > 0 && windowEnum.height > 0) {
+                    stage.x = (SCREEN_WIDTH - windowEnum.width) / 2.0
+                    stage.y = (SCREEN_HEIGHT - windowEnum.height) / 2.0
+                } else {
+                    if (windowEnum.x != -1.0) {
+                        stage.x = windowEnum.x
+                    }
+                    if (windowEnum.y != -1.0) {
+                        stage.y = windowEnum.y
+                    }
                 }
             }
 

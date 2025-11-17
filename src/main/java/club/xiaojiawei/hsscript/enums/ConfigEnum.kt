@@ -304,6 +304,14 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 更新游戏窗口信息
+     */
+    WINDOW_CONFIG(
+        group = WINDOW_CONFIG_GROUP,
+        defaultValueInitializer = { "" },
+    ),
+
+    /**
      * 检查游戏响应超时(s)
      */
     GAME_TIMEOUT(
