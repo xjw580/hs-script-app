@@ -65,6 +65,7 @@ val HS_CARD_UTIL_FILE = ResourceFile("card-update-util.exe")
 val UPDATE_FILE = ResourceFile("update.exe")
 
 val LIB_HS_FILE = ResourceFile("hs.dll")
+val LIB_HS_BASE_FILE = ResourceFile("hs_base.dll")
 
 val LIB_BN_FILE = ResourceFile("bn.dll")
 

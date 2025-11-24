@@ -622,17 +622,22 @@ object GameUtil {
                 val height = bottom - top
                 val width = right - left
                 val ratio = width.toDouble() / height
-                if (ratio < GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO || ratio > GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) {
+                val minRatio = GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO
+                val maxRatio = GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO
+                if (ratio !in minRatio..maxRatio) {
+                    val newWidth =
+                        (height * (minRatio + maxRatio) / 2.0).toInt()
+                    val newHeight = height
                     User32.INSTANCE.SetWindowPos(
                         gameHWND,
                         null,
                         0,
                         0,
-                        (height * (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2.0).toInt(),
-                        height,
+                        newWidth,
+                        newHeight,
                         SWP_NOMOVE or SWP_NOZORDER
                     )
-                    log.warn { "${GAME_CN_NAME}窗口宽高比不合理，已自动调整" }
+                    log.warn { "${GAME_CN_NAME}窗口宽高比不在[${minRatio},${maxRatio}]之间，已自动调整为[${newWidth},${newHeight}]" }
                     SystemUtil.updateRECT(gameHWND, ScriptStatus.GAME_RECT)
                 }
             }

@@ -31,6 +31,13 @@
                     <ConfigSwitch notificationManager="${notificationManager}" config="STRATEGY"/>
                 </HBox>
                 <HBox styleClass="h-box">
+                    <Text text="允许注入炉石传说"/>
+                    <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_GAME_INJECT"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <Text text="允许注入战网"/>
+                    <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_PLATFORM_INJECT"/>
+                </HBox>
+                <HBox styleClass="h-box">
                     <Text text="显示游戏控件位置" onMouseClicked="#enableDisplayGameRectPos"/>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}" config="DISPLAY_GAME_RECT_POS"/>

@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.consts.CONFIG_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.alibaba.fastjson2.JSON
 import org.ini4j.Config
@@ -81,8 +81,9 @@ object ConfigUtil {
      * 读取整型数字
      */
     fun getInt(key: ConfigEnum): Int {
-        return (CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue).toIntOrNull() ?: key.defaultValue.toIntOrNull()
-        ?: 0
+        return (CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue).toIntOrNull()
+            ?: key.defaultValue.toIntOrNull()
+            ?: 0
     }
 
     /**
@@ -99,8 +100,9 @@ object ConfigUtil {
      * 读取长整型数字
      */
     fun getLong(key: ConfigEnum): Long {
-        return (CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue).toLongOrNull() ?: key.defaultValue.toLongOrNull()
-        ?: 0L
+        return (CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue).toLongOrNull()
+            ?: key.defaultValue.toLongOrNull()
+            ?: 0L
     }
 
     /**
@@ -194,3 +196,33 @@ object ConfigUtil {
     }
 
 }
+
+fun ConfigEnum.getBoolean() = ConfigUtil.getBoolean(this)
+
+fun ConfigEnum.getString() = ConfigUtil.getString(this)
+
+fun ConfigEnum.getInt() = ConfigUtil.getInt(this)
+
+fun ConfigEnum.getLong() = ConfigUtil.getLong(this)
+
+fun ConfigEnum.getFloat() = ConfigUtil.getFloat(this)
+
+fun <T> ConfigEnum.getArray(clazz: Class<T>) = ConfigUtil.getArray(this, clazz)
+
+fun <T> ConfigEnum.getObject(clazz: Class<T>) = ConfigUtil.getObject(this, clazz)
+
+fun ConfigEnum.putBoolean(value: Boolean, store: Boolean = true) = ConfigUtil.putBoolean(this, value, store)
+
+fun ConfigEnum.putString(value: String, store: Boolean = true) = ConfigUtil.putString(this, value, store)
+
+fun ConfigEnum.putInt(value: Int, store: Boolean = true) = ConfigUtil.putInt(this, value, store)
+
+fun ConfigEnum.putLong(value: Long, store: Boolean = true) = ConfigUtil.putLong(this, value, store)
+
+fun ConfigEnum.putFloat(value: Float, store: Boolean = true) = ConfigUtil.putFloat(this, value, store)
+
+fun ConfigEnum.putArray(value: List<Any>, store: Boolean = true) = ConfigUtil.putArray(this, value, store)
+
+fun ConfigEnum.putObject(value: Any, store: Boolean = true) = ConfigUtil.putObject(this, value, store)
+
+fun ConfigEnum.remove() = ConfigUtil.remove(this)
