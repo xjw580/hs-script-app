@@ -70,6 +70,8 @@ interface CSystemDll : Library {
 
     fun frontWindow(hwnd: HWND?)
 
+    fun calmFrontWindow(hwnd: HWND?)
+
     fun topWindow(
         hwnd: HWND?,
         isTop: Boolean,

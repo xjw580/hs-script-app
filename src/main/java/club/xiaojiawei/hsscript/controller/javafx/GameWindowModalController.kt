@@ -208,7 +208,7 @@ class GameWindowModalController : Initializable, StageHook {
             newScene?.let {
                 val exec = Consumer<Window> { newWindow ->
                     ScriptStatus.gameHWND?.let {
-                        CSystemDll.INSTANCE.frontWindow(it)
+                        CSystemDll.INSTANCE.calmFrontWindow(it)
                     } ?: go {
                         GameUtil.launchPlatformAndGame()
                         SystemUtil.message("${GAME_CN_NAME}不在运行", type = MB_ICONERROR xor MB_TOPMOST)
