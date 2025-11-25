@@ -1,23 +1,22 @@
 package club.xiaojiawei.hsscript.service
 
-import club.xiaojiawei.hsscript.consts.GameRationConst
-import club.xiaojiawei.hsscript.consts.SCREEN_SCALE
-import club.xiaojiawei.hsscript.dll.User32ExDll
+import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.SCREEN_HEIGHT
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
+import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.GameUtil
 import com.sun.jna.platform.win32.WinDef.HWND
-import com.sun.jna.platform.win32.WinUser.SWP_NOMOVE
-import com.sun.jna.platform.win32.WinUser.SWP_NOZORDER
 import javafx.beans.value.ChangeListener
 
 /**
  * @author 肖嘉威
  * @date 2025/4/1 15:20
  */
-object GameWindowReductionFactorService : Service<Int>() {
+object GameWindowReductionFactorService : Service<Float>() {
     private val windowChangeListener: ChangeListener<HWND?> by lazy {
         ChangeListener<HWND?> { _, _, newValue ->
             if (WorkTimeListener.working) {
@@ -35,6 +34,8 @@ object GameWindowReductionFactorService : Service<Int>() {
     }
 
     override fun execStart(): Boolean {
+//        InjectStarter().start()
+//        CSystemDll.INSTANCE.resizeGameWindow(true)
         if (WorkTimeListener.working) {
             changeWindowSize(ScriptStatus.gameHWND)
         }
@@ -44,35 +45,28 @@ object GameWindowReductionFactorService : Service<Int>() {
     }
 
     override fun execStop(): Boolean {
+//        CSystemDll.INSTANCE.resizeGameWindow(false)
         ScriptStatus.gameHWNDProperty().removeListener(windowChangeListener)
         WorkTimeListener.removeChangeListener(workingChangeListener)
         return true
     }
 
-    override fun getStatus(value: Int?): Boolean =
-        (value ?: ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR)) > 0
+    override fun getStatus(value: Float?): Boolean =
+        (value ?: ConfigUtil.getFloat(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR)) > 0
 
     private fun changeWindowSize(
         hwnd: HWND?,
-        scale: Int = ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR),
+        scale: Float = ConfigUtil.getFloat(ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR),
     ) {
         hwnd ?: return
         if (scale < 1) return
-        val height = SCREEN_HEIGHT * SCREEN_SCALE / scale
-        User32ExDll.INSTANCE.SetWindowPos(
-            hwnd,
-            null,
-            0,
-            0,
-            (height * GameRationConst.GAME_WINDOW_CONTENT_WIDTH_HEIGHT_RATIO).toInt(),
-            height.toInt(),
-            SWP_NOZORDER or SWP_NOMOVE,
-        )
+        val height = SCREEN_HEIGHT / scale
+        GameUtil.legalizationGameWindowSize(height.toInt())
     }
 
     override fun execValueChanged(
-        oldValue: Int,
-        newValue: Int,
+        oldValue: Float,
+        newValue: Float,
     ) {
         changeWindowSize(ScriptStatus.gameHWND, newValue)
     }

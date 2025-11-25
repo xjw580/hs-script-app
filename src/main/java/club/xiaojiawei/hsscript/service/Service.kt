@@ -62,7 +62,7 @@ abstract class Service<T> {
     /**
      * 通过传入值判断应该启动还是停止，如果传入值为null，应该从配置文件中读取
      */
-    protected abstract fun getStatus(value: T?): Boolean
+    abstract fun getStatus(value: T?): Boolean
 
     protected open fun execValueChanged(
         oldValue: T,

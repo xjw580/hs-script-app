@@ -76,17 +76,17 @@
                                 <Text text="游戏窗口缩小倍数"/>
                                 <TipNode text="主显示器与游戏窗口高度之比"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigNumberField config="GAME_WINDOW_REDUCTION_FACTOR"
+                                <ConfigFloatNumberField decimalCount = "1" config="GAME_WINDOW_REDUCTION_FACTOR"
                                                    styleClass="text-field-ui, text-field-ui-small"
-                                                   minValue="0" maxValue="255" prefWidth="${fieldWidth}"/>
+                                                   minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="战网窗窗口缩小倍数"/>
                                 <TipNode text="主显示器与战网窗口高度之比"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigNumberField config="PLATFORM_WINDOW_REDUCTION_FACTOR"
+                                <ConfigFloatNumberField decimalCount = "1" config="PLATFORM_WINDOW_REDUCTION_FACTOR"
                                                    styleClass="text-field-ui, text-field-ui-small"
-                                                   minValue="0" maxValue="255" prefWidth="${fieldWidth}"/>
+                                                   minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="置顶游戏窗口"/>

@@ -16,12 +16,13 @@ import com.sun.jna.platform.win32.WinDef.HWND
 import com.sun.jna.platform.win32.WinUser.SWP_NOMOVE
 import com.sun.jna.platform.win32.WinUser.SWP_NOZORDER
 import javafx.beans.value.ChangeListener
+import kotlin.Float
 
 /**
  * @author 肖嘉威
  * @date 2025/4/1 15:20
  */
-object PlatformWindowReductionFactorService : Service<Int>() {
+object PlatformWindowReductionFactorService : Service<Float>() {
     private val windowChangeListener: ChangeListener<HWND?> by lazy {
         ChangeListener<HWND?> { _, _, newValue ->
             inject()
@@ -55,8 +56,8 @@ object PlatformWindowReductionFactorService : Service<Int>() {
         return true
     }
 
-    override fun getStatus(value: Int?): Boolean =
-        (value ?: ConfigUtil.getInt(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR)) > 0
+    override fun getStatus(value: Float?): Boolean =
+        (value ?: ConfigUtil.getFloat(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR)) > 0
 
     private fun inject(): Boolean {
         if (ConfigEnum.ALLOW_PLATFORM_INJECT.getBoolean()) {
@@ -67,14 +68,16 @@ object PlatformWindowReductionFactorService : Service<Int>() {
             }
             return false
         } else {
-            log.warn { "已禁用${PLATFORM_CN_NAME}注入，如有需要请到开发者选项中打开" }
-            return false
+            val text = "已禁用${PLATFORM_CN_NAME}注入，如有需要请到开发者选项中打开"
+            SystemUtil.notice(text)
+            log.warn { text }
+            return true
         }
     }
 
     private fun changeWindowSize(
         hwnd: HWND?,
-        scale: Int = ConfigUtil.getInt(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR),
+        scale: Float = ConfigUtil.getFloat(ConfigEnum.PLATFORM_WINDOW_REDUCTION_FACTOR),
     ) {
         hwnd ?: return
         if (scale < 1) return
@@ -91,8 +94,8 @@ object PlatformWindowReductionFactorService : Service<Int>() {
     }
 
     override fun execValueChanged(
-        oldValue: Int,
-        newValue: Int,
+        oldValue: Float,
+        newValue: Float,
     ) {
         changeWindowSize(ScriptStatus.platformHWND, newValue)
     }

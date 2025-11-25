@@ -6,10 +6,7 @@ import club.xiaojiawei.hsscript.config.InitializerConfig
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.dll.CSystemDll
-import club.xiaojiawei.hsscript.dll.KernelExDll
-import club.xiaojiawei.hsscript.dll.KernelExDll.Companion.FILE_MAP_READ
 import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
 import club.xiaojiawei.hsscript.listener.StatisticsListener
@@ -32,18 +29,10 @@ import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.CardAction.Companion.commonActionFactory
 import com.sun.jna.Memory
 import com.sun.jna.WString
-import com.sun.jna.platform.win32.Kernel32
-import com.sun.jna.platform.win32.WinNT
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
-import javafx.scene.Scene
-import javafx.scene.image.ImageView
-import javafx.scene.image.PixelFormat
-import javafx.scene.image.WritableImage
-import javafx.scene.image.WritablePixelFormat
-import javafx.scene.layout.StackPane
 import javafx.stage.Screen
 import javafx.stage.Stage
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
@@ -52,14 +41,11 @@ import java.awt.event.ActionEvent
 import java.awt.event.MouseEvent
 import java.io.File
 import java.net.URLClassLoader
-import java.nio.IntBuffer
 import java.util.Locale.getDefault
 import java.util.function.Consumer
 import java.util.function.Supplier
 import java.util.prefs.Preferences
 import javax.swing.AbstractAction
-import kotlin.io.path.Path
-import kotlin.io.path.exists
 import kotlin.system.exitProcess
 
 /**
@@ -478,31 +464,12 @@ class MainApplication : Application() {
                 log.info { "检测到多台显示器，开始运行后${GAME_CN_NAME}窗口不要移动到其他显示器" }
             }
         }
-        if (!ConfigUtil.getBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE) && SystemUtil.isStartupByJar()) {
+        if (!ConfigUtil.getBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE) && SystemUtil.isStartupByJar() && !File(
+                AOT_FILE_PATH
+            ).exists()
+        ) {
             runUI {
-                WindowUtil.createAlert(
-                    "AOT缓存检测",
-                    "是否创建AOT缓存，用于提高软件启动速度",
-                    {
-                        val aotBatch = Path(AOT_BATCH_NAME)
-                        if (aotBatch.exists()) {
-                            File(AOT_PATH).mkdirs()
-                            val startCMD =
-                                "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}_${BuildInfo.VERSION}\" \"${MainApplication::class.java.packageName}.MainKt\""
-                            CMDUtil.directExec(
-                                arrayOf(
-                                    "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
-                                )
-                            ).waitFor()
-                        } else {
-                            SystemUtil.notice("$aotBatch 不存在", "无法创建AOT缓存")
-                        }
-                    },
-                    {},
-                    WindowEnum.MAIN,
-                    "是",
-                    "否"
-                ).show()
+                AOTUtil.buildAOTAlert().getOrNull()?.show()
             }
             ConfigUtil.putBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE, true)
         }
