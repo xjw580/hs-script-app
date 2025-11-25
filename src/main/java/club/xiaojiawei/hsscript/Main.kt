@@ -60,22 +60,21 @@ private fun setLogPath() {
 fun main(args: Array<String>) {
     System.setProperty("jna.library.path", "lib")
 
-    if (!args.any { it.startsWith(ARG_AOT) }) {
-        val file = File(".pid")
-        if (!file.exists()) {
-            file.createNewFile()
-            Files.setAttribute(file.toPath(), "dos:hidden", true);
-        }
-        val randomAccessFile = RandomAccessFile(file, "rw")
-        if (randomAccessFile.channel.tryLock() == null) {
+    val file = File(".pid")
+    if (!file.exists()) {
+        file.createNewFile()
+        Files.setAttribute(file.toPath(), "dos:hidden", true);
+    }
+    val randomAccessFile = RandomAccessFile(file, "rw")
+    if (randomAccessFile.channel.tryLock() == null) {
+        if (!args.any { it.startsWith(ARG_AOT) }) {
             WindowUtil.hideLaunchPage()
             return
         }
-
+    } else {
         randomAccessFile.setLength(0)
         randomAccessFile.write(PROGRAM_NAME.toByteArray());
     }
-
 
     setLogPath()
 
