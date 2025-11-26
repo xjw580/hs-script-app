@@ -1,9 +1,6 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.hsscript.consts.GAME_PROGRAM_NAME
-import club.xiaojiawei.hsscript.consts.GAME_US_NAME
-import club.xiaojiawei.hsscript.consts.INJECT_UTIL_FILE
-import club.xiaojiawei.hsscript.consts.LIB_HS_FILE
+import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
@@ -26,6 +23,7 @@ class InjectStarter : AbstractStarter() {
         val logHook = ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1
         val limitMouseRange = ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)
         val autoRefreshGameTask = ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)
+//        val reductionGameWindowSize = ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR.service?.getStatus(null) == true
 
         log.info { "鼠标控制模式：${mouseControlMode.name}" }
         log.info { "阻止游戏反作弊：$acHook" }
@@ -34,6 +32,7 @@ class InjectStarter : AbstractStarter() {
             limitMouseRange ||
             autoRefreshGameTask ||
             logHook
+//            reductionGameWindowSize
         ) {
             if (ScriptStatus.gameHWND == null || !injectCheck()) {
                 pause()
@@ -52,14 +51,24 @@ class InjectStarter : AbstractStarter() {
     }
 
     private fun injectCheck(): Boolean {
-        val pid = CSystemDll.INSTANCE.findProcessId(GAME_PROGRAM_NAME, true)
-        if (pid > 0) {
-            if (CSystemDll.INSTANCE.isDllLoadedInProcess(pid, LIB_HS_FILE.name)) return true
-        }else {
-            return false
+        if (ConfigEnum.ALLOW_GAME_INJECT.getBoolean()) {
+            val pid = CSystemDll.INSTANCE.findProcessId(GAME_PROGRAM_NAME, true)
+            if (pid > 0) {
+                if (CSystemDll.INSTANCE.isDllLoadedInProcess(pid, LIB_HS_FILE.name)) return true
+            } else {
+                return false
+            }
+            val injectFile = SystemUtil.getExeFilePath(INJECT_UTIL_FILE) ?: return false
+            val dllFile = if (ConfigEnum.ENABLE_CONSOLE_HOTKEY.getBoolean()) {
+                SystemUtil.getDllFilePath(LIB_HS_FILE)
+            } else SystemUtil.getDllFilePath(LIB_HS_BASE_FILE) ?: SystemUtil.getDllFilePath(LIB_HS_FILE)
+            dllFile ?: return false
+            return InjectUtil.execInject(injectFile.absolutePath, dllFile.absolutePath, "$GAME_US_NAME.exe")
+        } else {
+            val text = "已禁用${GAME_CN_NAME}注入，如有需要请到开发者选项中打开"
+            SystemUtil.notice(text)
+            log.warn { text }
+            return true
         }
-        val injectFile = SystemUtil.getExeFilePath(INJECT_UTIL_FILE) ?: return false
-        val dllFile = SystemUtil.getDllFilePath(LIB_HS_FILE) ?: return false
-        return InjectUtil.execInject(injectFile.absolutePath, dllFile.absolutePath, "$GAME_US_NAME.exe")
     }
 }

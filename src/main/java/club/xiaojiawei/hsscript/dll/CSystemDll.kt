@@ -10,7 +10,7 @@ import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
-import com.sun.jna.platform.win32.WinDef.BOOL
+import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.io.File
 import java.time.LocalDateTime
@@ -69,6 +69,8 @@ interface CSystemDll : Library {
     fun quitWindow(hwnd: HWND?)
 
     fun frontWindow(hwnd: HWND?)
+
+    fun calmFrontWindow(hwnd: HWND?)
 
     fun topWindow(
         hwnd: HWND?,
@@ -190,6 +192,8 @@ interface CSystemDll : Library {
     fun logHook(enable: Boolean)
 
     fun acHook(enable: Boolean)
+
+    fun resizeGameWindow(enable: Boolean)
 
     fun limitMouseRange(enable: Boolean)
 
@@ -365,10 +369,14 @@ interface CSystemDll : Library {
     }
 }
 
+fun WinDef.RECT.width() = right - left
+
+fun WinDef.RECT.height() = bottom - top
+
 fun main() {
     val starter = GameStarter()
     starter.setNextStarter(InjectStarter().apply {
-        setNextStarter(object : AbstractStarter(){
+        setNextStarter(object : AbstractStarter() {
             override fun execStart() {
                 CSystemDll.INSTANCE.logHook(true)
                 println("logHook")

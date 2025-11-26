@@ -4,6 +4,8 @@ import club.xiaojiawei.hsscript.bean.GameRect
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.dll.height
+import club.xiaojiawei.hsscript.dll.width
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.Mode
@@ -622,22 +624,31 @@ object GameUtil {
                 val height = bottom - top
                 val width = right - left
                 val ratio = width.toDouble() / height
-                if (ratio < GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO || ratio > GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) {
-                    User32.INSTANCE.SetWindowPos(
-                        gameHWND,
-                        null,
-                        0,
-                        0,
-                        (height * (GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO + GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO) / 2.0).toInt(),
-                        height,
-                        SWP_NOMOVE or SWP_NOZORDER
-                    )
-                    log.warn { "${GAME_CN_NAME}窗口宽高比不合理，已自动调整" }
+                val minRatio = GameRationConst.GAME_WINDOW_MIN_WIDTH_HEIGHT_RATIO
+                val maxRatio = GameRationConst.GAME_WINDOW_MAX_WIDTH_HEIGHT_RATIO
+                if (ratio !in minRatio..maxRatio) {
+                    legalizationGameWindowSize(height, gameHWND)
                     SystemUtil.updateRECT(gameHWND, ScriptStatus.GAME_RECT)
+                    log.warn { "${GAME_CN_NAME}窗口宽高比不在[${minRatio},${maxRatio}]之间，已自动调整为[${ScriptStatus.GAME_RECT.width()},${ScriptStatus.GAME_RECT.height()}]" }
                 }
             }
         }
 //        println("left:${ScriptStatus.GAME_RECT.left}, right:${ScriptStatus.GAME_RECT.right}, top:${ScriptStatus.GAME_RECT.top}, bottom:${ScriptStatus.GAME_RECT.bottom}")
+    }
+
+    fun legalizationGameWindowSize(newHeight: Int, gameHWND: WinDef.HWND? = ScriptStatus.gameHWND) {
+        val newWidth =
+            (newHeight * GameRationConst.GAME_WINDOW_APPROPRIATE_WIDTH_HEIGHT_RATIO).toInt()
+        log.info { "newWidth:$newWidth , newHeight:$newHeight" }
+        User32.INSTANCE.SetWindowPos(
+            gameHWND,
+            null,
+            0,
+            0,
+            newWidth,
+            newHeight,
+            SWP_NOMOVE or SWP_NOZORDER
+        )
     }
 
     /**

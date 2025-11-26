@@ -553,6 +553,22 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 允许游戏注入
+     */
+    ALLOW_GAME_INJECT(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { TRUE_STR },
+    ),
+
+    /**
+     * 允许战网
+     */
+    ALLOW_PLATFORM_INJECT(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { TRUE_STR },
+    ),
+
+    /**
      * 启用换牌权重
      */
     ENABLE_CHANGE_WEIGHT(
