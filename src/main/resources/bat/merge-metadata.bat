@@ -1,18 +1,32 @@
 @echo off
+chcp 65001
 REM ============================================
 REM GraalVM Native Image Agent - Metadata Collection Script
 REM ============================================
-REM
-REM 使用说明：
-REM 1. 运行此脚本启动应用
-REM 2. 手动操作应用的所有功能（点击所有按钮、打开所有设置页面）
-REM 3. 关闭应用，Agent 会自动将配置写入到 META-INF/native-image
-REM 4. 运行 build.bat 重新打包
-REM
-REM ============================================
+
+REM 保存脚本启动时的目录
+set "ORIGINAL_DIR=%CD%"
 
 echo [INFO] Starting application with GraalVM Tracing Agent...
 echo.
+
+REM 检查 GRAALVM_HOME 是否存在
+if "%GRAALVM_HOME%"=="" (
+    echo [ERROR] GRAALVM_HOME 环境变量未设置！
+    echo 请设置 GraalVM 目录，例如：
+    echo   setx GRAALVM_HOME "S:\jdk-25.0.1_graalvm"
+    echo 或重新打开终端再试。
+    pause
+    exit /b 1
+)
+
+REM 检查 java.exe 是否存在
+if not exist "%GRAALVM_HOME%\bin\java.exe" (
+    echo [ERROR] 找不到 "%GRAALVM_HOME%\bin\java.exe"
+    echo 请检查 GRAALVM_HOME 是否设置正确。
+    pause
+    exit /b 1
+)
 
 REM Change to target directory
 cd /d "%~dp0..\..\..\..\target"
@@ -34,19 +48,15 @@ echo ============================================
 echo.
 
 REM Run JAR with GraalVM tracing agent
-REM 添加 -Dfastjson2 参数禁用 ASM，避免动态类生成错误
-"S:\jdk-25.0.1_graalvm\bin\java.exe" ^
-    -Dfastjson2.creator=reflect ^
-    -Dfastjson2.writer=reflect ^
-    -Dfastjson2.reader=reflect ^
-    -agentlib:native-image-agent=config-output-dir=../src/main/resources/META-INF/native-image ^
+"%GRAALVM_HOME%\bin\java.exe" ^
+    -agentlib:native-image-agent=config-merge-dir=../src/main/resources/META-INF/native-image ^
     -jar hs-script_v4.12.0-GA.jar
 
 echo.
 echo ============================================
 if %ERRORLEVEL% EQU 0 (
     echo [SUCCESS] Agent 已收集配置
-    echo 配置文件位置：src\main\resources\META-INF\native-image\
+    echo 配置文件位置：src\main\resources\META-INF/native-image\
     echo.
     echo 下一步：运行 build.bat 重新打包 Native Image
 ) else (
@@ -54,5 +64,8 @@ if %ERRORLEVEL% EQU 0 (
 )
 echo ============================================
 echo.
+
+REM 回到原始目录
+cd /d "%ORIGINAL_DIR%"
 
 pause

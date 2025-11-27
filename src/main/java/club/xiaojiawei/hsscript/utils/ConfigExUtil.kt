@@ -14,13 +14,14 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
-import club.xiaojiawei.hsscript.fileLogLevel
 import club.xiaojiawei.hsscript.initializer.DriverInitializer
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
-import com.alibaba.fastjson2.JSON
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -31,6 +32,13 @@ import java.nio.file.Path
  * @date 2024/10/2 13:19
  */
 object ConfigExUtil {
+
+    private val objectMapper: ObjectMapper by lazy {
+        jacksonObjectMapper().apply {
+            registerModule(JavaTimeModule())
+        }
+    }
+
     fun storeGamePath(gameInstallPath: String?): Boolean {
         gameInstallPath ?: return false
 
@@ -86,7 +94,7 @@ object ConfigExUtil {
 
     fun storeFileLogLevel(level: String) {
         ConfigUtil.putString(ConfigEnum.FILE_LOG_LEVEL, level)
-        fileLogLevel = getFileLogLevel().toInt()
+        ScriptStatus.fileLogLevel = getFileLogLevel().toInt()
     }
 
     fun storeMouseControlMode(mouseControlModeEnum: MouseControlModeEnum): Boolean {
@@ -166,7 +174,7 @@ object ConfigExUtil {
         ) ?: mutableListOf()
 
     fun storeWorkTimeRuleSet(workTimeRuleSets: List<WorkTimeRuleSet>) {
-        ConfigUtil.putString(ConfigEnum.WORK_TIME_RULE_SET, JSON.toJSONString(workTimeRuleSets))
+        ConfigUtil.putString(ConfigEnum.WORK_TIME_RULE_SET, objectMapper.writeValueAsString(workTimeRuleSets))
     }
 
     /**
@@ -189,7 +197,7 @@ object ConfigExUtil {
      * @param workTimeSetting 长度为7的集合，依次记录周一到周日的[WorkTimeRuleSet.id]
      */
     fun storeWorkTimeSetting(workTimeSetting: List<String>) {
-        ConfigUtil.putString(ConfigEnum.WORK_TIME_SETTING, JSON.toJSONString(workTimeSetting))
+        ConfigUtil.putString(ConfigEnum.WORK_TIME_SETTING, objectMapper.writeValueAsString(workTimeSetting))
     }
 
     fun getGameStartupMode(): MutableList<GameStartupModeEnum> {
@@ -200,7 +208,7 @@ object ConfigExUtil {
     }
 
     fun storeGameStartupMode(gameStartupModeEnums: List<GameStartupModeEnum>) {
-        ConfigUtil.putString(ConfigEnum.GAME_STARTUP_MODE, JSON.toJSONString(gameStartupModeEnums))
+        ConfigUtil.putString(ConfigEnum.GAME_STARTUP_MODE, objectMapper.writeValueAsString(gameStartupModeEnums))
     }
 
     fun getChooseDeckPos(): MutableList<Int> {
@@ -216,11 +224,15 @@ object ConfigExUtil {
 
     fun getGameTask(): GameTask {
         return ConfigUtil.getObject(ConfigEnum.GAME_TASK_STATUS, GameTask::class.java)
-            ?: JSON.parseObject(ConfigEnum.GAME_TASK_STATUS.defaultValue, GameTask::class.java)
+            ?: try {
+                objectMapper.readValue(ConfigEnum.GAME_TASK_STATUS.defaultValue, GameTask::class.java)
+            } catch (e: Exception) {
+                GameTask()
+            }
     }
 
     fun storeGameTask(gameTaskStatus: GameTask) {
-        ConfigUtil.putString(ConfigEnum.GAME_TASK_STATUS, JSON.toJSONString(gameTaskStatus))
+        ConfigUtil.putString(ConfigEnum.GAME_TASK_STATUS, objectMapper.writeValueAsString(gameTaskStatus))
     }
 
     fun getWindowConfig(): MutableList<WindowConfig> {
@@ -229,7 +241,7 @@ object ConfigExUtil {
     }
 
     fun storeWindowConfig(windowConfigs: List<WindowConfig>) {
-        ConfigUtil.putString(ConfigEnum.WINDOW_CONFIG, JSON.toJSONString(windowConfigs))
+        ConfigUtil.putString(ConfigEnum.WINDOW_CONFIG, objectMapper.writeValueAsString(windowConfigs))
     }
 
 }

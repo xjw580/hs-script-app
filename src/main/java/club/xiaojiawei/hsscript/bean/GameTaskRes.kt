@@ -1,7 +1,6 @@
 package club.xiaojiawei.hsscript.bean
 
-import com.alibaba.fastjson2.JSON
-import com.alibaba.fastjson2.annotation.JSONField
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -11,11 +10,11 @@ import java.time.LocalDateTime
  */
 data class GameTask(
     var gameTaskRes: GameTaskRes = GameTaskRes(),
-    @field:JSONField(format = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     var refreshDailyTime: LocalDate = LocalDate.of(1990, 1, 1),
-    @field:JSONField(format = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     var refreshWeeklyTime: LocalDate = LocalDate.of(1990, 1, 1),
-    @field:JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     var updateTime: LocalDateTime = LocalDateTime.of(1990, 1, 1, 0, 0, 0),
 )
 

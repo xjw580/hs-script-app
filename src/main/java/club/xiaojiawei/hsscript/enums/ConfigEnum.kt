@@ -4,7 +4,9 @@ import ch.qos.logback.classic.Level
 import club.xiaojiawei.hsscript.bean.*
 import club.xiaojiawei.hsscript.service.*
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
-import com.alibaba.fastjson2.JSON
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.melloware.jintellitype.JIntellitype
 
 /**
@@ -12,6 +14,12 @@ import com.melloware.jintellitype.JIntellitype
  * @author 肖嘉威
  * @date 2023/7/5 11:26
  */
+
+private val objectMapper: ObjectMapper by lazy {
+    jacksonObjectMapper().apply {
+        registerModule(JavaTimeModule())
+    }
+}
 
 @JvmInline
 value class ConfigGroup(val name: String)
@@ -90,7 +98,7 @@ enum class ConfigEnum(
     WORK_TIME_RULE_SET(
         group = TIME_CONFIG_GROUP,
         defaultValueInitializer = {
-            JSON.toJSONString(
+            objectMapper.writeValueAsString(
                 listOf(
                     WorkTimeRuleSet(
                         "预设1",
@@ -174,7 +182,7 @@ enum class ConfigEnum(
         group = TIME_CONFIG_GROUP,
         defaultValueInitializer =
             {
-                JSON.toJSONString(
+                objectMapper.writeValueAsString(
                     arrayOf(
                         WORK_TIME_RULE_PRESETS_ONE,
                         WORK_TIME_RULE_PRESETS_ONE,
@@ -350,7 +358,7 @@ enum class ConfigEnum(
     GAME_TASK_STATUS(
         group = BEHAVIOR_CONFIG_GROUP,
         defaultValueInitializer = {
-            JSON.toJSONString(GameTask())
+            objectMapper.writeValueAsString(GameTask())
         }
     ),
 
@@ -370,7 +378,7 @@ enum class ConfigEnum(
     GAME_STARTUP_MODE(
         group = BEHAVIOR_CONFIG_GROUP,
         defaultValueInitializer = {
-            JSON.toJSONString(arrayOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD))
+            objectMapper.writeValueAsString(arrayOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD))
         }
     ),
 
@@ -389,14 +397,14 @@ enum class ConfigEnum(
      */
     DECK_PLUGIN_DISABLED(
         group = PLUGIN_CONFIG_GROUP,
-        defaultValueInitializer = { JSON.toJSONString(emptyList<String>()) }),
+        defaultValueInitializer = { objectMapper.writeValueAsString(emptyList<String>()) }),
 
     /**
      * 卡牌插件禁用列表
      */
     CARD_PLUGIN_DISABLED(
         group = PLUGIN_CONFIG_GROUP,
-        defaultValueInitializer = { JSON.toJSONString(emptyList<String>()) }),
+        defaultValueInitializer = { objectMapper.writeValueAsString(emptyList<String>()) }),
 
     /**
      * 默认套牌策略(deck id)
@@ -495,7 +503,7 @@ enum class ConfigEnum(
      */
     EXIT_HOT_KEY(
         group = SYSTEM_CONFIG_GROUP,
-        defaultValueInitializer = { JSON.toJSONString(HotKey(JIntellitype.MOD_ALT, 'P'.code)) }
+        defaultValueInitializer = { objectMapper.writeValueAsString(HotKey(JIntellitype.MOD_ALT, 'P'.code)) }
     ),
 
     /**
@@ -503,7 +511,7 @@ enum class ConfigEnum(
      */
     PAUSE_HOT_KEY(
         group = SYSTEM_CONFIG_GROUP,
-        defaultValueInitializer = { JSON.toJSONString(HotKey(JIntellitype.MOD_CONTROL, 'P'.code)) },
+        defaultValueInitializer = { objectMapper.writeValueAsString(HotKey(JIntellitype.MOD_CONTROL, 'P'.code)) },
     ),
 
     /**

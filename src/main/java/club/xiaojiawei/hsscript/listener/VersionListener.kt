@@ -1,6 +1,5 @@
 package club.xiaojiawei.hsscript.listener
 
-import club.xiaojiawei.hsscript.PROGRAM_ARGS
 import club.xiaojiawei.hsscript.bean.DownloaderParam
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.bean.ResumeDownloader
@@ -9,6 +8,7 @@ import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
+import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
@@ -20,7 +20,6 @@ import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
 import java.io.File
 import java.nio.file.Path
-import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -96,7 +95,7 @@ object VersionListener {
 
         checkVersionTask = EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
             if (System.currentTimeMillis() - ConfigUtil.getLong(ConfigEnum.LAST_CHECK_VERSION_TIME) > 1000 * 60 * 60 &&
-                (SystemUtil.isStartupByJar() || PROGRAM_ARGS.contains(ARG_UPDATE))
+                (SystemUtil.isStartupByJar() || ScriptStatus.programArgs.contains(ARG_UPDATE))
             ) {
                 checkVersion()
             }

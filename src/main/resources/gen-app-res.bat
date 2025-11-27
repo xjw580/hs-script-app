@@ -1,0 +1,1 @@
+rc /fo app.res app.rc

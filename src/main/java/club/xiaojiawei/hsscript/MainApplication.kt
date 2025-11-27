@@ -13,6 +13,7 @@ import club.xiaojiawei.hsscript.listener.StatisticsListener
 import club.xiaojiawei.hsscript.listener.VersionListener
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PauseStatus
+import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.status.TaskManager
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.SystemUtil.addTray
@@ -154,7 +155,7 @@ class MainApplication : Application() {
 
     override fun start(stage: Stage?) {
         runCatching {
-            for (string in PROGRAM_ARGS) {
+            for (string in ScriptStatus.programArgs) {
                 if (string.startsWith("--window=")) {
                     val windowEnum = WindowEnum.fromString(string.split("=")[1]) ?: break
                     showStage(windowEnum)
@@ -197,7 +198,7 @@ class MainApplication : Application() {
     }
 
     private fun showMainPage() {
-        if (PROGRAM_ARGS.stream().anyMatch {
+        if (ScriptStatus.programArgs.stream().anyMatch {
                 if (it.startsWith(ARG_PAGE)) {
                     WindowEnum.fromString(it.removePrefix(ARG_PAGE).uppercase())?.let { windowEnum ->
                         showStage(windowEnum)

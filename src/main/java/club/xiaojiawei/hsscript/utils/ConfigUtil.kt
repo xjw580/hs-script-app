@@ -4,7 +4,10 @@ import club.xiaojiawei.hsscript.consts.CONFIG_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
-import com.alibaba.fastjson2.JSON
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.ini4j.Config
 import org.ini4j.Ini
 import java.io.File
@@ -16,6 +19,12 @@ import java.nio.file.Path
  * @date 2024/9/28 15:35
  */
 object ConfigUtil {
+
+    private val objectMapper: ObjectMapper by lazy {
+        jacksonObjectMapper().apply {
+            registerModule(JavaTimeModule())
+        }
+    }
 
     private val configFile: File by lazy {
         Path.of(CONFIG_PATH, "script.ini").toFile()
@@ -145,7 +154,7 @@ object ConfigUtil {
      * 存储数组类型数据
      */
     fun putArray(key: ConfigEnum, value: List<Any>, store: Boolean = true) {
-        CONFIG.put(key.group.name, key.name, JSON.toJSONString(value))
+        CONFIG.put(key.group.name, key.name, objectMapper.writeValueAsString(value))
         if (store) {
             store()
         }
@@ -156,14 +165,18 @@ object ConfigUtil {
      */
     fun <T> getArray(key: ConfigEnum, clazz: Class<T>): MutableList<T>? {
         val value = CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue
-        return JSON.parseArray(value, clazz)
+        return try {
+            objectMapper.readValue(value, objectMapper.typeFactory.constructCollectionType(MutableList::class.java, clazz))
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /**
      * 存储任意类型数据
      */
     fun putObject(key: ConfigEnum, value: Any, store: Boolean = true) {
-        CONFIG.put(key.group.name, key.name, JSON.toJSONString(value))
+        CONFIG.put(key.group.name, key.name, objectMapper.writeValueAsString(value))
         if (store) {
             store()
         }
@@ -174,7 +187,11 @@ object ConfigUtil {
      */
     fun <T> getObject(key: ConfigEnum, clazz: Class<T>): T? {
         val value = CONFIG[key.group.name]?.get(key.name) ?: key.defaultValue
-        return JSON.parseObject(value, clazz)
+        return try {
+            objectMapper.readValue(value, clazz)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     fun remove(key: ConfigEnum) {

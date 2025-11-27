@@ -4,6 +4,7 @@ import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.GameLogModeEnum
+import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.go
@@ -27,6 +28,15 @@ object ScriptStatus {
      * 仅供测试使用
      */
     var testMode = false
+
+    /**
+     * aot模式
+     */
+    var aotMode = false
+
+    var fileLogLevel = ConfigExUtil.getFileLogLevel().toInt()
+
+    var programArgs: List<String> = emptyList()
 
     /**
      * 炉石安装路径是否有效

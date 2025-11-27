@@ -418,7 +418,7 @@ object SystemUtil {
     fun getDllFilePath(file: ResourceFile): File? =
         if (Objects
                 .requireNonNull(javaClass.getResource(""))
-                .protocol == "jar"
+                .protocol != "file"
         ) {
             Path.of(DLL_PATH, file.name).toFile()
         } else {
@@ -431,7 +431,7 @@ object SystemUtil {
     fun getExeFilePath(file: ResourceFile): File? =
         if (Objects
                 .requireNonNull(javaClass.getResource(""))
-                .protocol == "jar"
+                .protocol != "file"
         ) {
             Path.of(ROOT_PATH, file.name).toFile()
         } else {
@@ -467,7 +467,7 @@ object SystemUtil {
     }
 
     fun isStartupByJar() = Objects.requireNonNull(javaClass.getResource(""))
-        .protocol == "jar"
+        .protocol != "file"
 
     /**
      * 关闭显示器

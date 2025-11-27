@@ -35,6 +35,57 @@
         <project.build.outputTimestamp>2025-01-01T00:00:00Z</project.build.outputTimestamp>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.10.5</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>club.xiaojiawei.hsscript.MainKt</mainClass>
+                            <outputDirectory>target/native</outputDirectory>
+                            <imageName>hs-script-native</imageName>
+                            <buildArgs>
+                                <buildArg>-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS</buildArg>
+                                <buildArg>-H:NativeLinkerOption=/ENTRY:mainCRTStartup</buildArg>
+                                <buildArg>-H:NativeLinkerOption=${project.basedir}/src/main/resources/app.res</buildArg>
+                                <buildArg>-H:+AddAllCharsets</buildArg>
+                                <buildArg>-H:ConfigurationFileDirectories=${project.basedir}/src/main/resources/META-INF/native-image</buildArg>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jvm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>com.github.nguyenq</groupId>
@@ -65,14 +116,14 @@
             <artifactId>hs-script-base-card-plugin</artifactId>
         </dependency>
         <!--模板插件-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.xjw580</groupId>-->
-<!--            <artifactId>hs-card-plugin-template</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.xjw580</groupId>-->
-<!--            <artifactId>hs-strategy-plugin-template</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.xjw580</groupId>-->
+        <!--            <artifactId>hs-card-plugin-template</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.xjw580</groupId>-->
+        <!--            <artifactId>hs-strategy-plugin-template</artifactId>-->
+        <!--        </dependency>-->
         <!--javafx-->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -138,11 +189,6 @@
             <groupId>com.melloware</groupId>
             <artifactId>jintellitype</artifactId>
         </dependency>
-        <!-- fastjson2 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
         <!--访问系统本地库依赖-->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -167,6 +213,16 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-kotlin</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -183,10 +239,6 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-            </plugin>
             <!-- 打包成jar包，并指定lib和resources文件夹位置 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -211,13 +263,12 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-<!--                            <Class-Path>resources/</Class-Path>-->
+                            <!--                            <Class-Path>resources/</Class-Path>-->
                             <Created-By>Maven</Created-By>
                         </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

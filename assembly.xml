@@ -81,6 +81,10 @@
             <includes>
                 <include>*.bat</include>
             </includes>
+            <excludes>
+                <exclude>collect-metadata.bat</exclude>
+                <exclude>merge-metadata.bat</exclude>
+            </excludes>
             <outputDirectory/>
         </fileSet>
         <fileSet>
