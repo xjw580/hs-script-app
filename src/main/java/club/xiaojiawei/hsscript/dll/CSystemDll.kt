@@ -147,11 +147,13 @@ interface CSystemDll : Library {
 
     fun activeWindowMove(hwnd: HWND?)
 
+    fun enableBlur(hwnd: HWND?)
+
     fun isDebug(): Boolean
 
     object SystemPart {
         fun enablePowerBoot(enable: Boolean, start: Boolean = false): Boolean {
-            return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe" }
+            return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe"||it.name == "${PROGRAM_NAME}-native.exe" }
                 ?.let { latestJar ->
                     val countDownLatch = CountDownLatch(1)
                     var res = false

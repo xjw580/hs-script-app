@@ -1,16 +1,16 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.hsscriptcardsdk.bean.Entity
-import club.xiaojiawei.hsscriptcardsdk.bean.isValid
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
-import club.xiaojiawei.hsscriptbase.enums.StepEnum
-import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.utils.CardUtil
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
+import club.xiaojiawei.hsscriptcardsdk.bean.Entity
+import club.xiaojiawei.hsscriptcardsdk.bean.isValid
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
 
 /**
  * 抽起始牌阶段
@@ -83,8 +83,8 @@ object DrawnInitCardPhaseStrategy : AbstractPhaseStrategy() {
         }
         war.run {
 
-            if (Entity.isUnknownEntityName(card.entityName) || card.entityName == "幸运币") {
-                card.entityName = "幸运币"
+            if (Entity.isUnknownEntityName(card.entityName) || card.entityName == "The Coin" || card.entityName == "幸运币" || card.isCoinCard) {
+//                card.entityName = "幸运币"
                 if (card.cardId.isNotBlank()) {
                     rival.gameId = firstPlayerGameId
                     log.info { "对方游戏id：$firstPlayerGameId" }
