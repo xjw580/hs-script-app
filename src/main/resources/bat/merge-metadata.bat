@@ -50,7 +50,7 @@ echo.
 REM Run JAR with GraalVM tracing agent
 "%GRAALVM_HOME%\bin\java.exe" ^
     -agentlib:native-image-agent=config-merge-dir=../src/main/resources/META-INF/native-image ^
-    -jar hs-script_v4.12.0-GA.jar
+    -jar hs-script_v4.13.0-GA.jar
 
 echo.
 echo ============================================

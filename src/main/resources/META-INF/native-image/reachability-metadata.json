@@ -5339,6 +5339,10 @@
           "parameterTypes": []
         },
         {
+          "name": "getProtectionDomain",
+          "parameterTypes": []
+        },
+        {
           "name": "getRecordComponents",
           "parameterTypes": []
         },
@@ -5705,11 +5709,25 @@
       ]
     },
     {
+      "type": "java.net.URI",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getPath",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "java.net.URL",
       "jniAccessible": true,
       "methods": [
         {
           "name": "getProtocol",
+          "parameterTypes": []
+        },
+        {
+          "name": "toURI",
           "parameterTypes": []
         }
       ]
@@ -5844,7 +5862,27 @@
       "type": "java.security.AlgorithmParametersSpi"
     },
     {
+      "type": "java.security.CodeSource",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getLocation",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "java.security.KeyStoreSpi"
+    },
+    {
+      "type": "java.security.ProtectionDomain",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getCodeSource",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "java.security.interfaces.ECPrivateKey"
