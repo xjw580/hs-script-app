@@ -127,6 +127,7 @@ object DeckStrategyActuator {
                 GameUtil.CONFIRM_RECT.lClick(false)
                 SystemUtil.delayShort()
             }
+            GameUtil.CENTER_RECT.lClick(false)
         }
     }
 
