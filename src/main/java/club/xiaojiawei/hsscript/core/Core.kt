@@ -22,6 +22,7 @@ import java.util.concurrent.locks.ReentrantLock
  * 控制脚本的启动
  * @author 肖嘉威
  * @date 2023/7/5 13:15
+ * @fix 2025/12/19 调用 ScreenLogListener.restdealing()解决炉石闪退后dealing为true的bug
  */
 object Core {
     @Volatile
@@ -109,6 +110,7 @@ object Core {
      * 重启脚本
      */
     fun restart(sync: Boolean = false) {
+        ScreenLogListener.restdealing()//重置screenlog的dealing
         val exec = {
             PauseStatus.asyncSetPause(true)
             GameUtil.killGame(true)
