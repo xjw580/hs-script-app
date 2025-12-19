@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
  * 游戏界面监听器
  * @author 肖嘉威
  * @date 2023/7/5 14:55
+ * @fix 2025/12/19 创建restdealing()解决炉石闪退非正常退出后dealing为true的问题
  */
 object ScreenLogListener :
     AbstractLogListener(GAME_MODE_LOG_NAME, 0, 50L, TimeUnit.MILLISECONDS) {
@@ -60,6 +61,11 @@ object ScreenLogListener :
     }
 
     private var dealing = false
+        
+    fun restdealing(){
+        dealing=false
+    }//解决炉石闪退或非正常退出后dealing为true的问题
+        
 
     override fun dealNewLog() {
         if (dealing) return
@@ -74,7 +80,7 @@ object ScreenLogListener :
                 resolveLog(line)
             }
         }
-        dealing = false
+        dealing = false//bug：炉石闪退或非正常退出后不执行，通过restdealing()解决
     }
 
     private fun resolveLog(line: String?) {
