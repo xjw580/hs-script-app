@@ -10,7 +10,7 @@
 
     <groupId>com.github.xjw580</groupId>
     <artifactId>hs-script-app</artifactId>
-<!--    <version>v4.13.0-GA</version>-->
+    <!--    <version>v4.13.0-GA</version>-->
     <name>hs-script-app</name>
     <description>炉石传说脚本</description>
 
@@ -39,6 +39,9 @@
     <profiles>
         <profile>
             <id>native</id>
+            <properties>
+                <run.mode>native</run.mode>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -73,6 +76,9 @@
         </profile>
         <profile>
             <id>jvm</id>
+            <properties>
+                <run.mode>jar</run.mode>
+            </properties>
             <build>
                 <plugins>
                     <plugin>

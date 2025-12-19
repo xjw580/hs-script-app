@@ -16,6 +16,7 @@ import club.xiaojiawei.hsscriptbase.bean.LRunnable
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
+import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.beans.property.ReadOnlyBooleanWrapper
 import java.io.File
@@ -95,7 +96,7 @@ object VersionListener {
 
         checkVersionTask = EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
             if (System.currentTimeMillis() - ConfigUtil.getLong(ConfigEnum.LAST_CHECK_VERSION_TIME) > 1000 * 60 * 60 &&
-                (SystemUtil.isStartupByJar() || ScriptStatus.programArgs.contains(ARG_UPDATE))
+                (BuildInfo.SOFT_RUN_MODE != SoftRunMode.FILE || ScriptStatus.programArgs.contains(ARG_UPDATE))
             ) {
                 checkVersion()
             }

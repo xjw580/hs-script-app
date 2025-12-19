@@ -225,7 +225,7 @@
                                            prefWidth="${fieldWidth}"
                                            editable="false"/>
                             </HBox>
-                            <HBox styleClass="h-box">
+                            <HBox fx:id="aotPane" styleClass="h-box">
                                 <Label fx:id="aotCacheLabel" text="AOT缓存: " contentDisplay="RIGHT"/>
                                 <Button text="刷新" onAction="#refreshAOTCache" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
                                 <Button text="打开" onAction="#openAOTCacheDir" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>

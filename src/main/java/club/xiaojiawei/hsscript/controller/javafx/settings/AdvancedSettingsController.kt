@@ -23,6 +23,8 @@ import club.xiaojiawei.hsscript.utils.ConfigExUtil.storeMouseControlMode
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storePauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigUtil.putString
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.const.BuildInfo
+import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 import com.melloware.jintellitype.JIntellitypeConstants
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
@@ -35,6 +37,7 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
+import javafx.scene.layout.HBox
 import javafx.util.Duration
 import java.io.File
 import java.net.URL
@@ -47,12 +50,20 @@ import java.util.*
 class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializable {
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
+        checkEnableAOT()
         initValue()
         listen()
     }
 
     override fun onShown() {
         refreshAOTCache()
+    }
+
+    private fun checkEnableAOT(){
+        if (BuildInfo.SOFT_RUN_MODE !== SoftRunMode.JAR){
+            aotPane.isVisible = false
+            aotPane.isManaged = false
+        }
     }
 
     private fun initValue() {

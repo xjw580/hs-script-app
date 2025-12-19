@@ -21,6 +21,9 @@ open class AdvancedSettingsView {
     protected lateinit var autoStartPane: HBox
 
     @FXML
+    protected lateinit var aotPane: HBox
+
+    @FXML
     protected lateinit var powerBootSwitch: ConfigSwitch
 
     @FXML

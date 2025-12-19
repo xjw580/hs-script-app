@@ -25,6 +25,7 @@ import club.xiaojiawei.hsscriptbase.bean.LThread
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.config.submitExtra
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
+import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.CardAction.Companion.commonActionFactory
@@ -465,7 +466,7 @@ class MainApplication : Application() {
                 log.info { "检测到多台显示器，开始运行后${GAME_CN_NAME}窗口不要移动到其他显示器" }
             }
         }
-        if (!ConfigUtil.getBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE) && SystemUtil.isStartupByJar() && !File(
+        if (!ConfigUtil.getBoolean(ConfigEnum.INIT_CREATE_AOT_CACHE) && BuildInfo.SOFT_RUN_MODE === SoftRunMode.JAR && !File(
                 AOT_FILE_PATH
             ).exists()
         ) {

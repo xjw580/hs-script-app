@@ -29,7 +29,7 @@
                                         <fx:define>
                                             <Double fx:id="icoSize" fx:value="40"/>
                                         </fx:define>
-                                        <ImageView fx:id="projectIco" fitHeight="${icoSize}" fitWidth="${icoSize}"/>
+                                        <ImageView fx:id="projectIco" fitHeight="${icoSize}" fitWidth="${icoSize}" onMouseClicked="#showExtraInfo"/>
                                         <Label text="Hearthstone-Script"
                                                style="-fx-font-weight: bold;-fx-font-size: 18"/>
                                     </HBox>
@@ -69,7 +69,7 @@
                                         </HBox>
                                     </HBox>
                                     <HBox>
-                                        <UrlLabel text="捐赠" url="https://gitee.com/zergqueen/Hearthstone-Script/blob/master/payment-code.jpg"/>
+                                        <UrlLabel text="捐赠" url="https://gitee.com/zergqueen/Hearthstone-Script/#-捐赠支持"/>
                                     </HBox>
                                 </VBox>
                             </HBox>

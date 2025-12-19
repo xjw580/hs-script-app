@@ -2728,6 +2728,9 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscript.dll.CSystemDll"
+    },
+    {
       "type": "club.xiaojiawei.hsscript.dll.CSystemDll$TrayCallback",
       "methods": [
         {
@@ -5594,6 +5597,12 @@
       "type": "java.lang.Throwable",
       "jniAccessible": true,
       "methods": [
+        {
+          "name": "addSuppressed",
+          "parameterTypes": [
+            "java.lang.Throwable"
+          ]
+        },
         {
           "name": "toString",
           "parameterTypes": []
