@@ -12,6 +12,7 @@
 <?import javafx.util.Duration?>
 <?import java.lang.Double?>
 <?import club.xiaojiawei.controls.ico.FailIco?>
+<?import club.xiaojiawei.controls.ico.EditIco?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/advancedSettings.css"
@@ -270,6 +271,19 @@
                                     </graphic>
                                     <tooltip>
                                         <Tooltip text="有魔法推荐选此，此更新源拥有所有版本">
+                                            <showDuration>
+                                                <fx:reference source="tooltipDuration"/>
+                                            </showDuration>
+                                        </Tooltip>
+                                    </tooltip>
+                                </RadioButton>
+                                <RadioButton fx:id="customUpdateSource" text="自定义" toggleGroup="$updateSourceToggle"
+                                             styleClass="radio-button-ui, radio-button-ui-main">
+                                    <graphic>
+                                        <EditIco scaleX="${icoScale}" scaleY="${icoScale}" onMouseClicked="#settingCustomUpdateSource"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip text="自定义更新源">
                                             <showDuration>
                                                 <fx:reference source="tooltipDuration"/>
                                             </showDuration>

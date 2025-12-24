@@ -9,6 +9,7 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
+import club.xiaojiawei.hsscript.utils.CMDUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
@@ -133,13 +134,23 @@ object VersionListener {
                 updatingProperty.set(true)
 
                 val updateProgramPath = SystemUtil.getExeFilePath(UPDATE_FILE)
-                Runtime
-                    .getRuntime()
-                    .exec(
-                        "$updateProgramPath ${ARG_TARGET}'${ROOT_PATH}' ${ARG_PAUSE}'${PauseStatus.isPause}' ${ARG_PID}'${
-                            ProcessHandle.current().pid()
-                        }' ${ARG_VERSION_FILE}'${versionFilePath}'"
-                    )
+
+                // 获取主程序路径
+                val mainProgramFile = File(ROOT_PATH).listFiles()?.find {
+                    it.name == "${PROGRAM_NAME}.exe" || it.name == "${PROGRAM_NAME}-native.exe"
+                }
+
+                // 构建参数（flag 参数必须在位置参数之前）
+                val pidArg = "${ARG_PID}${ProcessHandle.current().pid()}"
+                val pauseArg = ARG_PAUSE + PauseStatus.isPause
+                val mainProgramArg = mainProgramFile?.let { "--main-program=\"${it.absolutePath}\"" } ?: ""
+
+                // 正确的命令格式：update --flags... positionalArgs...
+                val command =
+                    "$updateProgramPath update $pidArg $pauseArg $mainProgramArg \"$versionFilePath\" \"$ROOT_PATH\""
+
+                log.info { "执行更新命令: $command" }
+                Runtime.getRuntime().exec(command)
             } catch (e: RuntimeException) {
                 log.error(e) { "执行版本更新失败" }
             } finally {

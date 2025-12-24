@@ -87,6 +87,9 @@ open class AdvancedSettingsView {
     protected lateinit var githubUpdateSource: RadioButton
 
     @FXML
+    protected lateinit var customUpdateSource: RadioButton
+
+    @FXML
     protected lateinit var giteeUpdateSource: RadioButton
 
     @FXML

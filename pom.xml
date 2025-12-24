@@ -254,10 +254,14 @@
                     <excludes>
                         <exclude>bat/**</exclude>
                         <exclude>exe/**</exclude>
+                        <exclude>build/**</exclude>
                         <exclude>resources/img/**</exclude>
                         <exclude>resources/tessdata/**</exclude>
                         <exclude>dll/**</exclude>
                         <exclude>logback.xml</exclude>
+                        <exclude>app.manifest</exclude>
+                        <exclude>app.rc</exclude>
+                        <exclude>app.res</exclude>
                     </excludes>
                     <archive>
                         <manifest>

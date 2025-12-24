@@ -1271,6 +1271,9 @@
       "type": "club.xiaojiawei.hsscript.bean.Release$Companion"
     },
     {
+      "type": "club.xiaojiawei.hsscript.bean.Release[]"
+    },
+    {
       "type": "club.xiaojiawei.hsscript.bean.WeightCard",
       "methods": [
         {
@@ -1947,6 +1950,10 @@
         {
           "name": "start",
           "parameterTypes": []
+        },
+        {
+          "name": "updateVersion",
+          "parameterTypes": []
         }
       ]
     },
@@ -2231,6 +2238,10 @@
           "parameterTypes": [
             "javafx.event.ActionEvent"
           ]
+        },
+        {
+          "name": "settingCustomUpdateSource",
+          "parameterTypes": []
         }
       ]
     },
@@ -2553,6 +2564,9 @@
           "name": "aotCacheLabel"
         },
         {
+          "name": "aotPane"
+        },
+        {
           "name": "autoStartPane"
         },
         {
@@ -2563,6 +2577,9 @@
         },
         {
           "name": "behaviorTitled"
+        },
+        {
+          "name": "customUpdateSource"
         },
         {
           "name": "exitHotKey"

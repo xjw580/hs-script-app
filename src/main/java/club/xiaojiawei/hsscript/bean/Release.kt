@@ -3,6 +3,8 @@ package club.xiaojiawei.hsscript.bean
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.const.BuildInfo
+import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.regex.Pattern
 import kotlin.math.min
@@ -35,9 +37,9 @@ class Release : Comparable<Release> {
         return compareVersion(version1, version2)
     }
 
-    fun fileName(): String = String.format(
-        "%s_%s.zip",
+    fun fileName(): String = "%s%s_%s.zip".format(
         PROGRAM_NAME,
+        if (BuildInfo.SOFT_RUN_MODE === SoftRunMode.NATIVE) "-native" else "",
         tagName
     )
 

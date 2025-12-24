@@ -6,6 +6,7 @@ import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.WindowConfig
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.bean.single.repository.AbstractRepository
+import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GithubRepository
 import club.xiaojiawei.hsscript.consts.GAME_PROGRAM_NAME
@@ -143,6 +144,20 @@ object ConfigExUtil {
         if (updateSource.isBlank()) {
             return listOf(GiteeRepository, GithubRepository)
         }
+
+        // 检查是否配置了自定义服务器
+        if (updateSource.startsWith("custom") || updateSource.contains("自定义")) {
+            // 配置自定义服务器（可以从配置文件读取）
+            val customDomain = ConfigUtil.getString(ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN)
+            if (customDomain.isNotBlank()) {
+                CustomRepository.configure(
+                    domain = customDomain,
+                    userName = ConfigUtil.getString(ConfigEnum.CUSTOM_UPDATE_SERVER_USER).ifBlank { "xiaojiawei" }
+                )
+                return listOf(CustomRepository, GiteeRepository, GithubRepository)
+            }
+        }
+
         if (GiteeRepository::class.java.simpleName
                 .lowercase()
                 .startsWith(updateSource)

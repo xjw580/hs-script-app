@@ -1,8 +1,10 @@
 package club.xiaojiawei.hsscript.bean.single.repository
 
 import club.xiaojiawei.hsscript.bean.Release
-import club.xiaojiawei.hsscript.consts.PROJECT_NAME
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
+import club.xiaojiawei.hsscript.consts.PROJECT_NAME
+import club.xiaojiawei.hsscriptbase.const.BuildInfo
+import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 
 /**
  * @author 肖嘉威
@@ -29,9 +31,9 @@ abstract class AbstractRepository {
     }
 
     fun getFileName(release: Release): String {
-        return String.format(
-            "%s_%s.zip",
+        return "%s%s_%s.zip".format(
             PROGRAM_NAME,
+            if (BuildInfo.SOFT_RUN_MODE === SoftRunMode.NATIVE) "-native" else "",
             release.tagName
         )
     }

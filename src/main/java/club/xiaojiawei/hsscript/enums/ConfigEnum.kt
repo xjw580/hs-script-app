@@ -210,6 +210,16 @@ enum class ConfigEnum(
     UPDATE_SOURCE(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "Gitee" }),
 
     /**
+     * 自定义更新服务器域名
+     */
+    CUSTOM_UPDATE_SERVER_DOMAIN(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "localhost:8080" }),
+
+    /**
+     * 自定义更新服务器用户名
+     */
+    CUSTOM_UPDATE_SERVER_USER(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "xiaojiawei" }),
+
+    /**
      * 更新开发版
      */
     UPDATE_DEV(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),

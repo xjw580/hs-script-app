@@ -49,7 +49,7 @@ object NetUtil {
     }
 
     fun buildRestTemplate(useProxy: Boolean = ConfigUtil.getBoolean(ConfigEnum.USE_PROXY)): RestTemplate {
-        if (!useProxy) RestTemplate()
+        if (!useProxy) return RestTemplate()
         return getSystemProxy()?.let {
             val factory = SimpleClientHttpRequestFactory()
             val proxy = Proxy(Proxy.Type.HTTP, it.address())

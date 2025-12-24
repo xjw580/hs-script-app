@@ -1,10 +1,13 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
+import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.HelpIco
 import club.xiaojiawei.controls.ico.OKIco
 import club.xiaojiawei.hsscript.bean.HotKey
+import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
+import club.xiaojiawei.hsscript.bean.single.repository.GithubRepository
 import club.xiaojiawei.hsscript.consts.AOT_FILE_PATH
 import club.xiaojiawei.hsscript.consts.AOT_PATH
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
@@ -14,17 +17,17 @@ import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
-import club.xiaojiawei.hsscript.utils.AOTUtil
-import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.getExitHotKey
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.getPauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storeExitHotKey
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storeMouseControlMode
 import club.xiaojiawei.hsscript.utils.ConfigExUtil.storePauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigUtil.putString
-import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import club.xiaojiawei.hsscriptbase.const.SoftRunMode
+import club.xiaojiawei.kt.dsl.gridPane
+import club.xiaojiawei.kt.dsl.label
 import com.melloware.jintellitype.JIntellitypeConstants
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
@@ -37,7 +40,6 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
-import javafx.scene.layout.HBox
 import javafx.util.Duration
 import java.io.File
 import java.net.URL
@@ -59,8 +61,8 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
         refreshAOTCache()
     }
 
-    private fun checkEnableAOT(){
-        if (BuildInfo.SOFT_RUN_MODE !== SoftRunMode.JAR){
+    private fun checkEnableAOT() {
+        if (BuildInfo.SOFT_RUN_MODE !== SoftRunMode.JAR) {
             aotPane.isVisible = false
             aotPane.isManaged = false
         }
@@ -70,8 +72,10 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
         val repositoryList = ConfigExUtil.getUpdateSourceList()
         if (repositoryList.isEmpty() || repositoryList.first() == GiteeRepository) {
             giteeUpdateSource.isSelected = true
-        } else {
+        } else if (repositoryList.first() == GithubRepository) {
             githubUpdateSource.isSelected = true
+        } else if (repositoryList.first() == CustomRepository) {
+            customUpdateSource.isSelected = true
         }
         mouseControlModeComboBox.setCellFactory {
             object : ListCell<MouseControlModeEnum?>() {
@@ -366,6 +370,58 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
     @FXML
     protected fun openAOTCacheDir() {
         SystemUtil.openFile(AOT_PATH)
+    }
+
+    @FXML
+    protected fun settingCustomUpdateSource() {
+        var domain = ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.defaultValue
+        var user = ConfigEnum.CUSTOM_UPDATE_SERVER_USER.defaultValue
+        val content = gridPane {
+            hgap(10.0)
+            vgap(10.0)
+            cell(0, 0) {
+                custom(label {
+                    +"主机"
+                    style()
+                })
+            }
+            cell(1, 0) {
+                custom(club.xiaojiawei.kt.dsl.textField {
+                    +ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.getString()
+                    promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.defaultValue)
+                    settings {
+                        textProperty().addListener { _, _, newValue ->
+                            domain = newValue.trim()
+                        }
+                    }
+                    style()
+                })
+            }
+            cell(0, 1) {
+                custom(label {
+                    +"用户名"
+                    style()
+                })
+            }
+            cell(1, 1) {
+                custom(club.xiaojiawei.kt.dsl.textField {
+                    +ConfigEnum.CUSTOM_UPDATE_SERVER_USER.getString()
+                    promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_USER.defaultValue)
+                    settings {
+                        textProperty().addListener { _, _, newValue ->
+                            user = newValue.trim()
+                        }
+                    }
+                    style()
+                })
+            }
+        }
+        Modal(
+            rootPane, "自定义更新源", content, {
+                ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.putString(domain)
+                ConfigEnum.CUSTOM_UPDATE_SERVER_USER.putString(user)
+            }
+        ).show()
     }
 
 }

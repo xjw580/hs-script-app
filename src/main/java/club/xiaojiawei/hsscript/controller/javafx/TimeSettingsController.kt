@@ -21,6 +21,7 @@ import club.xiaojiawei.hsscript.utils.runUI
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.kt.dsl.StyleSize
+import club.xiaojiawei.kt.dsl.button
 import club.xiaojiawei.kt.dsl.comboBox
 import club.xiaojiawei.kt.dsl.hbox
 import club.xiaojiawei.tablecell.TextFieldTableCellUI
@@ -490,9 +491,9 @@ class TimeSettingsController :
         return hbox {
             alignCenter()
             spacing(5.0)
-            text(item.deckPos.sorted().joinToString(","))
-            label {
-                graphic(club.xiaojiawei.kt.dsl.button {
+            addText(item.deckPos.sorted().joinToString(","))
+            addLabel {
+                graphic(button {
                     style(EDIT_STYLE)
                     cursor(Cursor.HAND)
                     graphic(EditIco("main-color"))
@@ -511,7 +512,7 @@ class TimeSettingsController :
             "设置卡组位", hbox {
                 spacing(10.0)
                 for (i in 1..9) {
-                    checkBox("$i") {
+                    addCheckBox("$i") {
                         style("-fx-text-fill: black;")
                         styleMain()
                         selected(item.deckPos.contains(i))
