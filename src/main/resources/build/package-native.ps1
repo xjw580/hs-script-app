@@ -91,7 +91,7 @@ try {
 
     # 5. Copy exe files to root
     $ExeDir = Join-Path $ResourcesDir "exe"
-    $ExeFiles = @("card-update-util.exe", "inject-util.exe", "install-drive.exe", "update.exe")
+    $ExeFiles = @("card-update-util.exe", "inject-util.exe", "install-drive.exe", "update.exe", "force-stop.exe")
     foreach ($exe in $ExeFiles) {
         $ExePath = Join-Path $ExeDir $exe
         if (Test-Path $ExePath) {

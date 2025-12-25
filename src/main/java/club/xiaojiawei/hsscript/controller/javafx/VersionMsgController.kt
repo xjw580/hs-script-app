@@ -35,11 +35,8 @@ class VersionMsgController : Initializable {
         //        TODO 版本更新时修改！！！
         versionDescription.text =
             """
-            🔧 重构与优化
-            1. 局换完牌后鼠标移动到中央，防止右键到英雄
-            
             🐛 Bug修复
-            1. 修复某些系统，游戏版本/语言下开局无法及时分辨玩家回合的问题
+            1. 修复游戏重启后软件可能无法正常运行的问题
             """.trimIndent()
     }
 

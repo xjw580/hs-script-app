@@ -1,7 +1,5 @@
 package club.xiaojiawei.hsscript.core
 
-import club.xiaojiawei.hsscriptbase.config.CORE_THREAD_POOL
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
@@ -10,10 +8,13 @@ import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.enums.OperateEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
+import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscriptbase.config.CORE_THREAD_POOL
+import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import java.util.concurrent.locks.ReentrantLock
@@ -22,7 +23,6 @@ import java.util.concurrent.locks.ReentrantLock
  * 控制脚本的启动
  * @author 肖嘉威
  * @date 2023/7/5 13:15
- * @fix 2025/12/19 调用 ScreenLogListener.restdealing()解决炉石闪退后dealing为true的bug
  */
 object Core {
     @Volatile
@@ -110,7 +110,7 @@ object Core {
      * 重启脚本
      */
     fun restart(sync: Boolean = false) {
-        ScreenLogListener.restdealing()//重置screenlog的dealing
+        ScreenLogListener.resetDealing()
         val exec = {
             PauseStatus.asyncSetPause(true)
             GameUtil.killGame(true)

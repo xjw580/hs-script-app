@@ -9,7 +9,6 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.VersionTypeEnum
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
-import club.xiaojiawei.hsscript.utils.CMDUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
@@ -101,7 +100,7 @@ object VersionListener {
             ) {
                 checkVersion()
             }
-        }, 500, 1000 * 60 * 60 * 2, TimeUnit.MILLISECONDS)
+        }, 1000 * 60 * 60, 1000 * 60 * 60 * 6, TimeUnit.MILLISECONDS)
         log.info { "版本更新检测已启动" }
     }
 
