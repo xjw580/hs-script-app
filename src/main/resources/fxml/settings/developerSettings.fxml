@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import club.xiaojiawei.controls.ico.HelpIco?>
 <?import club.xiaojiawei.controls.NotificationManager?>
+<?import club.xiaojiawei.controls.ProgressModal?>
 <?import club.xiaojiawei.factory.NotificationFactory?>
-<?import club.xiaojiawei.hsscript.component.ConfigSwitch?>
+<?import club.xiaojiawei.hsscript.component.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<?import club.xiaojiawei.controls.ProgressModal?>
-<?import club.xiaojiawei.hsscript.component.TipNode?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/developerSettings.css"
@@ -40,7 +38,8 @@
                 <HBox styleClass="h-box">
                     <Text text="显示游戏控件位置" onMouseClicked="#enableDisplayGameRectPos"/>
                     <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}" config="DISPLAY_GAME_RECT_POS"/>
+                    <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}"
+                                  config="DISPLAY_GAME_RECT_POS"/>
                 </HBox>
                 <HBox styleClass="h-box">
                     <Text text="保存OCR图片"/>
@@ -91,11 +90,13 @@
                             onAction="#captureGameFrame"/>
                 </HBox>
                 <HBox styleClass="h-box">
-                    <Button text="分析游戏数据" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openGameDataAnalysis"/>
+                    <Button text="分析游戏数据" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#openGameDataAnalysis"/>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <Label text="对局开始自动打开" contentDisplay="RIGHT">
                         <graphic>
-                            <ConfigSwitch notificationManager="${notificationManager}" config="AUTO_OPEN_GAME_ANALYSIS"/>
+                            <ConfigSwitch notificationManager="${notificationManager}"
+                                          config="AUTO_OPEN_GAME_ANALYSIS"/>
                         </graphic>
                     </Label>
                 </HBox>
@@ -107,12 +108,19 @@
                         </graphic>
                     </Button>
                 </HBox>
+                <HBox styleClass="h-box">
+                    <Button text="检查目标程序权限" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#checkPermission" contentDisplay="RIGHT"/>
+                </HBox>
                 <HBox styleClass="h-box" visible="false" managed="false">
-                    <Button text="编写卡牌插件" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#createCardAction"/>
+                    <Button text="编写卡牌插件" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#createCardAction"/>
                 </HBox>
                 <HBox styleClass="h-box">
-                    <Button text="格式化Power.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#formatPowerLog"/>
-                    <Button text="格式化LoadingScreen.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#formatLoadingScreenLog"/>
+                    <Button text="格式化Power.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#formatPowerLog"/>
+                    <Button text="格式化LoadingScreen.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                            onAction="#formatLoadingScreenLog"/>
                 </HBox>
             </VBox>
         </ScrollPane>

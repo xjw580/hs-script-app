@@ -5,8 +5,6 @@ import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.controls.ico.FileIco
-import club.xiaojiawei.hsscript.bean.FrameData
-import club.xiaojiawei.hsscript.bean.FrameReader
 import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -24,6 +22,8 @@ import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
+import com.sun.jna.Pointer
+import com.sun.jna.platform.win32.WinDef
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -31,11 +31,8 @@ import javafx.fxml.Initializable
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.image.PixelFormat
-import javafx.scene.image.WritableImage
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
@@ -43,7 +40,6 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.DirectoryChooser
-import javafx.stage.Stage
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
@@ -360,4 +356,13 @@ class DeveloperSettingsController : Initializable {
         }
     }
 
+    @FXML
+    protected fun checkPermission() {
+        val gamePermission = if (CSystemDll.isProcessElevated(GAME_PROGRAM_NAME)) "管理员权限" else "普通权限"
+        val platformPermission = if (CSystemDll.isProcessElevated(PLATFORM_PROGRAM_NAME)) "管理员权限" else "普通权限"
+        SystemUtil.messageInfoOk(
+            "${GAME_CN_NAME}: ${gamePermission}, ${PLATFORM_CN_NAME}: $platformPermission",
+            hwnd = WinDef.HWND(Pointer(WindowUtil.getHWND(rootPane.scene.window)))
+        )
+    }
 }

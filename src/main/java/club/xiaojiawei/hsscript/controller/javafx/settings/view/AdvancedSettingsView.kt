@@ -4,6 +4,7 @@ import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
+import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.control.*
@@ -115,6 +116,9 @@ open class AdvancedSettingsView {
 
     @FXML
     protected lateinit var gameStartupModeComboBox: ComboBox<GameStartupModeEnum>
+
+    @FXML
+    protected lateinit var softProtectedModeComboBox: ComboBox<SoftProtectedModeEnum>
 
     @FXML
     protected lateinit var aotCacheLabel: Label

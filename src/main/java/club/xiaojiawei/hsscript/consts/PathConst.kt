@@ -1,13 +1,10 @@
 package club.xiaojiawei.hsscript.consts
 
-import club.xiaojiawei.hsscript.listener.VersionListener
 import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
-import java.io.File
+import com.sun.jna.WString
 import java.nio.file.Path
 import kotlin.io.path.exists
-import kotlin.math.log
 
 /**
  * @author 肖嘉威
@@ -15,6 +12,8 @@ import kotlin.math.log
  */
 
 val ROOT_PATH by lazy { System.getProperty("user.dir") }
+
+val PROTECT_PATH = WString(ROOT_PATH)
 
 val TEMP_VERSION_PATH: String by lazy { Path.of(ROOT_PATH, "new_version_temp").toString() }
 

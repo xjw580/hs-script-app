@@ -15,6 +15,7 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
+import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
 import club.xiaojiawei.hsscript.initializer.DriverInitializer
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
@@ -224,6 +225,17 @@ object ConfigExUtil {
 
     fun storeGameStartupMode(gameStartupModeEnums: List<GameStartupModeEnum>) {
         ConfigUtil.putString(ConfigEnum.GAME_STARTUP_MODE, objectMapper.writeValueAsString(gameStartupModeEnums))
+    }
+
+    fun getSoftProtectedMode(): SoftProtectedModeEnum {
+        return ConfigUtil.getObject(
+            ConfigEnum.SOFT_PROTECTED_MODE,
+            SoftProtectedModeEnum::class.java,
+        ) ?: SoftProtectedModeEnum.NONE
+    }
+
+    fun storeSoftProtectedMode(softProtectedModeEnum: SoftProtectedModeEnum) {
+        ConfigUtil.putObject(ConfigEnum.SOFT_PROTECTED_MODE, softProtectedModeEnum)
     }
 
     fun getChooseDeckPos(): MutableList<Int> {

@@ -151,9 +151,21 @@ interface CSystemDll : Library {
 
     fun isDebug(): Boolean
 
+    fun protectDirectory(directoryPath: WString, strongProtection: Boolean): Boolean
+
+    fun unprotectDirectory(directoryPath: WString): Boolean
+
+    fun isDirectoryProtected(directoryPath: WString): Boolean
+
+    fun isProcessElevated(pid: Long): Boolean
+
+    fun getProcessId(processName: String): Long
+
     object SystemPart {
+
         fun enablePowerBoot(enable: Boolean, start: Boolean = false): Boolean {
-            return File(ROOT_PATH).listFiles().find { it.name == "${PROGRAM_NAME}.exe"||it.name == "${PROGRAM_NAME}-native.exe" }
+            return File(ROOT_PATH).listFiles()
+                .find { it.name == "${PROGRAM_NAME}.exe" || it.name == "${PROGRAM_NAME}-native.exe" }
                 ?.let { latestJar ->
                     val countDownLatch = CountDownLatch(1)
                     var res = false
@@ -298,6 +310,15 @@ interface CSystemDll : Library {
         const val MF_SEPARATOR: Int = -0x80000000
 
         const val MF_CHECKED: Int = 0x00000008
+
+        fun isProcessElevated(processName: String): Boolean {
+            val pid = INSTANCE.getProcessId(processName)
+            if (pid > 0) {
+                return INSTANCE.isProcessElevated(pid)
+            }
+            return false
+        }
+
 
         @Synchronized
         fun setWakeUpTimer(seconds: Int): Boolean {

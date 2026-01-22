@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import club.xiaojiawei.controls.ico.EditIco?>
 <?import club.xiaojiawei.controls.ico.GiteeIco?>
 <?import club.xiaojiawei.controls.ico.GithubIco?>
 <?import club.xiaojiawei.controls.NotificationManager?>
 <?import club.xiaojiawei.factory.NotificationFactory?>
 <?import club.xiaojiawei.hsscript.component.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.Group?>
+<?import javafx.scene.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.util.Duration?>
 <?import java.lang.Double?>
-<?import club.xiaojiawei.controls.ico.FailIco?>
-<?import club.xiaojiawei.controls.ico.EditIco?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/advancedSettings.css"
@@ -77,17 +76,17 @@
                                 <Text text="游戏窗口缩小倍数"/>
                                 <TipNode text="主显示器与游戏窗口高度之比"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigFloatNumberField decimalCount = "1" config="GAME_WINDOW_REDUCTION_FACTOR"
-                                                   styleClass="text-field-ui, text-field-ui-small"
-                                                   minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
+                                <ConfigFloatNumberField decimalCount="1" config="GAME_WINDOW_REDUCTION_FACTOR"
+                                                        styleClass="text-field-ui, text-field-ui-small"
+                                                        minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="战网窗窗口缩小倍数"/>
                                 <TipNode text="主显示器与战网窗口高度之比"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigFloatNumberField decimalCount = "1" config="PLATFORM_WINDOW_REDUCTION_FACTOR"
-                                                   styleClass="text-field-ui, text-field-ui-small"
-                                                   minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
+                                <ConfigFloatNumberField decimalCount="1" config="PLATFORM_WINDOW_REDUCTION_FACTOR"
+                                                        styleClass="text-field-ui, text-field-ui-small"
+                                                        minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="置顶游戏窗口"/>
@@ -140,7 +139,8 @@
                                 <Text text="避免以管理员权限启动游戏"/>
                                 <TipNode text="部分系统不支持，自行尝试"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
-                                <ConfigSwitch notificationManager="${notificationManager}" config="PREVENT_ADMIN_LAUNCH_GAME"/>
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="PREVENT_ADMIN_LAUNCH_GAME"/>
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="工作时最小化"/>
@@ -177,7 +177,8 @@
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="游戏日志大小限制/KB"/>
-                                <TipNode text="游戏日志文件超过此值将重启游戏。设为-1将禁用大小限制（必须用软件启动游戏才能生效），此时游戏日志不再写入磁盘，设置后重启游戏生效"/>
+                                <TipNode
+                                        text="游戏日志文件超过此值将重启游戏。设为-1将禁用大小限制（必须用软件启动游戏才能生效），此时游戏日志不再写入磁盘，设置后重启游戏生效"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigNumberField config="GAME_LOG_LIMIT"
                                                    styleClass="text-field-ui, text-field-ui-small"
@@ -220,22 +221,34 @@
                                            editable="false"/>
                             </HBox>
                             <HBox styleClass="h-box">
+                                <Text text="软件保护"/>
+                                <TipNode
+                                        text="软件所在目录无权限的程序和用户无法访问"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <ComboBox fx:id="softProtectedModeComboBox"
+                                          styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
+                            </HBox>
+                            <HBox fx:id="aotPane" styleClass="h-box">
+                                <Label fx:id="aotCacheLabel" text="AOT缓存: " contentDisplay="RIGHT"/>
+                                <Button text="刷新" onAction="#refreshAOTCache"
+                                        styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
+                                <Button text="打开" onAction="#openAOTCacheDir"
+                                        styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Button text="创建AOT缓存" onAction="#createAOTCache" contentDisplay="RIGHT"
+                                        styleClass="btn-ui, btn-ui-normal, btn-ui-small">
+                                    <graphic>
+                                        <TipNode
+                                                text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <Text text="退出快捷键"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <TextField fx:id="exitHotKey" styleClass="text-field-ui, text-field-ui-small"
                                            prefWidth="${fieldWidth}"
                                            editable="false"/>
-                            </HBox>
-                            <HBox fx:id="aotPane" styleClass="h-box">
-                                <Label fx:id="aotCacheLabel" text="AOT缓存: " contentDisplay="RIGHT"/>
-                                <Button text="刷新" onAction="#refreshAOTCache" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
-                                <Button text="打开" onAction="#openAOTCacheDir" styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
-                                <HBox HBox.hgrow="ALWAYS"/>
-                                <Button text="创建AOT缓存" onAction="#createAOTCache" contentDisplay="RIGHT" styleClass="btn-ui, btn-ui-normal, btn-ui-small">
-                                    <graphic>
-                                        <TipNode text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
-                                    </graphic>
-                                </Button>
                             </HBox>
                         </VBox>
                     </TitledPane>
@@ -280,7 +293,8 @@
                                 <RadioButton fx:id="customUpdateSource" text="自定义" toggleGroup="$updateSourceToggle"
                                              styleClass="radio-button-ui, radio-button-ui-main">
                                     <graphic>
-                                        <EditIco scaleX="${icoScale}" scaleY="${icoScale}" onMouseClicked="#settingCustomUpdateSource"/>
+                                        <EditIco scaleX="${icoScale}" scaleY="${icoScale}"
+                                                 onMouseClicked="#settingCustomUpdateSource"/>
                                     </graphic>
                                     <tooltip>
                                         <Tooltip text="自定义更新源">

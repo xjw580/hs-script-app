@@ -388,7 +388,7 @@ enum class ConfigEnum(
     GAME_STARTUP_MODE(
         group = BEHAVIOR_CONFIG_GROUP,
         defaultValueInitializer = {
-            objectMapper.writeValueAsString(arrayOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD))
+            objectMapper.writeValueAsString(GameStartupModeEnum.entries.toTypedArray())
         }
     ),
 
@@ -525,6 +525,16 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 软件保护模式
+     */
+    SOFT_PROTECTED_MODE(
+        group = SYSTEM_CONFIG_GROUP,
+        defaultValueInitializer = {
+            SoftProtectedModeEnum.NONE.name
+        }
+    ),
+
+    /**
      * 是否执行策略
      */
     STRATEGY(group = DEV_CONFIG_GROUP, defaultValueInitializer = { TRUE_STR }),
@@ -603,7 +613,9 @@ enum class ConfigEnum(
     /**
      * 最后一次检查软件更新的时间
      */
-    LAST_CHECK_VERSION_TIME(group = OTHER_CONFIG_GROUP, defaultValueInitializer = { System.currentTimeMillis().toString() }),
+    LAST_CHECK_VERSION_TIME(
+        group = OTHER_CONFIG_GROUP,
+        defaultValueInitializer = { System.currentTimeMillis().toString() }),
     ;
 
     val defaultValue: String by lazy {

@@ -7,6 +7,7 @@ import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
 import club.xiaojiawei.hsscript.listener.StatisticsListener
@@ -191,6 +192,7 @@ class MainApplication : Application() {
                         CSystemDll.INSTANCE.limitMouseRange(false)
                         CSystemDll.INSTANCE.mouseHook(false)
                         CSystemDll.INSTANCE.acHook(false)
+                        CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                         log.info { "软件已关闭" }
                     },
                     "ShutdownHook Thread",
@@ -483,23 +485,21 @@ class MainApplication : Application() {
             WindowUtil.hideLaunchPage()
             checkSystem()
             checkArg()
+            val softProtectedMode = ConfigExUtil.getSoftProtectedMode()
+            log.info { "软件保护模式:${softProtectedMode.name}" }
+            when (softProtectedMode) {
+                SoftProtectedModeEnum.NORMAL -> {
+                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                }
 
-//            val hand1 = Card(CommonCardAction()).apply {
-//                action.belongCard = this
-//                cardType = CardTypeEnum.MINION
-//                entityId = "1"
-////                area = WAR.me.handArea
-//            }
-//
-//            val play1 = Card(CommonCardAction()).apply {
-//                action.belongCard = this
-//                cardType = CardTypeEnum.MINION
-//                entityId = "2"
-////                area = WAR.me.playArea
-//            }
-//            WAR.me.handArea.add(hand1)
-//            WAR.me.playArea.add(play1)
-//            hand1.action.power(false)?.pointTo(play1, true)
+                SoftProtectedModeEnum.STRONG -> {
+                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                }
+
+                SoftProtectedModeEnum.NONE -> {
+                    CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
+                }
+            }
         }
     }
 }

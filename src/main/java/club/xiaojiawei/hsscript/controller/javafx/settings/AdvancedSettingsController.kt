@@ -10,11 +10,13 @@ import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GithubRepository
 import club.xiaojiawei.hsscript.consts.AOT_FILE_PATH
 import club.xiaojiawei.hsscript.consts.AOT_PATH
+import club.xiaojiawei.hsscript.consts.PROTECT_PATH
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
+import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.listener.GlobalHotkeyListener
 import club.xiaojiawei.hsscript.utils.*
@@ -41,6 +43,7 @@ import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.util.Duration
+import javafx.util.StringConverter
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -102,6 +105,17 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
 
         gameStartupModeComboBox.items.addAll(GameStartupModeEnum.entries.toTypedArray())
         gameStartupModeComboBox.value = ConfigExUtil.getGameStartupMode().first()
+
+        softProtectedModeComboBox.converter = object : StringConverter<SoftProtectedModeEnum>() {
+            override fun toString(p0: SoftProtectedModeEnum?): String? {
+                return p0?.comment
+            }
+
+            override fun fromString(p0: String?): SoftProtectedModeEnum? = null
+
+        }
+        softProtectedModeComboBox.items.addAll(SoftProtectedModeEnum.entries.toTypedArray())
+        softProtectedModeComboBox.value = ConfigExUtil.getSoftProtectedMode()
 
         val pauseKey = getPauseHotKey()
         if (pauseKey != null) {
@@ -219,6 +233,22 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
             }
         gameStartupModeComboBox.valueProperty().addListener { _, _, newValue ->
             ConfigExUtil.storeGameStartupMode(GameStartupModeEnum.entries.sortedBy { if (it == newValue) 0 else 1 })
+        }
+        softProtectedModeComboBox.valueProperty().addListener { _, _, newValue ->
+            ConfigExUtil.storeSoftProtectedMode(newValue)
+            when (newValue) {
+                SoftProtectedModeEnum.NORMAL -> {
+                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                }
+
+                SoftProtectedModeEnum.STRONG -> {
+                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                }
+
+                SoftProtectedModeEnum.NONE -> {
+                    CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
+                }
+            }
         }
 
         pauseHotKey.onKeyPressed =
