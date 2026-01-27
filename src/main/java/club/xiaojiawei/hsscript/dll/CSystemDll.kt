@@ -161,6 +161,8 @@ interface CSystemDll : Library {
 
     fun getProcessId(processName: String): Long
 
+    fun launchAsNormalUser(cmdLine: WString): Boolean
+
     object SystemPart {
 
         fun enablePowerBoot(enable: Boolean, start: Boolean = false): Boolean {
@@ -311,6 +313,17 @@ interface CSystemDll : Library {
 
         const val MF_CHECKED: Int = 0x00000008
 
+        fun launchAsNormalUser(exePath: String, args: List<String> = emptyList()): Boolean {
+            val cmdLine = buildString {
+                append('"').append(exePath).append('"')
+                args.forEach { arg ->
+                    append(' ')
+                    append(arg)
+                }
+            }
+            return INSTANCE.launchAsNormalUser(WString(cmdLine))
+        }
+
         fun isProcessElevated(processName: String): Boolean {
             val pid = INSTANCE.getProcessId(processName)
             if (pid > 0) {
@@ -395,17 +408,3 @@ interface CSystemDll : Library {
 fun WinDef.RECT.width() = right - left
 
 fun WinDef.RECT.height() = bottom - top
-
-fun main() {
-    val starter = GameStarter()
-    starter.setNextStarter(InjectStarter().apply {
-        setNextStarter(object : AbstractStarter() {
-            override fun execStart() {
-                CSystemDll.INSTANCE.logHook(true)
-                println("logHook")
-            }
-        })
-    })
-    starter.start()
-    Thread.sleep(1000000)
-}

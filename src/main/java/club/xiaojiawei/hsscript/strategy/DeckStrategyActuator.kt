@@ -2,7 +2,6 @@ package club.xiaojiawei.hsscript.strategy
 
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.listener.log.PowerLogListener
-import club.xiaojiawei.hsscript.listener.log.ScreenLogListener
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
@@ -141,7 +140,7 @@ object DeckStrategyActuator {
         val surrenderNumber = ConfigUtil.getInt(ConfigEnum.OVER_TURN_SURRENDER)
 
         if (surrenderNumber >= 0 && war.me.turn >= surrenderNumber) {
-            log.info { "到达投降回合" }
+            log.info { "到达投降回合-[${surrenderNumber}]" }
             GameUtil.surrender()
             return
         }
@@ -215,7 +214,10 @@ object DeckStrategyActuator {
     private fun checkSurrender(): Boolean {
         DeckStrategyManager.currentDeckStrategy?.let {
             if (it.needSurrender) {
-                go { GameUtil.surrender() }
+                go {
+                    log.info { "策略请求投降" }
+                    GameUtil.surrender()
+                }
                 it.needSurrender = false
                 return true
             }

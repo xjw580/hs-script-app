@@ -1,8 +1,5 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.StepEnum
-import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.bean.log.Block
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
@@ -22,9 +19,12 @@ import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealShowEntity
 import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealTagChange
 import club.xiaojiawei.hsscript.utils.PowerLogUtil.isRelevance
 import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.StepEnum
+import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscriptbase.interfaces.PhaseStrategy
-import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import java.io.IOException
 
 /**
@@ -56,7 +56,9 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
                 if (l == null) {
                     SystemUtil.delay(100)
                 } else if (isRelevance(l)) {
-                    log.debug { l }
+                    if (log.isDebugEnabled()) {
+                        log.debug { l }
+                    }
                     if (l.contains(TAG_CHANGE)) {
                         if (dealTagChangeThenIsOver(
                                 l, dealTagChange(l)

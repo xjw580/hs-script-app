@@ -12,6 +12,7 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
+import club.xiaojiawei.kt.config.log
 
 /**
  * 换牌阶段
@@ -29,11 +30,13 @@ object ReplaceCardPhaseStrategy : AbstractPhaseStrategy() {
             if (me.gameId == gameId || (rival.gameId.isNotBlank() && rival.gameId != gameId)) {
                 cancelAllTask()
 //                执行换牌策略
+                val winRateLimit = ConfigUtil.getInt(ConfigEnum.MAXIMUM_WIN_RATE_LIMIT)
                 (ChangeCardThread {
                     if (WarEx.warCount != 0
-                        && (WarEx.winCount * 100.0 / WarEx.warCount) > ConfigUtil.getInt(ConfigEnum.MAXIMUM_WIN_RATE_LIMIT)
+                        && (WarEx.winCount * 100.0 / WarEx.warCount) > winRateLimit
                             .toDouble()
                     ) {
+                        log.info { "达到胜率限制[${winRateLimit}%]，准备投降" }
                         GameUtil.surrender()
                     } else {
                         changeCard()

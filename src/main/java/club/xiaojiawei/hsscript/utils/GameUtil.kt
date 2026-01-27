@@ -448,12 +448,16 @@ object GameUtil {
                 log.error { PLATFORM_CN_NAME + "路径为空" }
                 return
             }
-            val command = if (ConfigUtil.getBoolean(ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME)) {
-                """runas /trustlevel:0x20000 "$platformPath --exec=\"launch WTCG\"""""
+            if (ConfigUtil.getBoolean(ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME)) {
+                CSystemDll.launchAsNormalUser(
+                    platformPath, listOf(
+                        """--exec="launch WTCG""""
+                    )
+                )
             } else {
-                """"$platformPath" --exec="launch WTCG""""
+                val command = """"$platformPath" --exec="launch WTCG""""
+                Runtime.getRuntime().exec(command)
             }
-            Runtime.getRuntime().exec(command)
         } catch (e: IOException) {
             log.error(e) { "启动${PLATFORM_CN_NAME}及${GAME_CN_NAME}异常" }
         }
@@ -503,7 +507,7 @@ object GameUtil {
         val isGamePlay = Mode.currMode === ModeEnum.GAMEPLAY
         gameEndTasks.add(
             EXTRA_THREAD_POOL.scheduleWithFixedDelay(
-                LRunnable {
+                {
                     if (PauseStatus.isPause) {
                         cancelGameEndTask()
                     } else if (WarEx.warCount > warCount || (isGamePlay && Mode.currMode !== ModeEnum.GAMEPLAY)) {
