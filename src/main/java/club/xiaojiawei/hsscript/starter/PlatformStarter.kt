@@ -1,10 +1,11 @@
 package club.xiaojiawei.hsscript.starter
 
-import club.xiaojiawei.hsscriptbase.bean.LRunnable
+import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
+import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscript.utils.getBoolean
 import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscript.consts.PLATFORM_CN_NAME
-import club.xiaojiawei.hsscript.utils.GameUtil
 import java.util.concurrent.TimeUnit
 
 /**
@@ -16,7 +17,7 @@ class PlatformStarter : AbstractStarter() {
 
     public override fun execStart() {
         if (GameUtil.isAliveOfGame()) {
-            startNextStarter()
+            next()
             return
         }
         if (GameUtil.isAliveOfPlatform()) {
@@ -29,7 +30,7 @@ class PlatformStarter : AbstractStarter() {
 
         var startTime = System.currentTimeMillis()
         addTask(
-            LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay( {
+            LAUNCH_PROGRAM_THREAD_POOL.scheduleWithFixedDelay({
                 if (System.currentTimeMillis() - startTime >= 10 * 1000 && !GameUtil.isAliveOfPlatform()) {
                     startTime = System.currentTimeMillis()
                     GameUtil.killPlatform()
@@ -37,10 +38,19 @@ class PlatformStarter : AbstractStarter() {
                     log.info { "${PLATFORM_CN_NAME}可能被关闭，启动中" }
                     GameUtil.launchPlatformAndGame()
                 }
-                if (GameUtil.findPlatformHWND() != null || GameUtil.findLoginPlatformHWND() != null) {
-                    startNextStarter()
-                }
+                next()
             }, 1, 50, TimeUnit.MILLISECONDS)
         )
+    }
+
+    private fun next() {
+        if (GameUtil.findPlatformHWND() != null || GameUtil.findLoginPlatformHWND() != null) {
+            if (ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME.getBoolean() && GameUtil.getPlatformProgramPermission()
+                    .isAdministration()
+            ) {
+                log.warn { "${PLATFORM_CN_NAME}正在以管理员权限运行" }
+            }
+        }
+        startNextStarter()
     }
 }

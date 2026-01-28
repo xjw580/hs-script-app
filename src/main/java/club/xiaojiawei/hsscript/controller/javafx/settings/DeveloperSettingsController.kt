@@ -358,10 +358,8 @@ class DeveloperSettingsController : Initializable {
 
     @FXML
     protected fun checkPermission() {
-        val gamePermission = if (CSystemDll.isProcessElevated(GAME_PROGRAM_NAME)) "管理员权限" else "普通权限"
-        val platformPermission = if (CSystemDll.isProcessElevated(PLATFORM_PROGRAM_NAME)) "管理员权限" else "普通权限"
         SystemUtil.messageInfoOk(
-            "${GAME_CN_NAME}: ${gamePermission}, ${PLATFORM_CN_NAME}: $platformPermission",
+            "${GAME_CN_NAME}: ${GameUtil.getGameProgramPermission().comment}\n${PLATFORM_CN_NAME}: ${GameUtil.getPlatformProgramPermission().comment}",
             hwnd = WinDef.HWND(Pointer(WindowUtil.getHWND(rootPane.scene.window)))
         )
     }

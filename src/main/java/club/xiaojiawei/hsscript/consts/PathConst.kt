@@ -23,6 +23,8 @@ const val AOT_DIR = "aot"
 
 const val AOT_BATCH_NAME = "create-aot.bat"
 
+const val UNLOCK_BATCH_NAME = "unlock.bat"
+
 val AOT_PATH: String by lazy { Path.of(ROOT_PATH, AOT_DIR).toString() }
 
 val AOT_FILE_PATH: String by lazy { Path.of(AOT_PATH, "${PROGRAM_NAME}_${BuildInfo.VERSION}.aot").toString() }
@@ -71,6 +73,8 @@ val LIB_BN_FILE = ResourceFile("bn.dll")
 val LIB_CAPTURE_READER_FILE = ResourceFile("capture_reader.dll")
 
 val LIB_LOG_READER_FILE = ResourceFile("log_reader.dll")
+
+val UNLOCK_FILE = ResourceFile(UNLOCK_BATCH_NAME)
 
 const val GAME_WAR_LOG_NAME = "Power.log"
 

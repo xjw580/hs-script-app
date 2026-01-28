@@ -137,7 +137,6 @@
                             </HBox>
                             <HBox styleClass="h-box">
                                 <Text text="避免以管理员权限启动游戏"/>
-                                <TipNode text="部分系统不支持，自行尝试"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <ConfigSwitch notificationManager="${notificationManager}"
                                               config="PREVENT_ADMIN_LAUNCH_GAME"/>
@@ -221,6 +220,13 @@
                                            editable="false"/>
                             </HBox>
                             <HBox styleClass="h-box">
+                                <Text text="退出快捷键"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <TextField fx:id="exitHotKey" styleClass="text-field-ui, text-field-ui-small"
+                                           prefWidth="${fieldWidth}"
+                                           editable="false"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <Text text="软件保护"/>
                                 <TipNode
                                         text="软件所在目录无权限的程序和用户无法访问"/>
@@ -242,13 +248,6 @@
                                                 text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
                                     </graphic>
                                 </Button>
-                            </HBox>
-                            <HBox styleClass="h-box">
-                                <Text text="退出快捷键"/>
-                                <HBox HBox.hgrow="ALWAYS"/>
-                                <TextField fx:id="exitHotKey" styleClass="text-field-ui, text-field-ui-small"
-                                           prefWidth="${fieldWidth}"
-                                           editable="false"/>
                             </HBox>
                         </VBox>
                     </TitledPane>

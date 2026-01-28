@@ -186,13 +186,13 @@ class MainApplication : Application() {
             .addShutdownHook(
                 LThread(
                     {
+                        CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                         CSystemDll.INSTANCE.removeSystemTray()
 //                        CSystemDll.INSTANCE.uninstall()
                         CSystemDll.INSTANCE.capture(false)
                         CSystemDll.INSTANCE.limitMouseRange(false)
                         CSystemDll.INSTANCE.mouseHook(false)
                         CSystemDll.INSTANCE.acHook(false)
-                        CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                         log.info { "软件已关闭" }
                     },
                     "ShutdownHook Thread",
@@ -486,14 +486,14 @@ class MainApplication : Application() {
             checkSystem()
             checkArg()
             val softProtectedMode = ConfigExUtil.getSoftProtectedMode()
-            log.info { "软件保护模式:${softProtectedMode.name}" }
+            log.info { "软件保护模式: ${softProtectedMode.comment}" }
             when (softProtectedMode) {
                 SoftProtectedModeEnum.NORMAL -> {
                     CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
                 }
 
                 SoftProtectedModeEnum.STRONG -> {
-                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, true)
                 }
 
                 SoftProtectedModeEnum.NONE -> {

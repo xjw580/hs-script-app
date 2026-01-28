@@ -2,13 +2,8 @@ package club.xiaojiawei.hsscript.starter
 
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
-import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
-import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.enums.GameLogModeEnum
-import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
-import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
@@ -16,12 +11,8 @@ import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.sun.jna.platform.win32.User32
-import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinDef.HWND
-import java.awt.Point
-import java.io.File
 import java.util.concurrent.TimeUnit
-import kotlin.io.path.Path
 
 /**
  * 启动游戏
@@ -95,8 +86,14 @@ class GameStarter : AbstractStarter() {
     }
 
     private fun next(gameHWND: HWND) {
-        log.info { GAME_CN_NAME + "正在运行" }
         updateGameMsg(gameHWND)
+        if (ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME.getBoolean() && GameUtil.getGameProgramPermission()
+                .isAdministration()
+        ) {
+            log.warn { "${GAME_CN_NAME}正在以管理员权限运行" }
+        } else {
+            log.info { GAME_CN_NAME + "正在运行" }
+        }
         startNextStarter()
     }
 

@@ -8,9 +8,7 @@ import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GithubRepository
-import club.xiaojiawei.hsscript.consts.AOT_FILE_PATH
-import club.xiaojiawei.hsscript.consts.AOT_PATH
-import club.xiaojiawei.hsscript.consts.PROTECT_PATH
+import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
@@ -28,6 +26,8 @@ import club.xiaojiawei.hsscript.utils.ConfigExUtil.storePauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigUtil.putString
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import club.xiaojiawei.hsscriptbase.const.SoftRunMode
+import club.xiaojiawei.kt.dsl.StyleSize
+import club.xiaojiawei.kt.dsl.button
 import club.xiaojiawei.kt.dsl.gridPane
 import club.xiaojiawei.kt.dsl.label
 import com.melloware.jintellitype.JIntellitypeConstants
@@ -46,7 +46,10 @@ import javafx.util.Duration
 import javafx.util.StringConverter
 import java.io.File
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.util.*
+import kotlin.io.path.Path
 
 /**
  * @author 肖嘉威
@@ -136,12 +139,9 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
             Timeline(
                 KeyFrame(
                     Duration.millis(0.0), KeyValue(scrollPane.vvalueProperty(), sourceV)
-                ),
-                KeyFrame(
-                    Duration.millis(200.0),
-                    KeyValue(
-                        scrollPane.vvalueProperty(),
-                        targetV
+                ), KeyFrame(
+                    Duration.millis(200.0), KeyValue(
+                        scrollPane.vvalueProperty(), targetV
                     )
                 )
             ).run {
@@ -222,94 +222,120 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
             putString(ConfigEnum.UPDATE_SOURCE, (newValue as ToggleButton).text)
         }
 //        监听鼠标模式开关
-        mouseControlModeComboBox.valueProperty()
-            .addListener { observable, oldValue, newValue ->
-                storeMouseControlMode(newValue)
-                val isDrive = ConfigExUtil.getMouseControlMode() === MouseControlModeEnum.DRIVE
-                refreshDriver.isVisible = isDrive
-                refreshDriver.isManaged = isDrive
-                topGameWindow.status =
-                    (newValue === MouseControlModeEnum.EVENT || newValue === MouseControlModeEnum.DRIVE)
-            }
+        mouseControlModeComboBox.valueProperty().addListener { observable, oldValue, newValue ->
+            storeMouseControlMode(newValue)
+            val isDrive = ConfigExUtil.getMouseControlMode() === MouseControlModeEnum.DRIVE
+            refreshDriver.isVisible = isDrive
+            refreshDriver.isManaged = isDrive
+            topGameWindow.status =
+                (newValue === MouseControlModeEnum.EVENT || newValue === MouseControlModeEnum.DRIVE)
+        }
         gameStartupModeComboBox.valueProperty().addListener { _, _, newValue ->
             ConfigExUtil.storeGameStartupMode(GameStartupModeEnum.entries.sortedBy { if (it == newValue) 0 else 1 })
         }
-        softProtectedModeComboBox.valueProperty().addListener { _, _, newValue ->
-            ConfigExUtil.storeSoftProtectedMode(newValue)
-            when (newValue) {
-                SoftProtectedModeEnum.NORMAL -> {
-                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
-                }
-
-                SoftProtectedModeEnum.STRONG -> {
-                    CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
-                }
-
-                SoftProtectedModeEnum.NONE -> {
-                    CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
-                }
+        var isCycle = false
+        softProtectedModeComboBox.valueProperty().addListener { _, oldValue, newValue ->
+            if (isCycle) return@addListener
+            CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
+            if (newValue === SoftProtectedModeEnum.STRONG) {
+                Modal(rootPane, "确定使用${SoftProtectedModeEnum.STRONG.comment}保护吗？", label {
+                    +"unlock.bat将备份至桌面,用于恢复"
+                    settings {
+                        contentDisplay = ContentDisplay.RIGHT
+                    }
+                    graphic(button {
+                        +"打开位置"
+                        onAction {
+                            SystemUtil.getBatFilePath(UNLOCK_FILE)?.let {
+                                SystemUtil.openFileAndSelect(it)
+                            }
+                        }
+                        style(styleSize = StyleSize.SMALL)
+                    })
+                }, {
+                    SystemUtil.getBatFilePath(UNLOCK_FILE)?.let {
+                        Files.copy(
+                            it.toPath(),
+                            Path(System.getProperty("user.home"), "Desktop", UNLOCK_BATCH_NAME),
+                            StandardCopyOption.REPLACE_EXISTING
+                        )
+                        ConfigExUtil.storeSoftProtectedMode(newValue)
+                        go {
+                            Thread.sleep(3000)
+                            CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, true)
+                            runUI {
+                                notificationManager.showSuccess("开启强力保护成功", 3)
+                            }
+                        }
+                    } ?: let {
+                        notificationManager.showWarn("无法备份${UNLOCK_BATCH_NAME}, 取消操作", 3)
+                    }
+                }, {
+                    isCycle = true
+                    softProtectedModeComboBox.value = oldValue
+                    isCycle = false
+                }).show()
+            } else if (newValue === SoftProtectedModeEnum.NORMAL) {
+                CSystemDll.INSTANCE.protectDirectory(PROTECT_PATH, false)
+                ConfigExUtil.storeSoftProtectedMode(newValue)
+            } else {
+                ConfigExUtil.storeSoftProtectedMode(newValue)
             }
         }
 
-        pauseHotKey.onKeyPressed =
-            EventHandler { event: KeyEvent ->
-                val hotKey = plusModifier(event)
-                if (hotKey != null) {
-                    if (hotKey.keyCode == 0) {
-                        pauseHotKey.text = ""
-                        storePauseHotKey(hotKey)
-                        GlobalHotkeyListener.reload()
-                        notificationManager.showSuccess("开始/暂停热键热键已删除", 2)
-                    } else {
-                        pauseHotKey.text = hotKey.toString()
-                        storePauseHotKey(hotKey)
-                        GlobalHotkeyListener.reload()
-                        notificationManager.showSuccess("开始/暂停热键已修改", 2)
-                    }
+        pauseHotKey.onKeyPressed = EventHandler { event: KeyEvent ->
+            val hotKey = plusModifier(event)
+            if (hotKey != null) {
+                if (hotKey.keyCode == 0) {
+                    pauseHotKey.text = ""
+                    storePauseHotKey(hotKey)
+                    GlobalHotkeyListener.reload()
+                    notificationManager.showSuccess("开始/暂停热键热键已删除", 2)
+                } else {
+                    pauseHotKey.text = hotKey.toString()
+                    storePauseHotKey(hotKey)
+                    GlobalHotkeyListener.reload()
+                    notificationManager.showSuccess("开始/暂停热键已修改", 2)
                 }
             }
-        pauseHotKey.onKeyReleased =
-            EventHandler { event: KeyEvent ->
-                this.reduceModifier(
-                    event
-                )
+        }
+        pauseHotKey.onKeyReleased = EventHandler { event: KeyEvent ->
+            this.reduceModifier(
+                event
+            )
+        }
+        pauseHotKey.focusedProperty().addListener { observable, oldValue, newValue ->
+            if (!newValue) {
+                modifier = 0
             }
-        pauseHotKey.focusedProperty()
-            .addListener { observable, oldValue, newValue ->
-                if (!newValue) {
-                    modifier = 0
-                }
-            }
+        }
 
-        exitHotKey.onKeyPressed =
-            EventHandler { event: KeyEvent ->
-                val hotKey = plusModifier(event)
-                if (hotKey != null) {
-                    if (hotKey.keyCode == 0) {
-                        exitHotKey.text = ""
-                        storeExitHotKey(hotKey)
-                        GlobalHotkeyListener.reload()
-                        notificationManager.showSuccess("退出热键已删除", 2)
-                    } else {
-                        exitHotKey.text = hotKey.toString()
-                        storeExitHotKey(hotKey)
-                        GlobalHotkeyListener.reload()
-                        notificationManager.showSuccess("退出热键已修改", 2)
-                    }
+        exitHotKey.onKeyPressed = EventHandler { event: KeyEvent ->
+            val hotKey = plusModifier(event)
+            if (hotKey != null) {
+                if (hotKey.keyCode == 0) {
+                    exitHotKey.text = ""
+                    storeExitHotKey(hotKey)
+                    GlobalHotkeyListener.reload()
+                    notificationManager.showSuccess("退出热键已删除", 2)
+                } else {
+                    exitHotKey.text = hotKey.toString()
+                    storeExitHotKey(hotKey)
+                    GlobalHotkeyListener.reload()
+                    notificationManager.showSuccess("退出热键已修改", 2)
                 }
             }
-        exitHotKey.onKeyReleased =
-            EventHandler { event: KeyEvent ->
-                this.reduceModifier(
-                    event
-                )
+        }
+        exitHotKey.onKeyReleased = EventHandler { event: KeyEvent ->
+            this.reduceModifier(
+                event
+            )
+        }
+        exitHotKey.focusedProperty().addListener { observable, oldValue, newValue ->
+            if (!newValue) {
+                modifier = 0
             }
-        exitHotKey.focusedProperty()
-            .addListener { observable, oldValue, newValue ->
-                if (!newValue) {
-                    modifier = 0
-                }
-            }
+        }
     }
 
     private var modifier = 0
@@ -450,8 +476,18 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
             rootPane, "自定义更新源", content, {
                 ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.putString(domain)
                 ConfigEnum.CUSTOM_UPDATE_SERVER_USER.putString(user)
-            }
-        ).show()
+            }).show()
     }
 
+}
+
+fun main() {
+
+    SystemUtil.getBatFilePath(UNLOCK_FILE)?.let {
+        Files.copy(
+            it.toPath(),
+            Path(System.getProperty("user.home"), "Desktop", UNLOCK_BATCH_NAME),
+            StandardCopyOption.REPLACE_EXISTING
+        )
+    }
 }

@@ -438,6 +438,15 @@ object SystemUtil {
             loadResource("exe/${file.name}")
         }
 
+    fun getBatFilePath(file: ResourceFile): File? = if (Objects
+            .requireNonNull(javaClass.getResource(""))
+            .protocol != "file"
+    ) {
+        Path.of(ROOT_PATH, file.name).toFile()
+    } else {
+        loadResource("bat/${file.name}")
+    }
+
     private fun loadResource(path: String): File? {
         var file: File? = null
         javaClass.classLoader.getResource(path)?.let {
@@ -454,12 +463,22 @@ object SystemUtil {
         return file
     }
 
+    @Suppress("DEPRECATION")
+    fun openFileAndSelect(path: String) {
+        val command = String.format("explorer /select,\"%s\"", path)
+        Runtime.getRuntime().exec(command)
+    }
+
+    fun openFileAndSelect(file: File) {
+        openFileAndSelect(file.absolutePath)
+    }
+
     /**
      * 打开文件
      */
     @Suppress("DEPRECATION")
     fun openFile(path: String) {
-        Runtime.getRuntime().exec(String.format("explorer %s", path))
+        Runtime.getRuntime().exec(String.format("explorer \"%s\"", path))
     }
 
     fun openFile(file: File) {

@@ -7,6 +7,7 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.dll.height
 import club.xiaojiawei.hsscript.dll.width
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.enums.ProgramPermissionEnum
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
@@ -598,6 +599,17 @@ object GameUtil {
     fun isAliveOfGame(): Boolean = CSystemDll.INSTANCE.isProcessRunning(GAME_PROGRAM_NAME)
 
     fun isAliveOfPlatform(): Boolean = CSystemDll.INSTANCE.isProcessRunning(PLATFORM_PROGRAM_NAME)
+
+
+    fun getGameProgramPermission(): ProgramPermissionEnum {
+        if (!isAliveOfGame()) return ProgramPermissionEnum.NOT_RUNNING
+        return if (CSystemDll.isProcessElevated(GAME_PROGRAM_NAME)) ProgramPermissionEnum.ADMINISTRATION else ProgramPermissionEnum.NORMAL
+    }
+
+    fun getPlatformProgramPermission(): ProgramPermissionEnum {
+        if (!isAliveOfPlatform()) return ProgramPermissionEnum.NOT_RUNNING
+        return if (CSystemDll.isProcessElevated(PLATFORM_PROGRAM_NAME)) ProgramPermissionEnum.ADMINISTRATION else ProgramPermissionEnum.NORMAL
+    }
 
     fun findGameHWND(): WinDef.HWND? {
         val hwnd =
