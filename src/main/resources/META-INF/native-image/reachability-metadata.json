@@ -1686,7 +1686,13 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscript.component.Group"
+    },
+    {
       "type": "club.xiaojiawei.hsscript.component.HBox"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.component.Hyperlink"
     },
     {
       "type": "club.xiaojiawei.hsscript.component.Label"
@@ -1741,10 +1747,65 @@
       "type": "club.xiaojiawei.hsscript.component.ScrollPane"
     },
     {
+      "type": "club.xiaojiawei.hsscript.component.SettingHBox",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "getContent",
+          "parameterTypes": []
+        },
+        {
+          "name": "setBeta",
+          "parameterTypes": [
+            "boolean"
+          ]
+        },
+        {
+          "name": "setGroup",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setName",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setTabWindow",
+          "parameterTypes": [
+            "club.xiaojiawei.hsscript.enums.WindowEnum"
+          ]
+        },
+        {
+          "name": "setTip",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.component.SettingsSearchField",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "club.xiaojiawei.hsscript.component.SplitPane"
     },
     {
       "type": "club.xiaojiawei.hsscript.component.StackPane"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.component.String"
     },
     {
       "type": "club.xiaojiawei.hsscript.component.TableColumn"
@@ -1935,6 +1996,12 @@
           "name": "openStatistics",
           "parameterTypes": [
             "javafx.event.ActionEvent"
+          ]
+        },
+        {
+          "name": "openVersionMsg",
+          "parameterTypes": [
+            "javafx.scene.input.MouseEvent"
           ]
         },
         {
@@ -2294,10 +2361,19 @@
       "type": "club.xiaojiawei.hsscript.controller.javafx.settings.DeveloperSettingsController",
       "fields": [
         {
+          "name": "debugNavigation"
+        },
+        {
+          "name": "debugPane"
+        },
+        {
           "name": "displayGameRectPosSwitch"
         },
         {
           "name": "fileLogLevelComboBox"
+        },
+        {
+          "name": "navigationBarToggle"
         },
         {
           "name": "notificationManager"
@@ -2307,6 +2383,18 @@
         },
         {
           "name": "rootPane"
+        },
+        {
+          "name": "scrollPane"
+        },
+        {
+          "name": "titledRootPane"
+        },
+        {
+          "name": "toolNavigation"
+        },
+        {
+          "name": "toolPane"
         }
       ],
       "methods": [
@@ -2316,6 +2404,10 @@
         },
         {
           "name": "captureGameFrame",
+          "parameterTypes": []
+        },
+        {
+          "name": "checkPermission",
           "parameterTypes": []
         },
         {
@@ -2336,6 +2428,12 @@
         },
         {
           "name": "openMeasureUtil",
+          "parameterTypes": [
+            "javafx.event.ActionEvent"
+          ]
+        },
+        {
+          "name": "scrollTool",
           "parameterTypes": [
             "javafx.event.ActionEvent"
           ]
@@ -2377,6 +2475,10 @@
         },
         {
           "name": "gameClicked",
+          "parameterTypes": []
+        },
+        {
+          "name": "openGamePath",
           "parameterTypes": []
         }
       ]
@@ -2471,10 +2573,19 @@
           "name": "pluginTab"
         },
         {
+          "name": "progressModal"
+        },
+        {
           "name": "rootPane"
         },
         {
+          "name": "searchField"
+        },
+        {
           "name": "strategyTab"
+        },
+        {
+          "name": "tabPane"
         },
         {
           "name": "weightTab"
@@ -2491,16 +2602,43 @@
       "type": "club.xiaojiawei.hsscript.controller.javafx.settings.StrategySettingsController",
       "fields": [
         {
+          "name": "navigationBarToggle"
+        },
+        {
           "name": "notificationManager"
         },
         {
           "name": "rootPane"
+        },
+        {
+          "name": "scrollPane"
+        },
+        {
+          "name": "strategyNavigation"
+        },
+        {
+          "name": "strategyPane"
+        },
+        {
+          "name": "surrenderNavigation"
+        },
+        {
+          "name": "surrenderPane"
+        },
+        {
+          "name": "titledRootPane"
         }
       ],
       "methods": [
         {
           "name": "<init>",
           "parameterTypes": []
+        },
+        {
+          "name": "scrollSurrender",
+          "parameterTypes": [
+            "javafx.event.ActionEvent"
+          ]
         }
       ]
     },
@@ -2564,6 +2702,9 @@
           "name": "aotCacheLabel"
         },
         {
+          "name": "aotFlushBtn"
+        },
+        {
           "name": "aotPane"
         },
         {
@@ -2625,6 +2766,9 @@
         },
         {
           "name": "scrollPane"
+        },
+        {
+          "name": "softProtectedModeComboBox"
         },
         {
           "name": "systemNavigation"
@@ -2839,7 +2983,21 @@
       "type": "club.xiaojiawei.hsscript.enums.OperateEnum"
     },
     {
-      "type": "club.xiaojiawei.hsscript.enums.WindowEnum"
+      "type": "club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum[]"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.enums.WindowEnum",
+      "methods": [
+        {
+          "name": "valueOf",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
     },
     {
       "type": "club.xiaojiawei.hsscript.enums.WindowEnum$Companion"
@@ -6352,6 +6510,9 @@
       ]
     },
     {
+      "type": "javafx.scene.HBox"
+    },
+    {
       "type": "javafx.scene.Node",
       "methods": [
         {
@@ -6478,6 +6639,15 @@
       "type": "javafx.scene.Scene"
     },
     {
+      "type": "javafx.scene.StackPane"
+    },
+    {
+      "type": "javafx.scene.String"
+    },
+    {
+      "type": "javafx.scene.VBox"
+    },
+    {
       "type": "javafx.scene.canvas.Canvas",
       "methods": [
         {
@@ -6582,6 +6752,9 @@
     },
     {
       "type": "javafx.scene.control.GridPane"
+    },
+    {
+      "type": "javafx.scene.control.Group"
     },
     {
       "type": "javafx.scene.control.HBox"
@@ -7562,7 +7735,13 @@
       "type": "javafx.stage.StageStyle"
     },
     {
-      "type": "javafx.stage.Window"
+      "type": "javafx.stage.Window",
+      "methods": [
+        {
+          "name": "getPeer",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "javafx.util.Duration",

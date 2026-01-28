@@ -35,8 +35,12 @@ class VersionMsgController : Initializable {
         //        TODO 版本更新时修改！！！
         versionDescription.text =
             """
-            🐛 Bug修复
-            1. 修复游戏重启后软件可能无法正常运行的问题
+            🚀 新功能
+            1. 设置页增加搜索设置项功能
+            2. 高级设置页增加保护软件所在目录的功能
+            
+            🔧 重构与优化
+            1. 增强`避免管理员权限启动游戏`功能的适用性生效
             """.trimIndent()
     }
 
