@@ -589,9 +589,17 @@ enum class ConfigEnum(
     ),
 
     /**
-     * 允许战网
+     * 允许战网注入
      */
     ALLOW_PLATFORM_INJECT(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { TRUE_STR },
+    ),
+
+    /**
+     * 启用设置项搜索服务
+     */
+    ENABLE_SETTINGS_SEARCH_SERVICE(
         group = DEV_CONFIG_GROUP,
         defaultValueInitializer = { TRUE_STR },
     ),

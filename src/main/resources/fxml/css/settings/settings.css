@@ -15,24 +15,115 @@
 
 .item-v-box {
     -fx-alignment: CENTER;
-    -fx-padding: 8 24 8 24!important;
+    -fx-padding: 8 24 8 24 !important;
     -fx-spacing: 8;
     /*-fx-padding: 10;*/
     /*-fx-font-size: 12;*/
     /*-fx-alignment: CENTER_LEFT;*/
 }
-.item-titled-pane{
+
+.item-titled-pane {
     -fx-alignment: center_left;
 }
-.item-titled-pane > .content{
-    -fx-background-color: none!important;
+
+.item-titled-pane>.content {
+    -fx-background-color: none !important;
 }
-.item-titled-pane > .title {
-    -fx-background-color: none!important;
-    -fx-border-color: none!important;
+
+.item-titled-pane>.title {
+    -fx-background-color: none !important;
+    -fx-border-color: none !important;
     -fx-font-weight: bold;
 }
 
 .control-btn {
     -fx-background-color: rgba(128, 128, 128, 0.5)
+}
+
+/* 设置搜索样式 */
+.settings-root {
+    -fx-background-color: rgb(242, 242, 242);
+}
+
+/*!* 搜索结果列表样式 *!*/
+/*.setting-cell {*/
+/*    -fx-padding: 10 14;*/
+/*    -fx-background-radius: 6;*/
+/*}*/
+
+/*.setting-name {*/
+/*    -fx-font-size: 13px;*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-text-fill: #333;*/
+/*}*/
+
+/*.setting-desc {*/
+/*    -fx-font-size: 11px;*/
+/*    -fx-text-fill: #888;*/
+/*}*/
+
+/*.setting-group {*/
+/*    -fx-font-size: 10px;*/
+/*    -fx-text-fill: #aaa;*/
+/*}*/
+
+/*!* 搜索结果弹窗列表美化 *!*/
+/*.search-popup-list {*/
+/*    -fx-background-color: white;*/
+/*    -fx-background-radius: 10;*/
+/*    -fx-border-radius: 10;*/
+/*    -fx-border-color: #e0e0e0;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 12, 0, 0, 4);*/
+/*    -fx-padding: 6;*/
+/*}*/
+
+/*.search-popup-list .list-cell {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-background-radius: 6;*/
+/*    -fx-padding: 4 6;*/
+/*}*/
+
+/*.search-popup-list .list-cell:filled:hover {*/
+/*    -fx-background-color: rgba(0, 120, 215, 0.08);*/
+/*}*/
+
+/*.search-popup-list .list-cell:filled:selected {*/
+/*    -fx-background-color: rgba(0, 120, 215, 0.15);*/
+/*}*/
+
+/*.search-popup-list .list-cell:filled:selected .setting-name {*/
+/*    -fx-text-fill: #0078d7;*/
+/*}*/
+
+/*!* 历史记录条目样式 *!*/
+/*.history-cell {*/
+/*    -fx-padding: 10 14;*/
+/*    -fx-alignment: CENTER_LEFT;*/
+/*    -fx-background-radius: 6;*/
+/*}*/
+
+/*.history-delete {*/
+/*    -fx-font-size: 16px;*/
+/*    -fx-text-fill: #999;*/
+/*    -fx-cursor: hand;*/
+/*    -fx-padding: 0 4;*/
+/*}*/
+
+/*.history-delete:hover {*/
+/*    -fx-text-fill: #ff4444;*/
+/*}*/
+
+/*导航栏*/
+.navigationBar {
+    -fx-font-size: 14;
+    -fx-text-fill: gray;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.navigationBar:selected {
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
 }

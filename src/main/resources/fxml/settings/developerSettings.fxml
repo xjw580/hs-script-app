@@ -6,125 +6,124 @@
 <?import club.xiaojiawei.hsscript.component.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/developerSettings.css"
            fx:id="rootPane"
            fx:controller="club.xiaojiawei.hsscript.controller.javafx.settings.DeveloperSettingsController">
-    <VBox>
-        <ScrollPane VBox.vgrow="ALWAYS" styleClass="scroll-pane-item">
-            <VBox styleClass="item-v-box">
-                <HBox styleClass="h-box">
-                    <Text text="启用鼠标"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="ENABLE_MOUSE"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="执行策略"/>
-                    <TipNode text="是否执行卡组策略"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="STRATEGY"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="允许注入炉石传说"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_GAME_INJECT"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <Text text="允许注入战网"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_PLATFORM_INJECT"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="显示游戏控件位置" onMouseClicked="#enableDisplayGameRectPos"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}"
-                                  config="DISPLAY_GAME_RECT_POS"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="保存OCR图片"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <HBox alignment="CENTER_LEFT">
-                        <Hyperlink text="日志" onAction="#openLogFile"/>
-                        <Label text="级别"/>
-                    </HBox>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ComboBox fx:id="fileLogLevelComboBox"
-                              styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="OFF"/>
-                                <String fx:value="ERROR"/>
-                                <String fx:value="WARN"/>
-                                <String fx:value="INFO"/>
-                                <String fx:value="DEBUG"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="启动控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#openConsole" contentDisplay="RIGHT">
-                        <graphic>
-                            <TipNode text="快捷键Alt+A"/>
-                        </graphic>
-                    </Button>
-                    <Button text="关闭控制台" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#closeConsole"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <Label text="启用热键" contentDisplay="RIGHT">
-                        <graphic>
-                            <ConfigSwitch config="ENABLE_CONSOLE_HOTKEY"/>
-                        </graphic>
-                    </Label>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="测量游戏控件" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#openMeasureUtil"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="捕获游戏画面" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#captureGameFrame"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="分析游戏数据" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#openGameDataAnalysis"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <Label text="对局开始自动打开" contentDisplay="RIGHT">
-                        <graphic>
-                            <ConfigSwitch notificationManager="${notificationManager}"
-                                          config="AUTO_OPEN_GAME_ANALYSIS"/>
-                        </graphic>
-                    </Label>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="更新卡牌数据库" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#updateCardDB" contentDisplay="RIGHT">
-                        <graphic>
-                            <TipNode text="更新hs_cards.db，需要魔法"/>
-                        </graphic>
-                    </Button>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="检查目标程序权限" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#checkPermission" contentDisplay="RIGHT"/>
-                </HBox>
-                <HBox styleClass="h-box" visible="false" managed="false">
-                    <Button text="编写卡牌插件" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#createCardAction"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Button text="格式化Power.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#formatPowerLog"/>
-                    <Button text="格式化LoadingScreen.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
-                            onAction="#formatLoadingScreenLog"/>
-                </HBox>
+    <StackPane>
+        <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" styleClass="scroll-pane-item">
+            <VBox fx:id="titledRootPane" alignment="CENTER">
+                <Group fx:id="debugPane">
+                    <TitledPane fx:id="debugTitled" text="调试"
+                                styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
+                        <VBox styleClass="item-v-box">
+                            <SettingHBox name="启用鼠标" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="ENABLE_MOUSE"/>
+                            </SettingHBox>
+                            <SettingHBox name="执行策略" tip="是否执行卡组策略" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="STRATEGY"/>
+                            </SettingHBox>
+                            <SettingHBox name="允许注入" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Label text="炉石传说" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_GAME_INJECT"/>
+                                    </graphic>
+                                </Label>
+                                <Label text="战网" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_PLATFORM_INJECT"/>
+                                    </graphic>
+                                </Label>
+                            </SettingHBox>
+                            <SettingHBox name="显示游戏控件位置" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}"
+                                              config="DISPLAY_GAME_RECT_POS"/>
+                            </SettingHBox>
+                            <SettingHBox name="保存OCR图片" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
+                            </SettingHBox>
+                            <SettingHBox name="日志级别" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Hyperlink text="日志" onAction="#openLogFile"/>
+                                <ComboBox fx:id="fileLogLevelComboBox"
+                                          styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="OFF"/>
+                                            <String fx:value="ERROR"/>
+                                            <String fx:value="WARN"/>
+                                            <String fx:value="INFO"/>
+                                            <String fx:value="DEBUG"/>
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </SettingHBox>
+                            <SettingHBox name="控制台" tip="快捷键Alt+A" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Button text="启动" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openConsole"/>
+                                <Button text="关闭" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#closeConsole"/>
+                                <Label text="启用热键" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch config="ENABLE_CONSOLE_HOTKEY"/>
+                                    </graphic>
+                                </Label>
+                            </SettingHBox>
+                            <SettingHBox name="分析游戏数据" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Button text="打开" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#openGameDataAnalysis"/>
+                                <Label text="对局开始自动打开" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="AUTO_OPEN_GAME_ANALYSIS"/>
+                                    </graphic>
+                                </Label>
+                            </SettingHBox>
+                        </VBox>
+                    </TitledPane>
+                </Group>
+                <Group fx:id="toolPane">
+                    <TitledPane fx:id="toolTitled" text="工具"
+                                styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
+                        <VBox styleClass="item-v-box">
+                            <SettingHBox name="启用设置搜索服务" tip="关闭可提高设置页首次打开速度，重启软件生效" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="ENABLE_SETTINGS_SEARCH_SERVICE"/>
+                            </SettingHBox>
+                            <SettingHBox name="测量游戏控件" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="打开" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openMeasureUtil"/>
+                            </SettingHBox>
+                            <SettingHBox name="捕获游戏画面" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="捕获" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#captureGameFrame"/>
+                            </SettingHBox>
+                            <SettingHBox name="更新卡牌数据库" tip="更新hs_cards.db，需要魔法" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="更新" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#updateCardDB"/>
+                            </SettingHBox>
+                            <SettingHBox name="检查目标程序权限" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="检查" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#checkPermission"/>
+                            </SettingHBox>
+                            <SettingHBox name="格式化日志" tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="Power.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#formatPowerLog"/>
+                                <Button text="LoadingScreen.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#formatLoadingScreenLog"/>
+                            </SettingHBox>
+                        </VBox>
+                    </TitledPane>
+                </Group>
             </VBox>
         </ScrollPane>
-    </VBox>
+        <VBox pickOnBounds="false" alignment="TOP_LEFT" style="-fx-padding: 40 0 0 20;-fx-spacing: 15"
+              translateY="-10">
+            <fx:define>
+                <ToggleGroup fx:id="navigationBarToggle"/>
+            </fx:define>
+            <ToggleButton fx:id="debugNavigation" text="调试" selected="true" styleClass="navigationBar"
+                          toggleGroup="$navigationBarToggle" onAction="#scrollDebug"/>
+            <ToggleButton fx:id="toolNavigation" text="工具" styleClass="navigationBar"
+                          toggleGroup="$navigationBarToggle" onAction="#scrollTool"/>
+        </VBox>
+    </StackPane>
 
     <ProgressModal fx:id="progressModal"/>
     <NotificationManager fx:id="notificationManager" notificationPos="BOTTOM_CENTER">

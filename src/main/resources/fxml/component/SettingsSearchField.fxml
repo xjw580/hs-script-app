@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<fx:root type="VBox" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml">
+    <HBox alignment="CENTER_LEFT" spacing="5">
+        <TextField fx:id="searchField"
+                   promptText="搜索设置项..."
+                   HBox.hgrow="ALWAYS"
+                   styleClass="text-field-ui, text-field-ui-small, settings-search-field"/>
+        <Label fx:id="historyBtn" text="🕒" styleClass="history-btn" onMouseClicked="#onHistoryBtnClicked"/>
+    </HBox>
+</fx:root>

@@ -3,10 +3,9 @@
 <?import club.xiaojiawei.controls.NotificationManager?>
 <?import club.xiaojiawei.factory.NotificationFactory?>
 <?import club.xiaojiawei.hsscript.component.*?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.lang.Double?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -16,72 +15,68 @@
     <fx:define>
         <Double fx:id="fieldWidth" fx:value="60"/>
     </fx:define>
-    <VBox>
-        <ScrollPane VBox.vgrow="ALWAYS" styleClass="scroll-pane-item">
-            <VBox fx:id="mainVBox" styleClass="item-v-box">
-                <HBox styleClass="h-box">
-                    <Text text="操作间隔/ms"/>
-                    <TipNode text="对战时的攻击，出牌等视为一个操作，此值过小会因卡牌动画导致数据不同步问题"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigNumberField config="MOUSE_ACTION_INTERVAL"
-                                       styleClass="text-field-ui, text-field-ui-small"
-                                       hideIcon="true" prefWidth="${fieldWidth}"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="随机事件"/>
-                    <TipNode text="我方回合结束后，可能触发点击卡牌等事件"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EVENT"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="随机表情"/>
-                    <TipNode text="我方回合结束后，可能发问候等表情"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EMOTION"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Label text="只打人机" contentDisplay="RIGHT">
-                        <graphic>
-                            <BetaTag/>
-                        </graphic>
-                    </Label>
-                    <TipNode text="若对方行为不像人机则考虑投降"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="ONLY_ROBOT"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="超回合投降"/>
-                    <TipNode text="指定我方回合数后自动投降"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigNumberField notificationManager="${notificationManager}" config="OVER_TURN_SURRENDER"
-                                       prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
-                                       styleClass="text-field-ui, text-field-ui-small"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="被斩杀投降"/>
-                    <TipNode text="要被斩了投降，只做粗略计算"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigSwitch notificationManager="${notificationManager}" config="KILLED_SURRENDER"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="对局超时投降"/>
-                    <TipNode text="游戏对局超过指定时间(秒)将直接投降"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigNumberField notificationManager="${notificationManager}" config="WAR_TIMEOUT_SURRENDER"
-                                       prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
-                                       styleClass="text-field-ui, text-field-ui-small"/>
-                </HBox>
-                <HBox styleClass="h-box">
-                    <Text text="最大胜率"/>
-                    <TipNode text="超过最大胜率将直接投降"/>
-                    <HBox HBox.hgrow="ALWAYS"/>
-                    <ConfigNumberField notificationManager="${notificationManager}" config="MAXIMUM_WIN_RATE_LIMIT"
-                                       prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="100"
-                                       styleClass="text-field-ui, text-field-ui-small"/>
-                </HBox>
+    <StackPane>
+        <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" styleClass="scroll-pane-item">
+            <VBox fx:id="titledRootPane" alignment="CENTER">
+                <Group fx:id="strategyPane">
+                    <TitledPane fx:id="strategyTitled" text="策略"
+                                styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
+                        <VBox styleClass="item-v-box">
+                            <SettingHBox name="操作间隔/ms" tip="对战时的攻击，出牌等视为一个操作，此值过小会因卡牌动画导致数据不同步问题" tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigNumberField config="MOUSE_ACTION_INTERVAL"
+                                                   styleClass="text-field-ui, text-field-ui-small"
+                                                   hideIcon="true" prefWidth="${fieldWidth}"/>
+                            </SettingHBox>
+                            <SettingHBox name="随机事件" tip="我方回合结束后，可能触发点击卡牌等事件" tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EVENT"/>
+                            </SettingHBox>
+                            <SettingHBox name="随机表情" tip="我方回合结束后，可能发问候等表情" tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EMOTION"/>
+                            </SettingHBox>
+                            <SettingHBox name="只打人机" beta="true" tip="若对方行为不像人机则考虑投降" tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="ONLY_ROBOT"/>
+                            </SettingHBox>
+                        </VBox>
+                    </TitledPane>
+                </Group>
+                <Group fx:id="surrenderPane">
+                    <TitledPane fx:id="surrenderTitled" text="投降"
+                                styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
+                        <VBox styleClass="item-v-box">
+                            <SettingHBox name="超回合投降" tip="指定我方回合数后自动投降" tabWindow="STRATEGY_SETTINGS" group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}" config="OVER_TURN_SURRENDER"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
+                                                   styleClass="text-field-ui, text-field-ui-small"/>
+                            </SettingHBox>
+                            <SettingHBox name="被斩杀投降" tip="要被斩了投降，只做粗略计算" tabWindow="STRATEGY_SETTINGS" group="投降">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="KILLED_SURRENDER"/>
+                            </SettingHBox>
+                            <SettingHBox name="对局超时投降" tip="游戏对局超过指定时间(秒)将直接投降" tabWindow="STRATEGY_SETTINGS" group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}" config="WAR_TIMEOUT_SURRENDER"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
+                                                   styleClass="text-field-ui, text-field-ui-small"/>
+                            </SettingHBox>
+                            <SettingHBox name="最大胜率" tip="超过最大胜率将直接投降" tabWindow="STRATEGY_SETTINGS" group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}" config="MAXIMUM_WIN_RATE_LIMIT"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="100"
+                                                   styleClass="text-field-ui, text-field-ui-small"/>
+                            </SettingHBox>
+                        </VBox>
+                    </TitledPane>
+                </Group>
             </VBox>
         </ScrollPane>
-    </VBox>
+        <VBox pickOnBounds="false" alignment="TOP_LEFT" style="-fx-padding: 40 0 0 20;-fx-spacing: 15"
+              translateY="-10">
+            <fx:define>
+                <ToggleGroup fx:id="navigationBarToggle"/>
+            </fx:define>
+            <ToggleButton fx:id="strategyNavigation" text="策略" selected="true" styleClass="navigationBar"
+                          toggleGroup="$navigationBarToggle" onAction="#scrollStrategy"/>
+            <ToggleButton fx:id="surrenderNavigation" text="投降" styleClass="navigationBar"
+                          toggleGroup="$navigationBarToggle" onAction="#scrollSurrender"/>
+        </VBox>
+    </StackPane>
     <NotificationManager fx:id="notificationManager" notificationPos="BOTTOM_CENTER">
         <NotificationFactory showingCloseBtn="false" size="SMALL"/>
     </NotificationManager>

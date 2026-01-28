@@ -9,11 +9,13 @@ import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox
+import javafx.scene.control.Hyperlink
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Text
@@ -36,10 +38,10 @@ class InitSettingsController : Initializable {
     protected lateinit var notificationManager: NotificationManager<Any>
 
     @FXML
-    protected lateinit var gamePath: Text
+    protected lateinit var gamePath: Hyperlink
 
     @FXML
-    protected lateinit var platformPath: Text
+    protected lateinit var platformPath: Hyperlink
 
     @FXML
     protected lateinit var password: PasswordTextField
@@ -139,6 +141,22 @@ class InitSettingsController : Initializable {
             }
             chooseDeckPosPane.children.add(checkBox)
             deckPosCheckBoxList.add(checkBox)
+        }
+    }
+
+    @FXML
+    protected fun openGamePath() {
+        val path = gamePath.text
+        if (path.isNotEmpty()) {
+            SystemUtil.openFile(path)
+        }
+    }
+
+    @FXML
+    protected fun openPlatformPath() {
+        val path = platformPath.text
+        if (path.isNotEmpty()) {
+            SystemUtil.openFileAndSelect(path)
         }
     }
 }

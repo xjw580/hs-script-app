@@ -482,7 +482,6 @@ class MainApplication : Application() {
     private fun afterShowing() {
         submitExtra {
             initTrayMenu
-            WindowUtil.hideLaunchPage()
             checkSystem()
             checkArg()
             val softProtectedMode = ConfigExUtil.getSoftProtectedMode()
@@ -500,6 +499,7 @@ class MainApplication : Application() {
                     CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                 }
             }
+            WindowUtil.hideLaunchPage()
         }
     }
 }

@@ -121,6 +121,6 @@ open class AdvancedSettingsView {
     protected lateinit var softProtectedModeComboBox: ComboBox<SoftProtectedModeEnum>
 
     @FXML
-    protected lateinit var aotCacheLabel: Label
+    protected lateinit var aotFlushBtn: Button
 
 }

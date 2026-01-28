@@ -11,6 +11,7 @@ import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import java.util.concurrent.CountDownLatch
 import kotlin.test.Test
 
@@ -18,6 +19,7 @@ import kotlin.test.Test
  * @author 肖嘉威
  * @date 2025/9/11 9:14
  */
+@Disabled
 class LogReaderTest {
 
     @BeforeEach

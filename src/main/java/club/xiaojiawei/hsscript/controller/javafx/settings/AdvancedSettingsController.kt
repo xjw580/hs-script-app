@@ -26,10 +26,7 @@ import club.xiaojiawei.hsscript.utils.ConfigExUtil.storePauseHotKey
 import club.xiaojiawei.hsscript.utils.ConfigUtil.putString
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import club.xiaojiawei.hsscriptbase.const.SoftRunMode
-import club.xiaojiawei.kt.dsl.StyleSize
-import club.xiaojiawei.kt.dsl.button
-import club.xiaojiawei.kt.dsl.gridPane
-import club.xiaojiawei.kt.dsl.label
+import club.xiaojiawei.kt.dsl.*
 import com.melloware.jintellitype.JIntellitypeConstants
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
@@ -68,7 +65,7 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
     }
 
     private fun checkEnableAOT() {
-        if (BuildInfo.SOFT_RUN_MODE !== SoftRunMode.JAR) {
+        if (BuildInfo.SOFT_RUN_MODE === SoftRunMode.NATIVE) {
             aotPane.isVisible = false
             aotPane.isManaged = false
         }
@@ -420,7 +417,7 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
 
     @FXML
     protected fun refreshAOTCache(action: ActionEvent? = null) {
-        aotCacheLabel.graphic = if (File(AOT_FILE_PATH).exists()) OKIco() else FailIco()
+        aotFlushBtn.graphic = if (File(AOT_FILE_PATH).exists()) OKIco() else FailIco()
     }
 
     @FXML
@@ -435,41 +432,45 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
         val content = gridPane {
             hgap(10.0)
             vgap(10.0)
-            cell(0, 0) {
-                custom(label {
-                    +"主机"
-                    style()
-                })
-            }
-            cell(1, 0) {
-                custom(club.xiaojiawei.kt.dsl.textField {
-                    +ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.getString()
-                    promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.defaultValue)
-                    settings {
-                        textProperty().addListener { _, _, newValue ->
-                            domain = newValue.trim()
-                        }
+            row {
+                cell {
+                    label {
+                        +"主机"
+                        style()
                     }
-                    style()
-                })
-            }
-            cell(0, 1) {
-                custom(label {
-                    +"用户名"
-                    style()
-                })
-            }
-            cell(1, 1) {
-                custom(club.xiaojiawei.kt.dsl.textField {
-                    +ConfigEnum.CUSTOM_UPDATE_SERVER_USER.getString()
-                    promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_USER.defaultValue)
-                    settings {
-                        textProperty().addListener { _, _, newValue ->
-                            user = newValue.trim()
+                }
+                cell {
+                    textField {
+                        +ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.getString()
+                        promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.defaultValue)
+                        settings {
+                            textProperty().addListener { _, _, newValue ->
+                                domain = newValue.trim()
+                            }
                         }
+                        style()
                     }
-                    style()
-                })
+                }
+            }
+            row {
+                cell {
+                    label {
+                        +"用户名"
+                        style()
+                    }
+                }
+                cell {
+                    textField {
+                        +ConfigEnum.CUSTOM_UPDATE_SERVER_USER.getString()
+                        promptText(ConfigEnum.CUSTOM_UPDATE_SERVER_USER.defaultValue)
+                        settings {
+                            textProperty().addListener { _, _, newValue ->
+                                user = newValue.trim()
+                            }
+                        }
+                        style()
+                    }
+                }
             }
         }
         Modal(

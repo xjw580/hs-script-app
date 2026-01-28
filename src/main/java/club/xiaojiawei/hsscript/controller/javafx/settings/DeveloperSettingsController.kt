@@ -24,12 +24,17 @@ import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
+import javafx.animation.KeyFrame
+import javafx.animation.KeyValue
+import javafx.animation.Timeline
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
@@ -40,6 +45,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.DirectoryChooser
+import javafx.util.Duration
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
@@ -67,6 +73,33 @@ class DeveloperSettingsController : Initializable {
 
     @FXML
     protected lateinit var fileLogLevelComboBox: ComboBox<String>
+
+    @FXML
+    protected lateinit var scrollPane: ScrollPane
+
+    @FXML
+    protected lateinit var titledRootPane: VBox
+
+    @FXML
+    protected lateinit var debugPane: Group
+
+    @FXML
+    protected lateinit var toolPane: Group
+
+    @FXML
+    protected lateinit var debugNavigation: ToggleButton
+
+    @FXML
+    protected lateinit var toolNavigation: ToggleButton
+
+    @FXML
+    protected lateinit var navigationBarToggle: ToggleGroup
+
+    private var forbidSetToggle = false
+    private var debugMaxY = 0.0
+    private var debugMinY = 0.0
+    private var toolMaxY = 0.0
+    private var toolMinY = 0.0
 
     private fun initValue() {
         fileLogLevelComboBox.value = ConfigExUtil.getFileLogLevel().levelStr.uppercase()
@@ -143,6 +176,7 @@ class DeveloperSettingsController : Initializable {
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         initValue()
         addListener()
+        listenNavigation()
     }
 
     @FXML
@@ -362,5 +396,70 @@ class DeveloperSettingsController : Initializable {
             "${GAME_CN_NAME}: ${GameUtil.getGameProgramPermission().comment}\n${PLATFORM_CN_NAME}: ${GameUtil.getPlatformProgramPermission().comment}",
             hwnd = WinDef.HWND(Pointer(WindowUtil.getHWND(rootPane.scene.window)))
         )
+    }
+
+    private fun listenNavigation() {
+        navigationBarToggle.selectedToggleProperty().addListener { _, oldToggle, newToggle ->
+            newToggle ?: let {
+                navigationBarToggle.selectToggle(oldToggle)
+            }
+        }
+        scrollPane.vvalueProperty().addListener { _, oldValue, newValue ->
+            if (forbidSetToggle) return@addListener
+            updateY()
+            val newV = newValue.toDouble()
+            val oldV = oldValue.toDouble()
+            if (newV - oldV > 0) {
+                if (newV > debugMaxY) {
+                    navigationBarToggle.selectToggle(toolNavigation)
+                }
+            } else {
+                if (newV <= debugMinY) {
+                    navigationBarToggle.selectToggle(debugNavigation)
+                } else if (newV <= toolMinY) {
+                    navigationBarToggle.selectToggle(toolNavigation)
+                }
+            }
+        }
+    }
+
+    private fun updateY() {
+        val diffH = titledRootPane.height - scrollPane.viewportBounds.height
+        debugMaxY = debugPane.boundsInParent.maxY / diffH
+        debugMinY = debugPane.boundsInParent.minY / diffH
+        toolMaxY = toolPane.boundsInParent.maxY / diffH
+        toolMinY = toolPane.boundsInParent.minY / diffH
+    }
+
+    private fun scrollTo(pane: Node) {
+        pane.boundsInParent.let {
+            val targetV = it.minY / (titledRootPane.height - scrollPane.viewportBounds.height)
+            val sourceV = scrollPane.vvalue
+            Timeline(
+                KeyFrame(
+                    Duration.millis(0.0), KeyValue(scrollPane.vvalueProperty(), sourceV)
+                ), KeyFrame(
+                    Duration.millis(200.0), KeyValue(
+                        scrollPane.vvalueProperty(), targetV
+                    )
+                )
+            ).run {
+                forbidSetToggle = true
+                onFinished = EventHandler {
+                    forbidSetToggle = false
+                }
+                play()
+            }
+        }
+    }
+
+    @FXML
+    protected fun scrollDebug(actionEvent: ActionEvent) {
+        scrollTo(debugPane)
+    }
+
+    @FXML
+    protected fun scrollTool(actionEvent: ActionEvent) {
+        scrollTo(toolPane)
     }
 }

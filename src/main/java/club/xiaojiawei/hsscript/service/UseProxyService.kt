@@ -24,7 +24,7 @@ object UseProxyService : Service<Boolean>() {
         if (status) {
             log.info { "代理地址:${NetUtil.getSystemProxy()}" }
         } else {
-            log.info { "取消使用代理" }
+            log.info { "不使用代理" }
         }
         return status
     }
