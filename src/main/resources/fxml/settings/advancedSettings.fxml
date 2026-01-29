@@ -154,7 +154,7 @@
                                 <ComboBox fx:id="softProtectedModeComboBox"
                                           styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
                             </SettingHBox>
-                            <SettingHBox name="AOT缓存" tabWindow="ADVANCED_SETTINGS" group="系统">
+                            <SettingHBox fx:id="aotPane" name="AOT缓存" tabWindow="ADVANCED_SETTINGS" group="系统">
                                 <Button fx:id="aotFlushBtn" text="刷新" onAction="#refreshAOTCache"
                                         styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
                                 <Button text="打开" onAction="#openAOTCacheDir"

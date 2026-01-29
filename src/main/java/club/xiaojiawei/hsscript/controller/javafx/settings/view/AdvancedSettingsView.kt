@@ -9,6 +9,7 @@ import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 
@@ -22,7 +23,7 @@ open class AdvancedSettingsView {
     protected lateinit var autoStartPane: HBox
 
     @FXML
-    protected lateinit var aotPane: HBox
+    protected lateinit var aotPane: Pane
 
     @FXML
     protected lateinit var powerBootSwitch: ConfigSwitch

@@ -19,9 +19,6 @@ import club.xiaojiawei.hsscript.status.TaskManager
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.SystemUtil.addTray
 import club.xiaojiawei.hsscript.utils.SystemUtil.shutdownSoft
-import club.xiaojiawei.hsscript.utils.WindowUtil.buildStage
-import club.xiaojiawei.hsscript.utils.WindowUtil.getStage
-import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
 import club.xiaojiawei.hsscriptbase.bean.LThread
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.config.submitExtra
@@ -160,7 +157,7 @@ class MainApplication : Application() {
             for (string in ScriptStatus.programArgs) {
                 if (string.startsWith("--window=")) {
                     val windowEnum = WindowEnum.fromString(string.split("=")[1]) ?: break
-                    showStage(windowEnum)
+                    WindowUtil.showStage(windowEnum)
                     return
                 }
             }
@@ -204,7 +201,7 @@ class MainApplication : Application() {
         if (ScriptStatus.programArgs.stream().anyMatch {
                 if (it.startsWith(ARG_PAGE)) {
                     WindowEnum.fromString(it.removePrefix(ARG_PAGE).uppercase())?.let { windowEnum ->
-                        showStage(windowEnum)
+                        WindowUtil.showStage(windowEnum)
                         WindowUtil.hideLaunchPage()
                         return@anyMatch true
                     }
@@ -214,7 +211,7 @@ class MainApplication : Application() {
         ) {
             return
         }
-        val stage = buildStage(WindowEnum.MAIN)
+        val stage = WindowUtil.buildStage(WindowEnum.MAIN)
         stageShowingListener =
             ChangeListener { _, aBoolean: Boolean?, t1: Boolean? ->
                 if (t1 != null && t1) {
@@ -249,7 +246,7 @@ class MainApplication : Application() {
         settingsItem.addActionListener(
             object : AbstractAction() {
                 override fun actionPerformed(e: ActionEvent?) {
-                    showStage(WindowEnum.SETTINGS, getStage(WindowEnum.MAIN))
+                    WindowUtil.showStage(WindowEnum.SETTINGS, WindowUtil.getStage(WindowEnum.MAIN))
                 }
             },
         )
@@ -267,11 +264,11 @@ class MainApplication : Application() {
             Consumer { e: MouseEvent? ->
 //            左键点击
                 if (e?.button == 1) {
-                    (getStage(WindowEnum.MAIN)?.isShowing ?: false)
+                    (WindowUtil.getStage(WindowEnum.MAIN)?.isShowing ?: false)
                         .isTrue {
                             WindowUtil.hideAllStage(true)
                         }.isFalse {
-                            showStage(WindowEnum.MAIN)
+                            WindowUtil.showStage(WindowEnum.MAIN)
                         }
                 }
             },
@@ -295,9 +292,9 @@ class MainApplication : Application() {
             clickCallback =
                 object : CSystemDll.TrayCallback {
                     override fun invoke() {
-                        val mainStage = getStage(WindowEnum.MAIN)
+                        val mainStage = WindowUtil.getStage(WindowEnum.MAIN)
                         if (mainStage == null || !mainStage.isShowing || mainStage.isIconified) {
-                            showStage(WindowEnum.MAIN)
+                            WindowUtil.showStage(WindowEnum.MAIN)
                         } else {
                             WindowUtil.hideAllStage()
                         }
@@ -339,7 +336,7 @@ class MainApplication : Application() {
                 callback =
                     object : CSystemDll.TrayCallback {
                         override fun invoke() {
-                            showStage(WindowEnum.SETTINGS, getStage(WindowEnum.MAIN))
+                            WindowUtil.showStage(WindowEnum.SETTINGS, WindowUtil.getStage(WindowEnum.MAIN))
                         }
                     }
             }
@@ -357,7 +354,7 @@ class MainApplication : Application() {
                 callback =
                     object : CSystemDll.TrayCallback {
                         override fun invoke() {
-                            showStage(WindowEnum.STATISTICS, getStage(WindowEnum.MAIN))
+                            WindowUtil.showStage(WindowEnum.STATISTICS, WindowUtil.getStage(WindowEnum.MAIN))
                         }
                     }
             }
@@ -413,10 +410,11 @@ class MainApplication : Application() {
         StatisticsListener.launch
     }
 
+    private var aoting = false
+
     private fun checkArg() {
         val args = this.parameters.raw
         var pause: String? = ""
-        var aoting = false
         for (arg in args) {
             if (arg.startsWith(ARG_AOT)) {
                 aoting = true
@@ -437,22 +435,16 @@ class MainApplication : Application() {
             val version = ConfigUtil.getString(ConfigEnum.CURRENT_VERSION)
             if (Release.compareVersion(BuildInfo.VERSION, version) > 0) {
                 runUI {
-                    showStage(WindowEnum.ABOUT)
-                    showStage(WindowEnum.VERSION_MSG, getStage(WindowEnum.MAIN))
+                    WindowUtil.showStage(WindowEnum.ABOUT)
+                    WindowUtil.showStage(WindowEnum.VERSION_MSG, WindowUtil.getStage(WindowEnum.MAIN))
                     ConfigUtil.putString(ConfigEnum.CURRENT_VERSION, BuildInfo.VERSION)
                 }
             } else {
                 if (preferences.get(key, "").isNullOrBlank()) {
-                    showStage(WindowEnum.ABOUT)
+                    WindowUtil.showStage(WindowEnum.ABOUT)
                 }
             }
             preferences.put(key, "true")
-        }
-        if (aoting) {
-            go {
-                Thread.sleep(1000)
-                exitProcess(0)
-            }
         }
     }
 
@@ -500,6 +492,15 @@ class MainApplication : Application() {
                 }
             }
             WindowUtil.hideLaunchPage()
+            if (aoting) {
+                runUI {
+                    WindowUtil.showStage(WindowEnum.SETTINGS, WindowUtil.getStage(WindowEnum.MAIN))
+                }
+                go {
+                    Thread.sleep(5000)
+                    exitProcess(0)
+                }
+            }
         }
     }
 }
