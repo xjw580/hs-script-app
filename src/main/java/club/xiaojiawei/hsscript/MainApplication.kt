@@ -313,7 +313,7 @@ class MainApplication : Application() {
                     }
                 iconPath =
                     Memory(iconPathMemorySize).apply {
-                        setWideString(0, SystemUtil.getResouceImgFile(TRAY_START_IMG_NAME).absolutePath)
+                        setWideString(0, SystemUtil.getResourcesImgFile(TRAY_START_IMG_NAME).absolutePath)
                     }
                 callback =
                     object : CSystemDll.TrayCallback {
@@ -331,7 +331,7 @@ class MainApplication : Application() {
                     }
                 iconPath =
                     Memory(iconPathMemorySize).apply {
-                        setWideString(0, SystemUtil.getResouceImgFile(TRAY_SETTINGS_IMG_NAME).absolutePath)
+                        setWideString(0, SystemUtil.getResourcesImgFile(TRAY_SETTINGS_IMG_NAME).absolutePath)
                     }
                 callback =
                     object : CSystemDll.TrayCallback {
@@ -349,7 +349,7 @@ class MainApplication : Application() {
                     }
                 iconPath =
                     Memory(iconPathMemorySize).apply {
-                        setWideString(0, SystemUtil.getResouceImgFile(TRAY_STATISTICS_IMG_NAME).absolutePath)
+                        setWideString(0, SystemUtil.getResourcesImgFile(TRAY_STATISTICS_IMG_NAME).absolutePath)
                     }
                 callback =
                     object : CSystemDll.TrayCallback {
@@ -371,7 +371,7 @@ class MainApplication : Application() {
                     }
                 iconPath =
                     Memory(iconPathMemorySize).apply {
-                        setWideString(0, SystemUtil.getResouceImgFile(TRAY_EXIT_IMG_NAME).absolutePath)
+                        setWideString(0, SystemUtil.getResourcesImgFile(TRAY_EXIT_IMG_NAME).absolutePath)
                     }
                 callback =
                     object : CSystemDll.TrayCallback {
@@ -385,13 +385,13 @@ class MainApplication : Application() {
                     trayItemArr[0].text?.setWideString(0, "开始")
                     trayItemArr[0].iconPath?.setWideString(
                         0,
-                        SystemUtil.getResouceImgFile(TRAY_START_IMG_NAME).absolutePath,
+                        SystemUtil.getResourcesImgFile(TRAY_START_IMG_NAME).absolutePath,
                     )
                 } else {
                     trayItemArr[0].text?.setWideString(0, "暂停")
                     trayItemArr[0].iconPath?.setWideString(
                         0,
-                        SystemUtil.getResouceImgFile(TRAY_PAUSE_IMG_NAME).absolutePath,
+                        SystemUtil.getResourcesImgFile(TRAY_PAUSE_IMG_NAME).absolutePath,
                     )
                 }
             }

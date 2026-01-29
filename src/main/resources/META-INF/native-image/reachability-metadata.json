@@ -1854,6 +1854,12 @@
           "parameterTypes": []
         },
         {
+          "name": "setContent",
+          "parameterTypes": [
+            "javafx.scene.Node"
+          ]
+        },
+        {
           "name": "setUrl",
           "parameterTypes": [
             "java.lang.String"
@@ -2253,6 +2259,12 @@
       "type": "club.xiaojiawei.hsscript.controller.javafx.settings.AboutController",
       "fields": [
         {
+          "name": "donateImageView"
+        },
+        {
+          "name": "joinChannelImageView"
+        },
+        {
           "name": "notificationManager"
         },
         {
@@ -2266,6 +2278,12 @@
         {
           "name": "<init>",
           "parameterTypes": []
+        },
+        {
+          "name": "showExtraInfo",
+          "parameterTypes": [
+            "javafx.scene.input.MouseEvent"
+          ]
         }
       ]
     },
@@ -2408,6 +2426,10 @@
         },
         {
           "name": "checkPermission",
+          "parameterTypes": []
+        },
+        {
+          "name": "formatLoadingScreenLog",
           "parameterTypes": []
         },
         {
@@ -4397,6 +4419,48 @@
       ]
     },
     {
+      "type": "com.sun.javafx.iio.common.ImageLoaderImpl",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "emitWarning",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.sun.javafx.iio.jpeg.JPEGImageLoader",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "setInputAttributes",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "byte[]"
+          ]
+        },
+        {
+          "name": "setOutputAttributes",
+          "parameterTypes": [
+            "int",
+            "int"
+          ]
+        },
+        {
+          "name": "updateImageProgress",
+          "parameterTypes": [
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.sun.javafx.logging.PrintLogger",
       "methods": [
         {
@@ -5407,7 +5471,24 @@
       ]
     },
     {
-      "type": "java.io.InputStream"
+      "type": "java.io.InputStream",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "read",
+          "parameterTypes": [
+            "byte[]",
+            "int",
+            "int"
+          ]
+        },
+        {
+          "name": "skip",
+          "parameterTypes": [
+            "long"
+          ]
+        }
+      ]
     },
     {
       "type": "java.io.ObjectInputStream"
@@ -7281,6 +7362,18 @@
         {
           "name": "fitWidthProperty",
           "parameterTypes": []
+        },
+        {
+          "name": "setFitWidth",
+          "parameterTypes": [
+            "double"
+          ]
+        },
+        {
+          "name": "setPreserveRatio",
+          "parameterTypes": [
+            "boolean"
+          ]
         }
       ]
     },

@@ -60,9 +60,9 @@ object SystemUtil {
 
     fun getProgramIconFile(): File = Path.of(IMG_PATH, MAIN_IMG_NAME).toFile()
 
-    fun getTrayIconFile(): File = getResouceImgFile(TRAY_IMG_NAME)
+    fun getTrayIconFile(): File = getResourcesImgFile(TRAY_IMG_NAME)
 
-    fun getResouceImgFile(name: String): File = Path.of(IMG_PATH, name).toFile()
+    fun getResourcesImgFile(name: String): File = Path.of(IMG_PATH, name).toFile()
 
     /**
      * 调用系统通知

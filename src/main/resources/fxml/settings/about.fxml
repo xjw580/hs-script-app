@@ -11,6 +11,7 @@
 <?import java.lang.Double?>
 <?import club.xiaojiawei.hsscript.component.UrlLabel?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.Image?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/about.css"
@@ -68,8 +69,17 @@
                                             </UrlLabel>
                                         </HBox>
                                     </HBox>
-                                    <HBox>
-                                        <UrlLabel text="捐赠" url="https://gitee.com/zergqueen/Hearthstone-Script/#-捐赠支持"/>
+                                    <HBox spacing="10">
+                                        <UrlLabel text="捐赠">
+                                            <content>
+                                                <ImageView fx:id="donateImageView" preserveRatio="true" fitWidth="400"/>
+                                            </content>
+                                        </UrlLabel>
+                                        <UrlLabel text="加入频道">
+                                            <content>
+                                                <ImageView fx:id="joinChannelImageView" preserveRatio="true" fitWidth="250"/>
+                                            </content>
+                                        </UrlLabel>
                                     </HBox>
                                 </VBox>
                             </HBox>
