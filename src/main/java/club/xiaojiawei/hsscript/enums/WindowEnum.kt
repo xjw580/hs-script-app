@@ -48,11 +48,8 @@ enum class WindowEnum(
     STRATEGY_SETTINGS(
         "settings/strategySettings.fxml",
     ),
-    WEIGHT_SETTINGS(
-        "settings/weightSettings.fxml",
-    ),
-    CARD_INFO_SETTINGS(
-        "settings/cardInfoSettings.fxml",
+    CARD_GROUP_SETTINGS(
+        "settings/cardGroupSettings.fxml",
     ),
     DEVELOPER_SETTINGS(
         "settings/developerSettings.fxml",

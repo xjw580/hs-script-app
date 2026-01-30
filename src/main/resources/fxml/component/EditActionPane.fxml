@@ -18,7 +18,7 @@
                 <VBox fx:id="actionPane" spacing="15" alignment="TOP_CENTER" style="-fx-padding: 15"/>
             </ScrollPane>
             <HBox alignment="CENTER" style="-fx-padding: 10">
-                <Button text="增加行为" styleClass="btn-ui, btn-ui-small" onAction="#addAction">
+                <Button text="增加行为" styleClass="btn-ui, btn-ui-small" onAction="#addAction" focusTraversable="false">
                     <graphic>
                         <AddIco/>
                     </graphic>
@@ -26,8 +26,8 @@
             </HBox>
         </VBox>
         <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10;-fx-spacing: 15">
-            <Button text="应用" styleClass="btn-ui, btn-ui-small, btn-ui-normal" onAction="#apply"/>
-            <Button text="保存" styleClass="btn-ui, btn-ui-small, btn-ui-success" onAction="#save"/>
+            <Button text="应用" styleClass="btn-ui, btn-ui-small, btn-ui-normal" onAction="#apply" focusTraversable="false"/>
+            <Button text="保存" styleClass="btn-ui, btn-ui-small, btn-ui-success" onAction="#save" focusTraversable="false"/>
         </HBox>
     </VBox>
 </fx:root>

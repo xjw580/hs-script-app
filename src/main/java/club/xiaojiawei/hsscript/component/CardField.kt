@@ -5,6 +5,7 @@ import club.xiaojiawei.controls.NumberField
 import club.xiaojiawei.func.FilterAction
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.control.CheckBox
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
@@ -23,6 +24,9 @@ class CardField : HBox() {
 
     @FXML
     lateinit var offset: NumberField
+
+    @FXML
+    lateinit var fuzzySearchCheckBox: CheckBox
 
     init {
         val fxmlLoader = FXMLLoader(javaClass.getResource("/fxml/component/CardField.fxml"))
@@ -80,7 +84,13 @@ class CardField : HBox() {
         } else {
             offset.text.toInt()
         }
-        searchHandler?.invoke(text, limit, offset)
+        // 如果启用模糊搜索，则在文本前后都添加 %
+        val searchText = if (fuzzySearchCheckBox.isSelected) {
+            "%$text%"
+        } else {
+            text
+        }
+        searchHandler?.invoke(searchText, limit, offset)
     }
 
 }

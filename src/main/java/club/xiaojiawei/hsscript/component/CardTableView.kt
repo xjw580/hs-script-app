@@ -1,8 +1,9 @@
 package club.xiaojiawei.hsscript.component
 
-import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.controls.NotificationManager
+import club.xiaojiawei.controls.TableFilterManagerGroup
 import club.xiaojiawei.hsscript.bean.tableview.NoEditTextFieldTableCell
+import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.fxml.FXML
@@ -25,31 +26,33 @@ class CardTableView : TableView<DBCard>() {
     protected var colMinWeight: Double = 0.0
 
     @FXML
-    lateinit var noCol: TableColumn<DBCard, Number?>
+    protected lateinit var noCol: TableColumn<DBCard, Number?>
 
     @FXML
-    lateinit var cardIdCol: TableColumn<DBCard, String>
+    protected lateinit var cardIdCol: TableColumn<DBCard, String>
 
     @FXML
-    lateinit var nameCol: TableColumn<DBCard, String>
+    protected lateinit var nameCol: TableColumn<DBCard, String>
 
     @FXML
-    lateinit var attackCol: TableColumn<DBCard, Number>
+    protected lateinit var attackCol: TableColumn<DBCard, Number>
 
     @FXML
-    lateinit var healthCol: TableColumn<DBCard, Number>
+    protected lateinit var healthCol: TableColumn<DBCard, Number>
 
     @FXML
-    lateinit var costCol: TableColumn<DBCard, Number>
+    protected lateinit var costCol: TableColumn<DBCard, Number>
 
     @FXML
-    lateinit var textCol: TableColumn<DBCard, String>
+    protected lateinit var textCol: TableColumn<DBCard, String>
 
     @FXML
-    lateinit var typeCol: TableColumn<DBCard, String>
+    protected lateinit var typeCol: TableColumn<DBCard, String>
 
     @FXML
-    lateinit var cardSetCol: TableColumn<DBCard, String>
+    protected lateinit var cardSetCol: TableColumn<DBCard, String>
+
+    private val cardTableProxy: TableFilterManagerGroup<DBCard, DBCard> = TableFilterManagerGroup()
 
     init {
         val fxmlLoader = FXMLLoader(javaClass.getResource("/fxml/component/CardTableView.fxml"))
@@ -68,6 +71,10 @@ class CardTableView : TableView<DBCard>() {
     }
 
     private fun initTable() {
+        this.selectionModel.selectionMode = SelectionMode.MULTIPLE
+        this.isEditable = true
+        cardTableProxy.tableView = this
+        cardTableProxy.isAutoRegisterColFilter = true
         val stringConverter: StringConverter<String?> = object : StringConverter<String?>() {
             override fun toString(`object`: String?): String? {
                 return `object`
@@ -77,8 +84,15 @@ class CardTableView : TableView<DBCard>() {
                 return string
             }
         }
-        this.selectionModel.selectionMode = SelectionMode.MULTIPLE
-        this.isEditable = true
+        val cellBuilder = {
+            object : NoEditTextFieldTableCell<DBCard?, String?>(stringConverter) {
+                override fun commitEdit(s: String?) {
+                    super.commitEdit(s)
+                    notificationManager?.showInfo("不允许修改", 1)
+                }
+            }
+        }
+
         noCol.setCellValueFactory { param: TableColumn.CellDataFeatures<DBCard, Number?> ->
             val items = param.tableView.items
             val index =
@@ -87,55 +101,46 @@ class CardTableView : TableView<DBCard>() {
         }
         noCol.text = "#"
         noCol.maxWidth = 30.0
-        cardIdCol.setCellValueFactory(PropertyValueFactory("cardId"))
-        cardIdCol.setCellFactory { weightCardNumberTableColumn: TableColumn<DBCard, String>? ->
-            object : NoEditTextFieldTableCell<DBCard?, String?>(stringConverter) {
-                override fun commitEdit(s: String?) {
-                    super.commitEdit(s)
-                    notificationManager?.showInfo("不允许修改", 1)
-                }
-            }
-        }
-        nameCol.setCellValueFactory(PropertyValueFactory("name"))
-        nameCol.setCellFactory { weightCardNumberTableColumn: TableColumn<DBCard, String>? ->
-            object : NoEditTextFieldTableCell<DBCard?, String?>(stringConverter) {
-                override fun commitEdit(s: String?) {
-                    super.commitEdit(s)
-                    notificationManager?.showInfo("不允许修改", 1)
-                }
-            }
-        }
-        attackCol.setCellValueFactory(PropertyValueFactory("attack"))
-        healthCol.setCellValueFactory(PropertyValueFactory("health"))
-        costCol.setCellValueFactory(PropertyValueFactory("cost"))
-        textCol.setCellValueFactory(PropertyValueFactory("text"))
-        textCol.setCellFactory { weightCardNumberTableColumn: TableColumn<DBCard, String>? ->
-            object : NoEditTextFieldTableCell<DBCard?, String?>(stringConverter) {
-                override fun commitEdit(s: String?) {
-                    super.commitEdit(s)
-                    notificationManager?.showInfo("不允许修改", 1)
-                }
-            }
-        }
-        typeCol.setCellValueFactory(PropertyValueFactory("type"))
-        cardSetCol.setCellValueFactory(PropertyValueFactory("cardSet"))
+
+        cardIdCol.cellValueFactory = PropertyValueFactory("cardId")
+        cardIdCol.setCellFactory { cellBuilder() }
+
+        nameCol.cellValueFactory = PropertyValueFactory("name")
+        nameCol.setCellFactory { cellBuilder() }
+
+        attackCol.cellValueFactory = PropertyValueFactory("attack")
+        healthCol.cellValueFactory = PropertyValueFactory("health")
+        costCol.cellValueFactory = PropertyValueFactory("cost")
+
+        textCol.cellValueFactory = PropertyValueFactory("text")
+        textCol.setCellFactory { cellBuilder() }
+
+        typeCol.cellValueFactory = PropertyValueFactory("type")
+        typeCol.setCellFactory { cellBuilder() }
+
+        cardSetCol.cellValueFactory = PropertyValueFactory("cardSet")
+        cardSetCol.setCellFactory { cellBuilder() }
     }
 
     fun setCardByName(name: String, limit: Int, offset: Int) {
         this.currentOffset = offset
-        this.items.setAll(CardDBUtil.queryCardByName(name, limit, offset, false))
+        cardTableProxy.resetFilter()
+        cardTableProxy.setAll(CardDBUtil.queryCardByName(name, limit, offset, false))
     }
 
     fun setCardById(id: String, limit: Int, offset: Int) {
         this.currentOffset = offset
-        this.items.setAll(CardDBUtil.queryCardById(id, limit, offset, false))
+        cardTableProxy.resetFilter()
+        cardTableProxy.setAll(CardDBUtil.queryCardById(id, limit, offset, false))
     }
 
     fun addCardByName(name: String, limit: Int, offset: Int) {
+        cardTableProxy.resetFilter()
         this.items.addAll(CardDBUtil.queryCardByName(name, limit, offset, false))
     }
 
     fun addCardById(id: String, limit: Int, offset: Int) {
+        cardTableProxy.resetFilter()
         this.items.addAll(CardDBUtil.queryCardById(id, limit, offset, false))
     }
 

@@ -1,0 +1,14 @@
+@import "settings.css";
+
+.section-title {
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5 0;
+}
+
+.deck-list-cell {
+    -fx-padding: 5 10;
+}
+
+.deck-list-cell .check-box {
+    -fx-padding: 0 5 0 0;
+}

@@ -10,7 +10,7 @@
         <Double fx:id="colMinWeight" fx:value="25"/>
     </fx:define>
     <columns>
-        <TableColumn minWidth="${colMinWeight}" prefWidth="${colMinWeight}" fx:id="noCol"/>
+        <TableColumn minWidth="${colMinWeight}" prefWidth="${colMinWeight}" fx:id="noCol" userData="disable"/>
         <TableColumn minWidth="${colMinWeight}" fx:id="cardIdCol" text="ID"/>
         <TableColumn minWidth="${colMinWeight}" fx:id="nameCol" text="名字"/>
         <TableColumn minWidth="${colMinWeight}" fx:id="attackCol" text="攻击力"/>

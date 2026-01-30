@@ -2,10 +2,10 @@ package club.xiaojiawei.hsscript.component
 
 import club.xiaojiawei.controls.WindowBar
 import club.xiaojiawei.controls.ico.ClearIco
-import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
 import club.xiaojiawei.hsscript.MainApplication
 import club.xiaojiawei.hsscript.bean.InfoCard
 import club.xiaojiawei.hsscript.enums.CardInfoActionTypeEnum
+import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
 import javafx.beans.property.ObjectProperty
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -24,7 +24,7 @@ import java.io.IOException
  * @date 2025/6/10 9:50
  */
 class EditActionPane(
-    var infoCard: InfoCard, var actionTypeEnum: CardInfoActionTypeEnum, val saveCallback: (() -> Unit)? = null
+    var infoCard: InfoCard, var actionTypeEnum: CardInfoActionTypeEnum, var onApply: (() -> Unit)? = null
 ) : StackPane() {
 
     @FXML
@@ -59,6 +59,7 @@ class EditActionPane(
             children.addAll(
                 Label("行为"),
                 ComboBox<CardActionEnum>().apply {
+                    isFocusTraversable = false
                     cardActionProperty = this.valueProperty()
                     converter = object : StringConverter<CardActionEnum?>() {
                         override fun toString(p0: CardActionEnum?): String? {
@@ -129,7 +130,7 @@ class EditActionPane(
             infoCard.powerActions = cardActionEnums
         }
 
-        saveCallback?.invoke()
+        onApply?.invoke()
     }
 
     @FXML

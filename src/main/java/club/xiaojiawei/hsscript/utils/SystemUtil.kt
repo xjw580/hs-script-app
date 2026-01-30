@@ -354,9 +354,6 @@ object SystemUtil {
      */
     fun shutdownSoft() {
         runCatching {
-            WindowUtil.saveConfig()
-        }
-        runCatching {
             WindowUtil.hideAllStage(true)
         }
         log.info { "准备关闭软件..." }

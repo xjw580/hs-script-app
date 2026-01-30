@@ -9,6 +9,8 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.SCREEN_HEIGHT
 import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
 import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.interfaces.KeyHook
+import club.xiaojiawei.hsscript.interfaces.MouseHook
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.utils.SystemUtil.findHWND
 import club.xiaojiawei.hsscript.utils.SystemUtil.showWindow
@@ -26,6 +28,8 @@ import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.Image
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Paint
@@ -77,20 +81,21 @@ object WindowUtil {
     }
 
     fun createAlert(
-        headerText: String?,
-        contentText: String?,
-        okHandler: EventHandler<ActionEvent?>?,
+        headerText: String? = null,
+        contentText: String? = null,
+        okHandler: EventHandler<ActionEvent?>? = null,
         cancelHandler: EventHandler<ActionEvent?>? = null,
         windowEnum: WindowEnum,
         okText: String = "确认",
         cancelText: String = "取消",
+        distinguishButton: Boolean = true,
     ): Stage {
         return createAlert(
             headerText,
             contentText,
             okHandler,
             cancelHandler,
-            getStage(windowEnum), okText, cancelText
+            getStage(windowEnum), okText, cancelText, distinguishButton
         )
     }
 
@@ -103,13 +108,14 @@ object WindowUtil {
      * @return
      */
     fun createAlert(
-        headerText: String?,
-        contentText: String?,
-        okHandler: EventHandler<ActionEvent?>?,
+        headerText: String? = null,
+        contentText: String? = null,
+        okHandler: EventHandler<ActionEvent?>? = null,
         cancelHandler: EventHandler<ActionEvent?>? = null,
         window: Window?,
         okText: String = "确认",
         cancelText: String = "取消",
+        distinguishButton: Boolean = true,
     ): Stage {
         val stage =
             Stage().apply {
@@ -127,7 +133,10 @@ object WindowUtil {
 
         val okBtn =
             Button(okText).apply {
-                styleClass.addAll("btn-ui", "btn-ui-success")
+                if (distinguishButton) {
+                    styleClass.addAll("btn-ui", "btn-ui-success")
+                } else styleClass.addAll("btn-ui")
+
                 onAction =
                     EventHandler { actionEvent: ActionEvent? ->
                         stage.hide()
@@ -268,6 +277,64 @@ object WindowUtil {
         }
     }
 
+    fun addEventHook(node: Node, controller: Any?) {
+        if (controller is KeyHook) {
+            node.addEventFilter(KeyEvent.ANY, controller::handleKeyEvent)
+        }
+        if (controller is MouseHook) {
+            node.addEventFilter(MouseEvent.ANY, controller::handleMouseEvent)
+        }
+    }
+
+    fun addEventHook(stage: Stage, controller: Any?) {
+        if (controller is KeyHook) {
+            stage.addEventFilter(KeyEvent.ANY, controller::handleKeyEvent)
+        }
+        if (controller is MouseHook) {
+            stage.addEventFilter(MouseEvent.ANY, controller::handleMouseEvent)
+        }
+    }
+
+    fun addWindowHook(stage: Stage, controller: Any?) {
+        if (controller is StageHook) {
+            stage.setOnShown {
+                controller.onShown()
+            }
+            stage.setOnShowing {
+                controller.onShowing()
+            }
+            stage.setOnHidden {
+                controller.onHidden()
+            }
+        }
+        stage.setOnHiding {
+            runCatching {
+                stage.isIconified = false
+            }.onFailure { log.error { it.message } }
+            for (entry in STAGE_MAP) {
+                if (entry.value.owner == stage) {
+                    entry.value.hide()
+                }
+            }
+            if (controller is StageHook) {
+                controller.onHiding()
+            }
+        }
+        stage.setOnCloseRequest { event ->
+            runCatching {
+                stage.isIconified = false
+            }.onFailure { log.error { it.message } }
+            for (entry in STAGE_MAP) {
+                if (entry.value.owner == stage) {
+                    entry.value.hide()
+                }
+            }
+            if (controller is StageHook) {
+                controller.onCloseRequest(event)
+            }
+        }
+    }
+
     fun getController(windowEnum: WindowEnum): Any? =
         getStage(windowEnum)?.let {
             it.properties[CONTROLLER_KEY]
@@ -292,45 +359,8 @@ object WindowUtil {
             }
             STAGE_MAP[windowEnum] = stage
             val controller = getController(windowEnum)
-            if (controller is StageHook) {
-                stage.setOnShown {
-                    controller.onShown()
-                }
-                stage.setOnShowing {
-                    controller.onShowing()
-                }
-                stage.setOnHidden {
-                    controller.onHidden()
-                }
-            }
-            stage.setOnHiding {
-                kotlin
-                    .runCatching {
-                        stage.isIconified = false
-                    }.onFailure { log.error { it.message } }
-                for (entry in STAGE_MAP) {
-                    if (entry.value.owner == stage) {
-                        entry.value.hide()
-                    }
-                }
-                if (controller is StageHook) {
-                    controller.onHiding()
-                }
-            }
-            stage.setOnCloseRequest { event ->
-                kotlin
-                    .runCatching {
-                        stage.isIconified = false
-                    }.onFailure { log.error { it.message } }
-                for (entry in STAGE_MAP) {
-                    if (entry.value.owner == stage) {
-                        entry.value.hide()
-                    }
-                }
-                if (controller is StageHook) {
-                    controller.onCloseRequest(event)
-                }
-            }
+            addEventHook(stage, controller)
+            addWindowHook(stage, controller)
             stage.xProperty().addListener { _, _, newValue ->
                 windowConfig[windowEnum]?.let {
                     it.x = newValue.toInt()
@@ -435,7 +465,7 @@ object WindowUtil {
                 stage.height = it.height.toDouble()
                 stage.x = it.x.toDouble()
                 stage.y = it.y.toDouble()
-            }?:let {
+            } ?: let {
                 (windowEnum.width > 0).isTrue {
                     stage.width = windowEnum.width
                     stage.minWidth = windowEnum.width

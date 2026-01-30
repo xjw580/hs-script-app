@@ -36,10 +36,6 @@ val CONFIG_PATH: String by lazy { Path.of(ROOT_PATH, "config").toString() }
 
 val PLUGIN_PATH: String by lazy { Path.of(ROOT_PATH, "plugin").toString() }
 
-val CARD_WEIGHT_CONFIG_PATH: Path by lazy { Path.of(CONFIG_PATH, "card.weight") }
-
-val CARD_INFO_CONFIG_PATH: Path by lazy { Path.of(CONFIG_PATH, "card.info") }
-
 const val FXML_DIR: String = "/fxml/"
 
 const val GAME_LOG_DIR: String = "Logs"
@@ -51,6 +47,8 @@ val MOUSE_DRIVE_PATH: String by lazy { Path.of(DRIVE_PATH, "mouse.sys").toString
 val KEYBOARD_DRIVE_PATH: String by lazy { Path.of(DRIVE_PATH, "keyboard.sys").toString() }
 
 val DATA_DIR: Path by lazy { Path.of(ROOT_PATH, "data") }
+
+val CARD_GROUP_DIR: Path by lazy { Path.of(DATA_DIR.toString(), "cardgroup") }
 
 const val STATISTICS_DB_NAME: String = "statistics.db"
 

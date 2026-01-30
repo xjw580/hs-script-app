@@ -3,6 +3,7 @@ package club.xiaojiawei.hsscript
 import club.xiaojiawei.hsscript.bean.CommonCardAction.Companion.DEFAULT
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.config.InitializerConfig
+import club.xiaojiawei.hsscript.config.ShutdownHookConfig
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -19,14 +20,13 @@ import club.xiaojiawei.hsscript.status.TaskManager
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.SystemUtil.addTray
 import club.xiaojiawei.hsscript.utils.SystemUtil.shutdownSoft
-import club.xiaojiawei.hsscriptbase.bean.LThread
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.config.submitExtra
 import club.xiaojiawei.hsscriptbase.const.BuildInfo
 import club.xiaojiawei.hsscriptbase.const.SoftRunMode
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptcardsdk.CardAction.Companion.commonActionFactory
+import club.xiaojiawei.hsscriptcardsdk.CardAction
 import com.sun.jna.Memory
 import com.sun.jna.WString
 import javafx.application.Application
@@ -173,28 +173,11 @@ class MainApplication : Application() {
     }
 
     private fun preInit() {
-        commonActionFactory = Supplier { DEFAULT.createNewInstance() }
+        CardAction.commonActionFactory = Supplier { DEFAULT.createNewInstance() }
         Platform.setImplicitExit(false)
         launchService()
-        CardUtil.reloadCardWeight()
-        CardUtil.reloadCardInfo()
-        Runtime
-            .getRuntime()
-            .addShutdownHook(
-                LThread(
-                    {
-                        CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
-                        CSystemDll.INSTANCE.removeSystemTray()
-//                        CSystemDll.INSTANCE.uninstall()
-                        CSystemDll.INSTANCE.capture(false)
-                        CSystemDll.INSTANCE.limitMouseRange(false)
-                        CSystemDll.INSTANCE.mouseHook(false)
-                        CSystemDll.INSTANCE.acHook(false)
-                        log.info { "软件已关闭" }
-                    },
-                    "ShutdownHook Thread",
-                ),
-            )
+        CardGroupUtil.applyEnabledCardGroups()
+        ShutdownHookConfig.init
     }
 
     private fun showMainPage() {

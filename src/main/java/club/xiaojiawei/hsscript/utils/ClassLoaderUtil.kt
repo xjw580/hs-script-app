@@ -1,10 +1,8 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptbase.config.log
 import java.io.File
 import java.net.URL
 import java.net.URLClassLoader
-import java.util.ArrayList
 
 
 /**
@@ -13,13 +11,13 @@ import java.util.ArrayList
  */
 object ClassLoaderUtil {
 
-    fun getClassLoader(path: File): MutableList<ClassLoader?> {
+    fun getClassLoader(path: File): Result<MutableList<ClassLoader?>> {
         val classLoaderList: MutableList<ClassLoader?> = ArrayList<ClassLoader?>()
-        if (path.exists()) {
+        return if (path.exists()) {
             val files = path.listFiles()
             if (files != null) {
                 for (file in files) {
-                    if (file.name.endsWith(".jar")){
+                    if (file.name.endsWith(".jar")) {
                         classLoaderList.add(
                             URLClassLoader(
                                 arrayOf<URL>(file.toURI().toURL()),
@@ -29,10 +27,10 @@ object ClassLoaderUtil {
                     }
                 }
             }
+            Result.success(classLoaderList)
         } else {
-            log.warn { "插件目录不存在:$path" }
+            Result.failure(Throwable("目录不存在"))
         }
-        return classLoaderList
     }
 
 }

@@ -4,6 +4,7 @@ import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.hsscript.bean.SettingItem
 import club.xiaojiawei.hsscript.component.SettingHBox
 import club.xiaojiawei.hsscript.component.SettingsSearchField
+import club.xiaojiawei.hsscript.controller.javafx.settings.view.SettingsView
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.interfaces.StageHook
@@ -31,43 +32,7 @@ import java.util.*
  * @author 肖嘉威
  * @date 2023/10/14 12:43
  */
-class SettingsController : Initializable, StageHook {
-
-    @FXML
-    protected lateinit var progressModal: ProgressModal
-
-    @FXML
-    protected lateinit var searchField: SettingsSearchField
-
-    @FXML
-    protected lateinit var initTab: Tab
-
-    @FXML
-    protected lateinit var advancedTab: Tab
-
-    @FXML
-    protected lateinit var pluginTab: Tab
-
-    @FXML
-    protected lateinit var strategyTab: Tab
-
-    @FXML
-    protected lateinit var weightTab: Tab
-
-    @FXML
-    protected lateinit var cardInfoTab: Tab
-
-    @FXML
-    protected lateinit var developerTab: Tab
-
-    @FXML
-    protected lateinit var aboutTab: Tab
-
-    @FXML
-    protected lateinit var rootPane: Pane
-
-    @FXML
-    protected lateinit var tabPane: TabPane
+class SettingsController : SettingsView(), Initializable, StageHook {
 
     private var progress: DoubleProperty? = null
 
@@ -78,15 +43,14 @@ class SettingsController : Initializable, StageHook {
             buildWindowPair(WindowEnum.ADVANCED_SETTINGS, advancedTab),
             buildWindowPair(WindowEnum.PLUGIN_SETTINGS, pluginTab),
             buildWindowPair(WindowEnum.STRATEGY_SETTINGS, strategyTab),
-            buildWindowPair(WindowEnum.WEIGHT_SETTINGS, weightTab),
-            buildWindowPair(WindowEnum.CARD_INFO_SETTINGS, cardInfoTab),
+            buildWindowPair(WindowEnum.CARD_GROUP_SETTINGS, cardGroupTab),
             buildWindowPair(WindowEnum.DEVELOPER_SETTINGS, developerTab),
             buildWindowPair(WindowEnum.ABOUT, aboutTab),
         )
     }
 
     private fun buildWindowPair(windowEnum: WindowEnum, tab: Tab): Pair<WindowEnum, Tab> {
-        return windowEnum to tab.apply { userData = windowEnum }
+        return windowEnum to tab.apply { properties[windowKey] = windowEnum }
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
@@ -130,8 +94,9 @@ class SettingsController : Initializable, StageHook {
         super.onShown()
         if (ConfigEnum.ENABLE_SETTINGS_SEARCH_SERVICE.getBoolean()) {
             runUILater {
-                initSearchService()
+                initSearchService
                 progressModal.hide(progress)
+                progress = null
             }
         }
     }
@@ -248,23 +213,37 @@ class SettingsController : Initializable, StageHook {
         }
     }
 
-    fun initSearchService() {
+    private val initSearchService by lazy {
         loadTab(WindowEnum.INIT_SETTINGS)
         loadTab(WindowEnum.ADVANCED_SETTINGS)
         loadTab(WindowEnum.STRATEGY_SETTINGS)
         loadTab(WindowEnum.DEVELOPER_SETTINGS)
     }
 
+    private var currentTab: Tab? = null
+
+    private val windowKey = "window"
+    private val controllerKey = "controller"
+
+    override fun onHidden() {
+        super.onHidden()
+        (currentTab?.properties?.get(controllerKey) as? StageHook)?.onHidden()
+    }
+
     private fun loadTab(tab: Tab) {
-        val windowEnum = tab.userData
+        (currentTab?.properties?.get(controllerKey) as? StageHook)?.onHidden()
+        val windowEnum = tab.properties[windowKey]
         if (windowEnum is WindowEnum && tab.content == null) {
             val loader = WindowUtil.getLoader(windowEnum)
+            val start = System.currentTimeMillis()
             tab.content = loader.load()
+            println("load ${windowEnum.name} time:${System.currentTimeMillis() - start}ms")
             val controller = loader.getController<Any>()
-            if (controller is StageHook) {
-                controller.onShown()
-            }
+            tab.properties[controllerKey] = controller
+            WindowUtil.addEventHook(tab.content, controller)
         }
+        currentTab = tab
+        (currentTab?.properties?.get(controllerKey) as? StageHook)?.onShown()
     }
 
 }

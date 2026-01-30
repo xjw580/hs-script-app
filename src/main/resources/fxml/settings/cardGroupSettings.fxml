@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import club.xiaojiawei.controls.ico.*?>
+<?import club.xiaojiawei.controls.NotificationManager?>
+<?import club.xiaojiawei.controls.TableFilterManagerGroup?>
+<?import club.xiaojiawei.controls.TableValueFilterManager?>
+<?import club.xiaojiawei.factory.NotificationFactory?>
+<?import club.xiaojiawei.hsscript.component.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.Double?>
+<?import club.xiaojiawei.controls.ProgressModal?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           stylesheets="@../css/settings/cardGroupSettings.css"
+           fx:id="rootPane"
+           fx:controller="club.xiaojiawei.hsscript.controller.javafx.settings.CardGroupSettingsController">
+    <fx:define>
+        <Double fx:id="colMinWeight" fx:value="25"/>
+        <Double fx:id="icoScale" fx:value="0.8"/>
+    </fx:define>
+    <SplitPane dividerPositions="0.2, 0.55" styleClass="split-pane-line">
+        <!-- 左侧：卡牌组列表 -->
+        <VBox minWidth="0" style="-fx-padding: 5">
+            <Label text="卡牌组列表" styleClass="section-title"/>
+            <ListView fx:id="cardGroupListView" VBox.vgrow="ALWAYS" styleClass="list-view-ui"/>
+            <HBox style="-fx-padding: 5 0 0 0" alignment="CENTER">
+                <fx:define>
+                    <Double fx:id="maxSpacerWidth" fx:value="10"/>
+                </fx:define>
+                <Button styleClass="btn-ui, btn-ui-small" onAction="#createCardGroup">
+                    <graphic>
+                        <AddIco color="#29b829"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="新建卡牌组"/>
+                    </tooltip>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" maxWidth="${maxSpacerWidth}"/>
+                <Button styleClass="btn-ui, btn-ui-small" onAction="#deleteCardGroup">
+                    <graphic>
+                        <ClearIco color="#e84749"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="删除卡牌组"/>
+                    </tooltip>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" maxWidth="${maxSpacerWidth}"/>
+                <Button styleClass="btn-ui, btn-ui-small" onAction="#copyCardGroup">
+                    <graphic>
+                        <CopyIco color="main-color"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="复制卡牌组"/>
+                    </tooltip>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" maxWidth="${maxSpacerWidth}"/>
+                <Button styleClass="btn-ui, btn-ui-small" onAction="#importCardGroup">
+                    <graphic>
+                        <ImportIco color="#29b829"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="导入卡牌组"/>
+                    </tooltip>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" maxWidth="${maxSpacerWidth}"/>
+                <Button styleClass="btn-ui, btn-ui-small" onAction="#exportCardGroup">
+                    <graphic>
+                        <ExportIco color="main-color"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="导出卡牌组"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- 中间：卡牌搜索 -->
+        <VBox minWidth="0">
+            <fx:define>
+                <CardTableView fx:id="cardTable" VBox.vgrow="ALWAYS">
+                    <placeholder>
+                        <StackPane>
+                            <Label text="1.选中此表的行，点击向右按钮添加至右侧表" wrapText="true"/>
+                        </StackPane>
+                    </placeholder>
+                </CardTableView>
+                <CardField fx:id="cardField"/>
+            </fx:define>
+            <CardSearcher minWidth="0" cardField="$cardField" cardTableView="$cardTable" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <!-- 右侧：卡牌组详情 -->
+        <HBox minWidth="0">
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 5">
+                <Button styleClass="btn-ui, btn-ui-small, control-btn" onAction="#addCard">
+                    <graphic>
+                        <Label>
+                            <graphic>
+                                <NextIco color="#ecebeb"/>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="添加卡牌到卡牌组"/>
+                            </tooltip>
+                        </Label>
+                    </graphic>
+                </Button>
+                <Button styleClass="btn-ui, btn-ui-small, control-btn" onAction="#removeCard">
+                    <graphic>
+                        <Label>
+                            <graphic>
+                                <NextIco color="#ecebeb" rotate="180"/>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="从卡牌组移除卡牌"/>
+                            </tooltip>
+                        </Label>
+                    </graphic>
+                </Button>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS">
+                <!-- 卡牌组信息区域 -->
+                <HBox spacing="10" style="-fx-padding: 10" alignment="CENTER_LEFT">
+                    <Label text="卡牌组名称:"/>
+                    <TextField fx:id="cardGroupNameField" prefWidth="150"
+                               styleClass="text-field-ui, text-field-ui-small"/>
+                    <Button text="重命名" styleClass="btn-ui, btn-ui-small" onAction="#renameCardGroup"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <CheckBox fx:id="enabledCheckBox" text="启用此卡牌组" styleClass="check-box-ui, check-box-ui-main"/>
+                </HBox>
+
+                <!-- 卡牌表格 -->
+                <TableView fx:id="cardGroupCardTable"
+                           styleClass="table-view-idea, table-view-idea-tiny, table-view-idea-upright"
+                           VBox.vgrow="ALWAYS">
+                    <fx:define>
+                        <TableFilterManagerGroup fx:id="cardGroupCardTableProxy" tableView="$cardGroupCardTable"
+                                                 autoRegisterColFilter="false"/>
+                    </fx:define>
+                    <columns>
+                        <TableColumn minWidth="${colMinWeight}" prefWidth="${colMinWeight}" fx:id="noCol" text="#"
+                                     maxWidth="30"/>
+                        <TableColumn minWidth="${colMinWeight}" prefWidth="${colMinWeight}" fx:id="cardIdCol"
+                                     text="ID">
+                            <graphic>
+                                <TableValueFilterManager tableColumn="$cardIdCol"
+                                                         tableFilterManagerGroup="$cardGroupCardTableProxy"/>
+                            </graphic>
+                        </TableColumn>
+                        <TableColumn text="名字" minWidth="${colMinWeight}" prefWidth="${colMinWeight}"
+                                     fx:id="nameCol">
+                            <graphic>
+                                <TableValueFilterManager tableColumn="$nameCol"
+                                                         tableFilterManagerGroup="$cardGroupCardTableProxy"/>
+                            </graphic>
+                        </TableColumn>
+                        <TableColumn text="效果类型" minWidth="${colMinWeight}" prefWidth="50"
+                                     fx:id="effectTypeCol"/>
+                        <TableColumn text="打出行为" minWidth="${colMinWeight}" prefWidth="50"
+                                     fx:id="playActionCol"/>
+                        <TableColumn text="使用行为" minWidth="${colMinWeight}" prefWidth="50"
+                                     fx:id="powerActionCol"/>
+                        <TableColumn minWidth="${colMinWeight}" prefWidth="50" fx:id="weightCol">
+                            <graphic>
+                                <Label text="权重" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <TipNode scaleX="${icoScale}" scaleY="${icoScale}"
+                                                 text="衡量卡牌的价值，影响本回合要出哪些牌及优先解哪个怪，默认为1"/>
+                                    </graphic>
+                                </Label>
+                            </graphic>
+                        </TableColumn>
+                        <TableColumn minWidth="${colMinWeight}" prefWidth="55" fx:id="powerWeightCol">
+                            <graphic>
+                                <Label text="使用权重" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <TipNode scaleX="${icoScale}" scaleY="${icoScale}"
+                                                 text="衡量卡牌出牌顺序，比如本回合确定要出船载火炮和南海船工，如果船载火炮的使用权重大，将会先出船载火炮再出南海船工，默认为1"/>
+                                    </graphic>
+                                </Label>
+                            </graphic>
+                        </TableColumn>
+                        <TableColumn minWidth="${colMinWeight}" prefWidth="55" fx:id="changeWeightCol">
+                            <graphic>
+                                <Label text="换牌权重" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <TipNode scaleX="${icoScale}" scaleY="${icoScale}"
+                                                 text="衡量起手换牌权重，值大于等于0表示留下，值小于0表示需要换掉，默认大于2费的为-1，小于等于2费的为0"/>
+                                    </graphic>
+                                </Label>
+                            </graphic>
+                        </TableColumn>
+                    </columns>
+                    <placeholder>
+                        <StackPane>
+                            <Label text="2.双击权重单元格编辑，右键编辑卡牌行为" wrapText="true"/>
+                        </StackPane>
+                    </placeholder>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+
+                <!-- 底部操作栏 -->
+                <HBox spacing="10" style="-fx-padding: 10 10 10 0" alignment="CENTER_LEFT">
+                    <Button styleClass="btn-ui, btn-ui-small" onAction="#copyCard">
+                        <graphic>
+                            <CopyIco color="main-color"/>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="复制选中的卡牌"/>
+                        </tooltip>
+                    </Button>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <CheckBox fx:id="changeWeightCheckBox" text="换牌权重"
+                              styleClass="check-box-ui, check-box-ui-main"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </SplitPane>
+    <ProgressModal fx:id="progressModal"/>
+    <NotificationManager fx:id="notificationManager" notificationPos="BOTTOM_CENTER">
+        <NotificationFactory showingCloseBtn="false" size="SMALL"/>
+    </NotificationManager>
+</StackPane>

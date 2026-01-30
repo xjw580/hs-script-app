@@ -481,14 +481,3 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
     }
 
 }
-
-fun main() {
-
-    SystemUtil.getBatFilePath(UNLOCK_FILE)?.let {
-        Files.copy(
-            it.toPath(),
-            Path(System.getProperty("user.home"), "Desktop", UNLOCK_BATCH_NAME),
-            StandardCopyOption.REPLACE_EXISTING
-        )
-    }
-}

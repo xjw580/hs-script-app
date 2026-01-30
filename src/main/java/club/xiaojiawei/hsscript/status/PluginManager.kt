@@ -70,13 +70,23 @@ object PluginManager {
         loadCard.set(true)
     }
 
+    private val pluginDir by lazy {
+        File(PLUGIN_PATH).apply {
+            if (!exists()) {
+                log.info { "插件目录不存在：${toString()}" }
+            }
+        }
+    }
+
     private fun <T, P : Plugin> loadPlugin(
         aClass: Class<T>,
         pluginClass: Class<P>,
         pluginWrapperMap: MutableMap<String, MutableList<PluginWrapper<T>>>
     ) {
         pluginWrapperMap.clear()
-        val deckClassLoaders = ClassLoaderUtil.getClassLoader(File(PLUGIN_PATH))
+        val result = ClassLoaderUtil.getClassLoader(pluginDir)
+
+        val deckClassLoaders = result.getOrDefault(emptyList())
 
         var pluginWrapper: PluginWrapper<T>
         val disableSet: MutableSet<String> =
