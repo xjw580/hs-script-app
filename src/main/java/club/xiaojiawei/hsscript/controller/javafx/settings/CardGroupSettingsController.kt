@@ -852,29 +852,11 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
             // 构建卡牌列表
             val cards = mutableListOf<CardGroupCard>()
             var notFoundCount = 0
+            val dbCardParser = DBCardParser()
             for (cardInfo in deckInfo.cards) {
                 val dbCard = cardsMap[cardInfo.dbfId]
                 if (dbCard != null) {
-                    val cardGroupCard = CardGroupCard(
-                        cardId = dbCard.cardId,
-                        dbfId = dbCard.dbfId,
-                        name = dbCard.name,
-                        playActions = listOf(CardActionEnum.NO_POINT),
-                        powerActions = if (dbCard.type == CardTypeEnum.MINION.name ||
-                            dbCard.type == CardTypeEnum.HERO.name ||
-                            dbCard.type == CardTypeEnum.WEAPON.name
-                        ) {
-                            listOf(CardActionEnum.POINT_RIVAL)
-                        } else if (dbCard.type == CardTypeEnum.SPELL.name) {
-                            emptyList()
-                        } else {
-                            listOf(CardActionEnum.NO_POINT)
-                        },
-                        weight = 1.0,
-                        powerWeight = 1.0,
-                        changeWeight = if (dbCard.cost == null || dbCard.cost!! > 2) -1.0 else 0.0
-                    )
-                    cards.add(cardGroupCard)
+//                    cards.add(dbCardParser.parseAsGroupCard(dbCard))
                 } else {
                     notFoundCount++
                 }

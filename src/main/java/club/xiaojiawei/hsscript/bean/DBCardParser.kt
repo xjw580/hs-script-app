@@ -1,260 +1,393 @@
 package club.xiaojiawei.hsscript.bean
 
-import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
-import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
-import club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum
-import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
-
 /**
- * 卡牌描述分析结果
- */
-data class CardTextAnalysisResult(
-    /** 效果类型 */
-    val effectType: CardEffectTypeEnum = CardEffectTypeEnum.UNKNOWN,
-    /** 推荐的打出行为 */
-    val playActions: List<CardActionEnum> = listOf(CardActionEnum.NO_POINT),
-    /** 伤害值（如果是伤害类效果） */
-    val damageValue: Int? = null,
-    /** 攻击力增益值（如果是增益类效果） */
-    val attackBuff: Int? = null,
-    /** 生命值增益值（如果是增益类效果） */
-    val healthBuff: Int? = null
-)
-
-/**
- * 卡牌描述分析器
  * @author 肖嘉威
  * @date 2026/2/4 8:41
  */
 class DBCardParser {
+//    fun parseAsGroupCard(dbCard: DBCard): CardGroupCard {
+//        val cardDescription = dbCard.text
+//        val chars = cardDescription.toCharArray()
+//        for ((index, ch) in chars.withIndex()) {
+//
+//        }
+//        val card = CardGroupCard()
+//        val cardGroupCard = CardGroupCard(
+//            cardId = dbCard.cardId,
+//            dbfId = dbCard.dbfId,
+//            name = dbCard.name,
+//            playActions = listOf(CardActionEnum.NO_POINT),
+//            powerActions = if (dbCard.type == CardTypeEnum.MINION.name ||
+//                dbCard.type == CardTypeEnum.HERO.name ||
+//                dbCard.type == CardTypeEnum.WEAPON.name
+//            ) {
+//                listOf(CardActionEnum.POINT_RIVAL)
+//            } else if (dbCard.type == CardTypeEnum.SPELL.name) {
+//                emptyList()
+//            } else {
+//                listOf(CardActionEnum.NO_POINT)
+//            },
+//            weight = 1.0,
+//            powerWeight = 1.0,
+//            changeWeight = if (dbCard.cost == null || dbCard.cost!! > 2) -1.0 else 0.0
+//        )
+//        return card
+//    }
 
-    companion object {
-        // ==================== 伤害类正则表达式 ====================
-        
-        /** 对敌方随从造成x点伤害 */
-        private val DAMAGE_ENEMY_MINION_REGEX = Regex("对敌方随从造成(\\d+)点伤害")
-        
-        /** 对敌方角色造成x点伤害 */
-        private val DAMAGE_ENEMY_CHARACTER_REGEX = Regex("对敌方角色造成(\\d+)点伤害")
-        
-        /** 造成x点伤害（通用，需要指向） */
-        private val DAMAGE_GENERAL_REGEX = Regex("(?<!对[所所有敌友方]*[角色随从]*|对所有[敌友方]*[角色随从]*)造成(\\d+)点伤害")
-        
-        /** 对随从造成x点伤害 */
-        private val DAMAGE_MINION_REGEX = Regex("对随从造成(\\d+)点伤害")
-        
-        /** 对所有角色造成x点伤害 */
-        private val DAMAGE_ALL_CHARACTERS_REGEX = Regex("对所有角色造成(\\d+)点伤害")
-        
-        /** 对所有敌方角色造成x点伤害 */
-        private val DAMAGE_ALL_ENEMY_CHARACTERS_REGEX = Regex("对所有敌方角色造成(\\d+)点伤害")
-        
-        /** 对所有敌方随从造成x点伤害 */
-        private val DAMAGE_ALL_ENEMY_MINIONS_REGEX = Regex("对所有敌方随从造成(\\d+)点伤害")
-        
-        // ==================== 增益类正则表达式 ====================
-        
-        /** 使一个随从获得+x生命值 */
-        private val BUFF_HEALTH_REGEX = Regex("使一个[友方敌方]*随从获得\\+(\\d+)生命值")
-        
-        /** 使一个随从获得+x攻击力 */
-        private val BUFF_ATTACK_REGEX = Regex("使一个[友方敌方]*随从获得\\+(\\d+)攻击力")
-        
-        /** 使一个随从获得+x/+x */
-        private val BUFF_STATS_REGEX = Regex("使一个([友方敌方]*)随从获得\\+(\\d+)/\\+(\\d+)")
-        
-        /** 使一个友方随从获得+x/+x */
-        private val BUFF_FRIENDLY_STATS_REGEX = Regex("使一个友方随从获得\\+(\\d+)/\\+(\\d+)")
-        
-        /** 使一个敌方随从获得+x/+x */
-        private val BUFF_ENEMY_STATS_REGEX = Regex("使一个敌方随从获得\\+(\\d+)/\\+(\\d+)")
+
+    /*========================================================================================================================*/
+
+    sealed class Action {
+        data class Damage(val amount: Int) : Action()
+        data class Heal(val amount: Int) : Action()
+        object Freeze : Action()
+        data class Discard(val count: Int, val random: Boolean) : Action()
+        data class Buff(val atk: Int, val hp: Int) : Action()
     }
 
-    /**
-     * 分析卡牌描述文本，提取效果信息
-     * @param text 卡牌描述文本
-     * @return 分析结果
-     */
-    fun analyzeCardText(text: String): CardTextAnalysisResult {
-        if (text.isBlank()) {
-            return CardTextAnalysisResult()
+    sealed class Target {
+        object Self : Target()
+        object Hero : Target()
+        object EnemyHero : Target()
+
+        data class Single(
+            val type: UnitType? = null
+        ) : Target()
+
+        data class All(
+            val side: Side? = null,
+            val unitType: UnitType? = null,
+            val exclude: UnitType? = null
+        ) : Target()
+    }
+
+    enum class Side { FRIENDLY, ENEMY }
+    enum class UnitType {
+        MINION,
+        CHARACTER,
+        BEAST,
+        DRAGON,
+        HERO
+    }
+
+
+    sealed class Modifier {
+
+        /** 随机 */
+        object Random : Modifier()
+
+        /** 仅受伤的 */
+        object InjuredOnly : Modifier()
+
+        /** 排除某种族 / 类型（非龙、非野兽） */
+        data class Exclude(val unitType: UnitType) : Modifier()
+
+        /** 重复执行 N 次 */
+        data class Repeat(val times: Int) : Modifier()
+    }
+
+
+    data class EffectNode(
+        val action: Action,
+        val target: Target,
+        val modifiers: List<Modifier> = emptyList()
+    )
+
+    enum class SegmentTrigger {
+        AND, COMMA, FOR
+    }
+
+    enum class TokenType {
+        NUMBER,
+
+        DAMAGE, HEAL, FREEZE, DISCARD, BUFF,
+
+        TARGET_SINGLE,
+        TARGET_ALL,
+
+        FRIENDLY, ENEMY,
+        MINION, HERO, CHARACTER,
+        BEAST, DRAGON,
+
+        RANDOM,
+        AND,
+        COMMA,
+        FOR,
+        UNKNOWN,
+
+        INJURED,
+
+        NON,
+    }
+
+    data class Token(
+        val type: TokenType,
+        val text: String
+    )
+
+    val dictionary = mapOf(
+        "造成" to TokenType.DAMAGE,
+        "恢复" to TokenType.HEAL,
+        "冻结" to TokenType.FREEZE,
+        "弃" to TokenType.DISCARD,
+        "获得" to TokenType.BUFF,
+
+        "一个" to TokenType.TARGET_SINGLE,
+        "所有" to TokenType.TARGET_ALL,
+
+        "敌方" to TokenType.ENEMY,
+        "友方" to TokenType.FRIENDLY,
+
+        "随从" to TokenType.MINION,
+        "角色" to TokenType.CHARACTER,
+        "野兽" to TokenType.BEAST,
+        "龙" to TokenType.DRAGON,
+
+        "随机" to TokenType.RANDOM,
+        "并" to TokenType.AND,
+        "并" to TokenType.AND,
+        "，" to TokenType.COMMA,
+        "为" to TokenType.FOR,
+    )
+
+    val ACTION_TOKENS = setOf(
+        TokenType.DAMAGE,
+        TokenType.HEAL,
+        TokenType.FREEZE,
+        TokenType.DISCARD,
+        TokenType.BUFF
+    )
+
+
+    fun splitByAction(tokens: List<Token>): List<List<Token>> {
+        val actionIndices = tokens
+            .mapIndexedNotNull { i, t -> if (t.type in ACTION_TOKENS) i else null }
+
+        if (actionIndices.isEmpty()) return emptyList()
+
+        val segments = mutableListOf<List<Token>>()
+
+        for (i in actionIndices.indices) {
+            val start = if (i == 0) 0 else actionIndices[i - 1]
+            val end = if (i == actionIndices.lastIndex)
+                tokens.size
+            else
+                actionIndices[i + 1]
+
+            // segment = 从上一个 action 到下一个 action
+            segments += tokens.subList(start, end)
         }
-        
-        // 移除HTML标签
-        val cleanText = text.replace(Regex("<[^>]+>"), "")
-        
-        // 优先匹配更具体的模式
-        
-        // 1. 对所有敌方随从造成x点伤害（AOE，无指向）
-        DAMAGE_ALL_ENEMY_MINIONS_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.NO_POINT),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 2. 对所有敌方角色造成x点伤害（AOE，无指向）
-        DAMAGE_ALL_ENEMY_CHARACTERS_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.NO_POINT),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 3. 对所有角色造成x点伤害（AOE，无指向）
-        DAMAGE_ALL_CHARACTERS_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.NO_POINT),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 4. 对敌方随从造成x点伤害（指向敌方随从）
-        DAMAGE_ENEMY_MINION_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.POINT_RIVAL_MINION),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 5. 对敌方角色造成x点伤害（指向敌方角色）
-        DAMAGE_ENEMY_CHARACTER_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.POINT_RIVAL),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 6. 对随从造成x点伤害（指向任意随从）
-        DAMAGE_MINION_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.DAMAGE,
-                playActions = listOf(CardActionEnum.POINT_MINION),
-                damageValue = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 7. 使一个友方随从获得+x/+x
-        BUFF_FRIENDLY_STATS_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.BUFF,
-                playActions = listOf(CardActionEnum.POINT_MY_MINION),
-                attackBuff = match.groupValues[1].toIntOrNull(),
-                healthBuff = match.groupValues[2].toIntOrNull()
-            )
-        }
-        
-        // 8. 使一个敌方随从获得+x/+x
-        BUFF_ENEMY_STATS_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.BUFF,
-                playActions = listOf(CardActionEnum.POINT_RIVAL_MINION),
-                attackBuff = match.groupValues[1].toIntOrNull(),
-                healthBuff = match.groupValues[2].toIntOrNull()
-            )
-        }
-        
-        // 9. 使一个随从获得+x/+x（通用，指向任意随从，通常是友方）
-        BUFF_STATS_REGEX.find(cleanText)?.let { match ->
-            val target = match.groupValues[1]
-            val action = when {
-                target.contains("友方") -> CardActionEnum.POINT_MY_MINION
-                target.contains("敌方") -> CardActionEnum.POINT_RIVAL_MINION
-                else -> CardActionEnum.POINT_MY_MINION // 默认为友方
+
+        return segments
+    }
+
+
+    private val htmlRegex = Regex("<.*?>")
+    fun preprocess(text: String): String {
+        return text
+            .replace(htmlRegex, "")
+            .replace("。", "")
+            .trim()
+    }
+
+    private val numberRegex = Regex("""[$#](\d+)""")
+
+    fun tokenize(text: String): List<Token> {
+        val clean = preprocess(text)
+        val tokens = mutableListOf<Token>()
+
+        var i = 0
+        while (i < clean.length) {
+            val matched = dictionary.entries
+                .firstOrNull { clean.startsWith(it.key, i) }
+
+            if (matched != null) {
+                tokens += Token(matched.value, matched.key)
+                i += matched.key.length
+                continue
             }
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.BUFF,
-                playActions = listOf(action),
-                attackBuff = match.groupValues[2].toIntOrNull(),
-                healthBuff = match.groupValues[3].toIntOrNull()
-            )
+
+            val num = numberRegex.find(clean, i)
+            if (num != null && num.range.first == i) {
+                tokens += Token(TokenType.NUMBER, num.groupValues[1])
+                i += num.value.length
+                continue
+            }
+
+            i++
         }
-        
-        // 10. 使一个随从获得+x攻击力
-        BUFF_ATTACK_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.BUFF,
-                playActions = listOf(CardActionEnum.POINT_MY_MINION),
-                attackBuff = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 11. 使一个随从获得+x生命值
-        BUFF_HEALTH_REGEX.find(cleanText)?.let { match ->
-            return CardTextAnalysisResult(
-                effectType = CardEffectTypeEnum.BUFF,
-                playActions = listOf(CardActionEnum.POINT_MY_MINION),
-                healthBuff = match.groupValues[1].toIntOrNull()
-            )
-        }
-        
-        // 12. 造成x点伤害（通用伤害，需要指向）
-        // 需要排除已经匹配的 AOE 模式
-        if (!cleanText.contains("对所有") && !cleanText.contains("对敌方") && !cleanText.contains("对随从")) {
-            Regex("造成(\\d+)点伤害").find(cleanText)?.let { match ->
-                return CardTextAnalysisResult(
-                    effectType = CardEffectTypeEnum.DAMAGE,
-                    playActions = listOf(CardActionEnum.POINT_WHATEVER),
-                    damageValue = match.groupValues[1].toIntOrNull()
-                )
+        return tokens
+    }
+
+    fun splitByAnd(tokens: List<Token>): List<List<Token>> {
+        val result = mutableListOf<MutableList<Token>>()
+        var current = mutableListOf<Token>()
+
+        for (t in tokens) {
+            if (t.type == TokenType.AND) {
+                result += current
+                current = mutableListOf()
+            } else {
+                current += t
             }
         }
-        
-        return CardTextAnalysisResult()
+        result += current
+        return result
     }
 
-    /**
-     * 解析 DBCard 为 CardGroupCard
-     * @param dbCard 数据库卡牌
-     * @return 卡组卡牌
-     */
-    fun parseAsGroupCard(dbCard: DBCard): CardGroupCard {
-        // 分析卡牌描述
-        val analysisResult = analyzeCardText(dbCard.text)
-        
-        // 确定打出行为
-        val playActions = if (analysisResult.playActions.isNotEmpty() && 
-            analysisResult.playActions != listOf(CardActionEnum.NO_POINT)) {
-            analysisResult.playActions
-        } else {
-            listOf(CardActionEnum.NO_POINT)
+    fun parseTarget(tokens: List<Token>, modifiers: List<Modifier>): Target {
+        val isAll = tokens.any { it.type == TokenType.TARGET_ALL }
+
+        val side = when {
+            tokens.any { it.type == TokenType.ENEMY } -> Side.ENEMY
+            tokens.any { it.type == TokenType.FRIENDLY } -> Side.FRIENDLY
+            else -> null
         }
-        
-        // 确定使用行为（随从、英雄、武器可以攻击敌方）
-        val powerActions = if (dbCard.type == CardTypeEnum.MINION.name ||
-            dbCard.type == CardTypeEnum.HERO.name ||
-            dbCard.type == CardTypeEnum.WEAPON.name
-        ) {
-            listOf(CardActionEnum.POINT_RIVAL)
-        } else if (dbCard.type == CardTypeEnum.SPELL.name) {
-            emptyList()
-        } else {
-            listOf(CardActionEnum.NO_POINT)
+
+        val unit = when {
+            tokens.any { it.type == TokenType.BEAST } -> UnitType.BEAST
+            tokens.any { it.type == TokenType.DRAGON } -> UnitType.DRAGON
+            tokens.any { it.type == TokenType.MINION } -> UnitType.MINION
+            tokens.any { it.type == TokenType.CHARACTER } -> UnitType.CHARACTER
+            else -> null
         }
-        
-        // 确定效果类型
-        val effectType = if (analysisResult.effectType != CardEffectTypeEnum.UNKNOWN) {
-            analysisResult.effectType
+
+        val exclude = modifiers
+            .filterIsInstance<Modifier.Exclude>()
+            .firstOrNull()
+            ?.unitType
+
+        return if (isAll) {
+            Target.All(side, unit, exclude)
         } else {
-            CardEffectTypeEnum.UNKNOWN
+            Target.Single(unit)
         }
-        
-        return CardGroupCard(
-            cardId = dbCard.cardId,
-            dbfId = dbCard.dbfId,
-            name = dbCard.name,
-            effectType = effectType,
-            playActions = playActions,
-            powerActions = powerActions,
-            weight = 1.0,
-            powerWeight = 1.0,
-            changeWeight = if (dbCard.cost == null || dbCard.cost!! > 2) -1.0 else 0.0
-        )
     }
 
+
+    fun parseAction(tokens: List<Token>): Action {
+        val num = tokens.firstOrNull { it.type == TokenType.NUMBER }?.text?.toInt()
+
+        return when {
+            tokens.any { it.type == TokenType.DAMAGE } ->
+                Action.Damage(num!!)
+
+            tokens.any { it.type == TokenType.HEAL } ->
+                Action.Heal(num!!)
+
+            tokens.any { it.type == TokenType.FREEZE } ->
+                Action.Freeze
+
+            tokens.any { it.type == TokenType.DISCARD } ->
+                Action.Discard(1, tokens.any { it.type == TokenType.RANDOM })
+
+            tokens.any { it.type == TokenType.BUFF } -> {
+                val (atk, hp) = Regex("""\+(\d+)/\+(\d+)""")
+                    .find(tokens.joinToString("") { it.text })!!
+                    .destructured
+                Action.Buff(atk.toInt(), hp.toInt())
+            }
+
+            else -> error("Unknown action")
+        }
+    }
+
+    fun parseModifiers(tokens: List<Token>): List<Modifier> {
+        val modifiers = mutableListOf<Modifier>()
+
+        // 随机
+        if (tokens.any { it.type == TokenType.RANDOM }) {
+            modifiers += Modifier.Random
+        }
+
+        // 受伤的
+        if (tokens.any { it.type == TokenType.INJURED }) {
+            modifiers += Modifier.InjuredOnly
+        }
+
+        // 非龙 / 非野兽
+        val nonIndex = tokens.indexOfFirst { it.type == TokenType.NON }
+        if (nonIndex != -1 && nonIndex + 1 < tokens.size) {
+            val unitType = when (tokens[nonIndex + 1].type) {
+                TokenType.DRAGON -> UnitType.DRAGON
+                TokenType.BEAST -> UnitType.BEAST
+                else -> null
+            }
+            if (unitType != null) {
+                modifiers += Modifier.Exclude(unitType)
+            }
+        }
+
+        // 重复 N 次（例如：重复3次）
+        val repeatIndex = tokens.indexOfFirst { it.text == "重复" }
+        if (repeatIndex != -1) {
+            val num = tokens
+                .firstOrNull { it.type == TokenType.NUMBER }
+                ?.text
+                ?.toInt()
+
+            if (num != null) {
+                modifiers += Modifier.Repeat(num)
+            }
+        }
+
+        return modifiers
+    }
+
+
+    fun cleanSegment(tokens: List<Token>): List<Token> =
+        tokens.filterNot { it.type == TokenType.FOR }
+
+    fun parse(text: String): List<EffectNode> {
+        val tokens = tokenize(text)
+        val segments = splitByAction(tokens)
+
+        return segments.map { segment ->
+            val clean = cleanSegment(segment)
+            val modifiers = parseModifiers(clean)
+
+            EffectNode(
+                action = parseAction(clean),
+                target = parseTarget(clean, modifiers),
+                modifiers = modifiers
+            )
+        }
+    }
+
+
+}
+
+/*
+造成$6点伤害。
+对一个随从造成$25点伤害。
+对一个角色造成$3点伤害，并使其<b>冻结</b>。
+对一个随从造成$4点伤害。
+造成$4点伤害，随机弃一张牌。
+对所有敌方随从造成$2点伤害，为所有友方角色恢复#2点生命值。
+对所有敌人造成$2点伤害。
+对所有敌方随从造成$2点伤害，并使其<b>冻结</b>。
+对所有非龙随从造成$5点伤害。
+对所有随从造成$2点伤害。
+使你手牌，牌库和战场上的所有野兽获得+2/+2。
+* */
+
+
+fun main() {
+    fun test(text: String) {
+        println("text:$text")
+        val parser = DBCardParser()
+        val res = parser.parse(text)
+        for (node in res) {
+            println(node)
+        }
+        println()
+    }
+    test($$"对所有敌方随从造成$2点伤害，为所有友方角色恢复#2点生命值。")
+    test($$"造成$6点伤害")
+    test($$"对一个随从造成$25点伤害。")
+    test($$"对一个角色造成$3点伤害，并使其<b>冻结</b>。")
+    test($$"对一个随从造成$4点伤害。")
+    test($$"造成$4点伤害，随机弃一张牌。")
+    test($$"对所有敌方随从造成$2点伤害，并使其<b>冻结</b>。")
+    test($$"对所有敌方随从造成$2点伤害，并使其冻结。")
 }
