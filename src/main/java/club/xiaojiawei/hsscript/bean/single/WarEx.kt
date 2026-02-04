@@ -1,6 +1,8 @@
 package club.xiaojiawei.hsscript.bean.single
 
+import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
+import club.xiaojiawei.hsscript.utils.getBoolean
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
@@ -106,8 +108,12 @@ object WarEx {
             rival = Player.UNKNOWN_PLAYER
             me = Player.UNKNOWN_PLAYER
             currentPlayer = Player.UNKNOWN_PLAYER
-            player1 = Player(allowLog = true, playerId = "1", war = war)
-            player2 = Player(allowLog = true, playerId = "2", war = war)
+            player1 = Player(allowLog = true, playerId = "1", war = war).apply {
+                handArea.parseCard = ConfigEnum.ANALYZE_CARD_DESCRIPTION.getBoolean()
+            }
+            player2 = Player(allowLog = true, playerId = "2", war = war).apply {
+                handArea.parseCard = ConfigEnum.ANALYZE_CARD_DESCRIPTION.getBoolean()
+            }
             warTurn = 0
             conceded = ""
             lost = conceded

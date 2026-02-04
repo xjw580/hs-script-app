@@ -237,7 +237,7 @@ class SettingsController : SettingsView(), Initializable, StageHook {
             val loader = WindowUtil.getLoader(windowEnum)
             val start = System.currentTimeMillis()
             tab.content = loader.load()
-            println("load ${windowEnum.name} time:${System.currentTimeMillis() - start}ms")
+//            println("load ${windowEnum.name} time:${System.currentTimeMillis() - start}ms")
             val controller = loader.getController<Any>()
             tab.properties[controllerKey] = controller
             WindowUtil.addEventHook(tab.content, controller)

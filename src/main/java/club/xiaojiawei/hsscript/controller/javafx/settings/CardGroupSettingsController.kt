@@ -15,6 +15,7 @@ import club.xiaojiawei.hsscript.interfaces.KeyHook
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.util.setAll
+import club.xiaojiawei.hsscriptcardsdk.data.CardInfoData
 import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
 import club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum
 import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
@@ -852,29 +853,11 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
             // 构建卡牌列表
             val cards = mutableListOf<CardGroupCard>()
             var notFoundCount = 0
+//            val dbCardParser = DBCardParser()
             for (cardInfo in deckInfo.cards) {
                 val dbCard = cardsMap[cardInfo.dbfId]
                 if (dbCard != null) {
-                    val cardGroupCard = CardGroupCard(
-                        cardId = dbCard.cardId,
-                        dbfId = dbCard.dbfId,
-                        name = dbCard.name,
-                        playActions = listOf(CardActionEnum.NO_POINT),
-                        powerActions = if (dbCard.type == CardTypeEnum.MINION.name ||
-                            dbCard.type == CardTypeEnum.HERO.name ||
-                            dbCard.type == CardTypeEnum.WEAPON.name
-                        ) {
-                            listOf(CardActionEnum.POINT_RIVAL)
-                        } else if (dbCard.type == CardTypeEnum.SPELL.name) {
-                            emptyList()
-                        } else {
-                            listOf(CardActionEnum.NO_POINT)
-                        },
-                        weight = 1.0,
-                        powerWeight = 1.0,
-                        changeWeight = if (dbCard.cost == null || dbCard.cost!! > 2) -1.0 else 0.0
-                    )
-                    cards.add(cardGroupCard)
+//                    cards.add(dbCardParser.parseAsGroupCard(dbCard))
                 } else {
                     notFoundCount++
                 }
@@ -1010,18 +993,12 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
                     cardId = cardId,
                     dbfId = dbfId,
                     name = name,
-                    playActions = listOf(CardActionEnum.NO_POINT),
-                    powerActions = listOf(CardActionEnum.NO_POINT),
+                    playActions = CardInfoData.parsePlayAction(dbCard),
+                    powerActions = CardInfoData.parsePowerAction(dbCard),
                     weight = 1.0,
                     powerWeight = 1.0,
                     changeWeight = if (cost == null || cost > 2) -1.0 else 0.0
                 )
-                // 根据卡牌类型设置默认使用行为
-                if (type == CardTypeEnum.MINION.name || type == CardTypeEnum.HERO.name || type == CardTypeEnum.WEAPON.name) {
-                    cardGroupCard.powerActions = listOf(CardActionEnum.POINT_RIVAL)
-                } else if (type == CardTypeEnum.SPELL.name) {
-                    cardGroupCard.powerActions = emptyList()
-                }
                 cardGroup.cardsObservable.add(cardGroupCard)
                 cardGroupCardTable.items.add(cardGroupCard)
             }

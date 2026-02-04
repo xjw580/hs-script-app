@@ -21,7 +21,8 @@ import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.DB_NAME
+import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB
+import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB_NAME
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
 import javafx.animation.KeyFrame
@@ -69,7 +70,7 @@ class DeveloperSettingsController : Initializable {
     protected lateinit var rootPane: StackPane
 
     @FXML
-    protected lateinit var notificationManager: NotificationManager<Node>
+    protected lateinit var notificationManager: NotificationManager<Any>
 
     @FXML
     protected lateinit var fileLogLevelComboBox: ComboBox<String>
@@ -250,7 +251,7 @@ class DeveloperSettingsController : Initializable {
                         "cmd /c start ${exeFile.absolutePath} --proxyAddress=$proxyPath --dbPath=${
                             Path.of(
                                 ROOT_PATH,
-                                DB_NAME
+                                CARD_DB_NAME
                             )
                         }"
                     )

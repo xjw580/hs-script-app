@@ -133,6 +133,7 @@ object DeckStrategyActuator {
     fun outCard() {
         if (!canExec()) return
 
+
         if (Mode.currMode !== ModeEnum.GAMEPLAY) {
             log.warn { "没有处于${ModeEnum.GAMEPLAY.comment}，但试图执行出牌方法，如脚本运行不正常请提交issue并附带游戏日志【${PowerLogListener.logFile?.path()}】" }
         }
@@ -148,6 +149,7 @@ object DeckStrategyActuator {
         // 等待动画结束
         SystemUtil.delay(5000)
         if (!war.isMyTurn || PauseStatus.isPause) return
+
         log.info { "执行出牌策略" }
 
         try {
