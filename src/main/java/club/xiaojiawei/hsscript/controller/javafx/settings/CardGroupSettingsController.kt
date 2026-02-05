@@ -852,7 +852,7 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
             // 构建卡牌列表
             val cards = mutableListOf<CardGroupCard>()
             var notFoundCount = 0
-            val dbCardParser = DBCardParser()
+//            val dbCardParser = DBCardParser()
             for (cardInfo in deckInfo.cards) {
                 val dbCard = cardsMap[cardInfo.dbfId]
                 if (dbCard != null) {

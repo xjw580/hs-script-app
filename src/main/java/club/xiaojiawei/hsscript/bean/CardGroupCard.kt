@@ -128,7 +128,7 @@ class CardGroupCard : Cloneable {
     constructor(
         cardId: String,
         dbfId: Int = 0,
-        name: String,
+        name: String = "",
         effectType: CardEffectTypeEnum = CardEffectTypeEnum.UNKNOWN,
         playActions: List<CardActionEnum> = listOf(CardActionEnum.NO_POINT),
         powerActions: List<CardActionEnum> = listOf(CardActionEnum.NO_POINT),
