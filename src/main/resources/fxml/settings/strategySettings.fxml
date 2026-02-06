@@ -36,6 +36,9 @@
                             <SettingHBox name="只打人机" beta="true" tip="若对方行为不像人机则考虑投降" tabWindow="STRATEGY_SETTINGS" group="策略">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="ONLY_ROBOT"/>
                             </SettingHBox>
+                            <SettingHBox name="分析卡牌描述" beta="true" tip="可以解析出卡牌的行为" tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigSwitch notificationManager="${notificationManager}" config="ANALYZE_CARD_DESCRIPTION"/>
+                            </SettingHBox>
                         </VBox>
                     </TitledPane>
                 </Group>

@@ -10,7 +10,7 @@
 
     <groupId>com.github.xjw580</groupId>
     <artifactId>hs-script-app</artifactId>
-<!--    <version>v4.14.0-GA</version>-->
+    <version>v4.14.1-DEV</version>
     <name>hs-script-app</name>
     <description>炉石传说脚本</description>
 
@@ -96,28 +96,18 @@
     </profiles>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-serialization-core</artifactId>
-            <version>1.6.3</version>
-        </dependency>
-
-        <!-- JSON 支持 -->
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-serialization-json</artifactId>
-            <version>1.6.3</version>
-        </dependency>
         <!-- ByteBuddy -->
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
             <version>1.14.12</version>
         </dependency>
+        <!--ocr-->
         <dependency>
             <groupId>com.github.nguyenq</groupId>
             <artifactId>tess4j</artifactId>
         </dependency>
+        <!--javafx图表库-->
         <dependency>
             <groupId>eu.hansolo</groupId>
             <artifactId>tilesfx</artifactId>
@@ -235,7 +225,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <!--json需要-->
+        <!--json序列化-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -243,12 +233,10 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
     </dependencies>
 

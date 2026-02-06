@@ -1,0 +1,14 @@
+<configuration>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <property name="log_pattern_console"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%boldYellow(%thread)] \(%file:%line\) %highlight(%-5level) %msg%n"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                ${log_pattern_console}
+            </pattern>
+        </layout>
+    </appender>
+</configuration>

@@ -18,7 +18,18 @@ object MessageDigestUtil {
                 digest.update(buffer, 0, read)
             }
         }
-        return digest.digest().toHexString()
+        return bytesToHex(digest.digest())
+    }
+
+    /**
+     * 字节数组转十六进制字符串
+     */
+    private fun bytesToHex(bytes: ByteArray): String {
+        val sb = StringBuilder()
+        for (b in bytes) {
+            sb.append(String.format("%02x", b))
+        }
+        return sb.toString()
     }
 
     fun File.calcSHA256(): String = sha256(this)

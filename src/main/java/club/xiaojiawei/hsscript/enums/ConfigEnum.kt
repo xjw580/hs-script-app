@@ -43,24 +43,19 @@ val DEV_CONFIG_GROUP = ConfigGroup("dev")
 val WEIGHT_CONFIG_GROUP = ConfigGroup("weight")
 
 private const val WORK_TIME_RULE_PRESETS_ONE = "presets-one"
-
 private const val WORK_TIME_RULE_PRESETS_EMPTY = ""
-
 private const val WORK_TIME_RULE_PRESETS_TWO = "presets-two"
 
 val DEFAULT_WORK_TIME by lazy {
     WorkTime("00:00", "23:59")
 }
-
 val DEFAULT_OPERATIONS by lazy {
     setOf(
         OperateEnum.CLOSE_GAME,
         OperateEnum.CLOSE_PLATFORM,
     )
 }
-
 val DEFAULT_RUN_MODE_ENUM = RunModeEnum.STANDARD
-
 val DEFAULT_DECK_POS by lazy {
     listOf(1)
 }
@@ -68,7 +63,6 @@ val DEFAULT_DECK_POS by lazy {
 const val DEFAULT_DECK_STRATEGY_ID = "e71234fa-1-radical-deck-97e9-1f4e126cd33b"
 
 private const val FALSE_STR = false.toString()
-
 private const val TRUE_STR = true.toString()
 
 enum class ConfigEnum(
@@ -248,7 +242,7 @@ enum class ConfigEnum(
      */
     TOP_GAME_WINDOW(
         group = WINDOW_CONFIG_GROUP,
-        defaultValueInitializer = { MOUSE_CONTROL_MODE.defaultValue },
+        defaultValueInitializer = { FALSE_STR },
         service = TopGameWindowService,
     ),
 
@@ -487,6 +481,14 @@ enum class ConfigEnum(
     MAXIMUM_WIN_RATE_LIMIT(
         group = STRATEGY_CONFIG_GROUP,
         defaultValueInitializer = { "100" },
+    ),
+
+    /**
+     * 分析卡牌描述
+     */
+    ANALYZE_CARD_DESCRIPTION(
+        group = STRATEGY_CONFIG_GROUP,
+        defaultValueInitializer = { TRUE_STR },
     ),
 
     /**

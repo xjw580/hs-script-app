@@ -97,7 +97,7 @@ class GameLogInitializer : AbstractInitializer() {
 
         modify.isTrue {
             clientIni.store()
-            log.info { "游戏日志大小限制已修改为${shouldLogLimitSize}KB，重启游戏生效" }
+            log.warn { "游戏日志大小限制已修改为${shouldLogLimitSize}KB，重启游戏生效" }
         }
 
     }

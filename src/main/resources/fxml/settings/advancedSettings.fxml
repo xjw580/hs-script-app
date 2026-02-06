@@ -82,12 +82,10 @@
                     <TitledPane fx:id="behaviorTitled" text="行为"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="阻止游戏反作弊" tip="阻止游戏加载本地反作弊插件，必须用本软件启动游戏才能生效" tabWindow="ADVANCED_SETTINGS" group="行为">
-                                <BetaTag/>
+                            <SettingHBox name="阻止游戏反作弊" tip="阻止游戏加载本地反作弊插件，必须用本软件启动游戏才能生效" beta="true" tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="PREVENT_AC"/>
                             </SettingHBox>
-                            <SettingHBox name="自动刷新游戏任务" tip="每次进入游戏首页时检查" tabWindow="ADVANCED_SETTINGS" group="行为">
-                                <BetaTag/>
+                            <SettingHBox name="自动刷新游戏任务" tip="每次进入游戏首页时检查" beta="true" tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="AUTO_REFRESH_GAME_TASK"/>
                             </SettingHBox>
                             <SettingHBox name="游戏启动方式偏好" tabWindow="ADVANCED_SETTINGS" group="行为">
