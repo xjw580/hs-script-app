@@ -1,5 +1,7 @@
 package club.xiaojiawei.hsscript.bean
 
+import club.xiaojiawei.hsscriptcardsdk.cardparser.CardActionGenerator
+import club.xiaojiawei.hsscriptcardsdk.cardparser.MinionPointRivalPlayActionInterceptor
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -13,7 +15,7 @@ class CardActionGeneratorTest {
 
         val generatedClass = CardActionGenerator.generateCardActionClass(
             className, cardIds,
-            MinionPointRivalPlayActionsInterceptor(1)
+            MinionPointRivalPlayActionInterceptor(1)
         )
         assertEquals(className, generatedClass.name)
 

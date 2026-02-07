@@ -5,12 +5,11 @@
     <parent>
         <groupId>com.github.xjw580.Hearthstone-Script</groupId>
         <artifactId>hs-script</artifactId>
-        <version>v4.14.0-GA</version>
+        <version>v4.14.0.1-BETA</version>
     </parent>
 
     <groupId>com.github.xjw580</groupId>
     <artifactId>hs-script-app</artifactId>
-    <version>v4.14.1-DEV</version>
     <name>hs-script-app</name>
     <description>炉石传说脚本</description>
 
@@ -96,12 +95,6 @@
     </profiles>
 
     <dependencies>
-        <!-- ByteBuddy -->
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>1.14.12</version>
-        </dependency>
         <!--ocr-->
         <dependency>
             <groupId>com.github.nguyenq</groupId>

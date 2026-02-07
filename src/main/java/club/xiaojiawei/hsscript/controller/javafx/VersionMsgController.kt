@@ -36,11 +36,10 @@ class VersionMsgController : Initializable {
         versionDescription.text =
             """
             🚀 新功能
-            1. 设置页增加搜索设置项功能
-            2. 高级设置页增加保护软件所在目录的功能
+            1. 支持自动解析卡牌描述[策略设置->分析卡牌描述]
             
             🔧 重构与优化
-            1. 增强`避免管理员权限启动游戏`功能的适用性生效
+            1. 合并卡牌权重和卡牌信息为卡牌组，支持多个卡牌组应用
             """.trimIndent()
     }
 

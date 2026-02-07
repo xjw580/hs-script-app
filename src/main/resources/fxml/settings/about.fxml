@@ -12,6 +12,7 @@
 <?import club.xiaojiawei.hsscript.component.UrlLabel?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.Image?>
+<?import club.xiaojiawei.hsscript.component.TipNode?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/about.css"
@@ -30,7 +31,8 @@
                                         <fx:define>
                                             <Double fx:id="icoSize" fx:value="40"/>
                                         </fx:define>
-                                        <ImageView fx:id="projectIco" fitHeight="${icoSize}" fitWidth="${icoSize}" onMouseClicked="#showExtraInfo"/>
+                                        <ImageView fx:id="projectIco" fitHeight="${icoSize}" fitWidth="${icoSize}"
+                                                   onMouseClicked="#showExtraInfo"/>
                                         <Label text="Hearthstone-Script"
                                                style="-fx-font-weight: bold;-fx-font-size: 18"/>
                                     </HBox>
@@ -53,16 +55,19 @@
                                             </UrlLabel>
                                         </HBox>
                                     </HBox>
-                                    <Label text="本软件面向个人免费使用，所有需要收费的都是骗子！" style="-fx-font-size: 13;-fx-font-weight: bold"/>
+                                    <Label text="本软件面向个人免费使用，所有需要收费的都是骗子！"
+                                           style="-fx-font-size: 13;-fx-font-weight: bold"/>
                                     <HBox alignment="CENTER_LEFT" spacing="10">
                                         <Label text="软件下载"/>
                                         <HBox spacing="5" alignment="CENTER_LEFT">
-                                            <UrlLabel url="https://gitee.com/zergqueen/Hearthstone-Script/releases/latest">
+                                            <UrlLabel
+                                                    url="https://gitee.com/zergqueen/Hearthstone-Script/releases/latest">
                                                 <graphic>
                                                     <GiteeIco scaleX="${icoScale}" scaleY="${icoScale}"/>
                                                 </graphic>
                                             </UrlLabel>
-                                            <UrlLabel url="https://github.com/xjw580/Hearthstone-Script/releases/latest">
+                                            <UrlLabel
+                                                    url="https://github.com/xjw580/Hearthstone-Script/releases/latest">
                                                 <graphic>
                                                     <GithubIco scaleX="${icoScale}" scaleY="${icoScale}"/>
                                                 </graphic>
@@ -77,7 +82,8 @@
                                         </UrlLabel>
                                         <UrlLabel text="加入频道">
                                             <content>
-                                                <ImageView fx:id="joinChannelImageView" preserveRatio="true" fitWidth="250"/>
+                                                <ImageView fx:id="joinChannelImageView" preserveRatio="true"
+                                                           fitWidth="250"/>
                                             </content>
                                         </UrlLabel>
                                     </HBox>
@@ -87,11 +93,26 @@
                     </TitledPane>
                 </Group>
                 <Group>
-                    <TitledPane text="开源许可" expanded="false"
+                    <TitledPane text="使用到的开源库，开源万岁" expanded="false"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
                             <HBox styleClass="h-box">
+                                <UrlLabel text="bytebuddy" url="https://github.com/raphw/byte-buddy"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Label text="Apache 2.0"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
+                                <UrlLabel text="tess4j" url="https://github.com/nguyenq/tess4j"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Label text="Apache 2.0"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
                                 <UrlLabel text="kotlin" url="https://kotlinlang.org/"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Label text="Apache 2.0"/>
+                            </HBox>
+                            <HBox styleClass="h-box">
+                                <UrlLabel text="kotlinx" url="https://kotlinlang.org/"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <Label text="Apache 2.0"/>
                             </HBox>
@@ -116,12 +137,8 @@
                                 <Label text="Apache 2.0"/>
                             </HBox>
                             <HBox styleClass="h-box">
-                                <UrlLabel text="lombok" url="https://github.com/projectlombok/lombok"/>
-                                <HBox HBox.hgrow="ALWAYS"/>
-                                <Label text="MIT"/>
-                            </HBox>
-                            <HBox styleClass="h-box">
-                                <UrlLabel text="spring-framework" url="https://github.com/spring-projects/spring-framework"/>
+                                <UrlLabel text="spring-framework"
+                                          url="https://github.com/spring-projects/spring-framework"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <Label text="Apache 2.0"/>
                             </HBox>
@@ -136,7 +153,7 @@
                                 <Label text="Apache 2.0"/>
                             </HBox>
                             <HBox styleClass="h-box">
-                                <UrlLabel text="jfx" url="https://github.com/openjdk/jfx"/>
+                                <UrlLabel text="javafx" url="https://github.com/openjdk/jfx"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <Label text="GPL 2.0"/>
                             </HBox>
@@ -152,11 +169,6 @@
                             </HBox>
                             <HBox styleClass="h-box">
                                 <UrlLabel text="jintellitype" url="https://github.com/melloware/jintellitype"/>
-                                <HBox HBox.hgrow="ALWAYS"/>
-                                <Label text="Apache 2.0"/>
-                            </HBox>
-                            <HBox styleClass="h-box">
-                                <UrlLabel text="fastjson2" url="https://github.com/alibaba/fastjson2"/>
                                 <HBox HBox.hgrow="ALWAYS"/>
                                 <Label text="Apache 2.0"/>
                             </HBox>
