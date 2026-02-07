@@ -5,18 +5,19 @@ import club.xiaojiawei.hsscript.listener.log.PowerLogListener
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.PauseStatus
-import club.xiaojiawei.hsscript.utils.*
+import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptbasestrategy.util.DeckStrategyUtil
 import club.xiaojiawei.hsscriptcardsdk.bean.Card
 import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
 import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
-import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
 
 /**
@@ -148,21 +149,6 @@ object DeckStrategyActuator {
         // 等待动画结束
         SystemUtil.delay(5000)
         if (!war.isMyTurn || PauseStatus.isPause) return
-
-//        解析卡牌描述
-        if (ConfigEnum.ANALYZE_CARD_DESCRIPTION.getBoolean()) {
-            log.info { "解析手中卡牌描述" }
-            val myHandCards = war.me.handArea.cards.toList()
-            try {
-                for (card in myHandCards) {
-                    if (card.cardType === CardTypeEnum.SPELL || card.isBattlecry) {
-                        DeckStrategyUtil.parseCard(card.cardId)
-                    }
-                }
-            }catch (e:Exception){
-                log.error (e){ "解析手中卡牌出错" }
-            }
-        }
 
         log.info { "执行出牌策略" }
 
