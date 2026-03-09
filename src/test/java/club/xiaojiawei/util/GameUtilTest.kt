@@ -9,11 +9,11 @@ import club.xiaojiawei.hsscript.strategy.mode.TournamentModeStrategy
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.GameUtil.getChooseOneCardRect
 import club.xiaojiawei.hsscript.utils.GameUtil.updateGameRect
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 /**
@@ -21,7 +21,7 @@ import kotlin.test.Test
  * @date 2025/6/23 19:37
  */
 @ExtendWith(GameUtilTest.Callback::class)
-@Disabled
+@Ignore
 class GameUtilTest {
 
     private class Callback : BeforeAllCallback, AfterAllCallback {
@@ -46,7 +46,7 @@ class GameUtilTest {
     }
 
     @Test
-    fun testClick(){
+    fun testClick() {
         TournamentModeStrategy.TOURNAMENT_MODE_RECT.lClick()
     }
 

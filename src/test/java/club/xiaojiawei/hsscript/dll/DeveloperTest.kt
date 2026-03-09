@@ -1,19 +1,18 @@
-package club.xiaojiawei.dll
+package club.xiaojiawei.hsscript.dll
 
-import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
-import org.junit.jupiter.api.Disabled
 import java.util.concurrent.CountDownLatch
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 /**
  * @author 肖嘉威
  * @date 2025/9/11 9:14
  */
-@Disabled
+@Ignore
 class DeveloperTest {
 
     @Test

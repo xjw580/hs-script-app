@@ -1,10 +1,9 @@
-package club.xiaojiawei.dll
+package club.xiaojiawei.hsscript.dll
 
-import club.xiaojiawei.hsscript.dll.CSystemDll
 import com.sun.jna.WString
-import org.junit.jupiter.api.Disabled
 import java.io.File
 import java.nio.file.Paths
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -14,6 +13,12 @@ import kotlin.test.assertTrue
  * @date 2025/4/20 16:11
  */
 class CSystemDllTest {
+
+    private val protectionDir by lazy {
+        val path = WString(Paths.get(System.getProperty("user.home"), "Downloads", "test_protect").toString())
+        File(path.toString()).mkdirs()
+        path
+    }
 
     @Test
     fun testIsDebug() {
@@ -25,20 +30,14 @@ class CSystemDllTest {
         CSystemDll.INSTANCE.uninstall()
     }
 
-    private val protectionDir by lazy {
-        val path = WString(Paths.get(System.getProperty("user.home"), "Downloads", "test_protect").toString())
-        File(path.toString()).mkdirs()
-        path
-    }
-
     @Test
-    @Disabled
+    @Ignore
     fun testStrongProtection() {
         assertTrue { CSystemDll.INSTANCE.protectDirectory(protectionDir, true) }
     }
 
     @Test
-    @Disabled
+    @Ignore
     fun testNormalProtection() {
         assertTrue {
             CSystemDll.INSTANCE.protectDirectory(
@@ -49,7 +48,7 @@ class CSystemDllTest {
     }
 
     @Test
-    @Disabled
+    @Ignore
     fun testUnprotect() {
         assertTrue {
             CSystemDll.INSTANCE.unprotectDirectory(protectionDir)

@@ -2,6 +2,7 @@ package club.xiaojiawei.hsscript.config
 
 import club.xiaojiawei.hsscript.consts.PROTECT_PATH
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.utils.WindowUtil
 import club.xiaojiawei.hsscriptbase.bean.LThread
 import club.xiaojiawei.hsscriptbase.config.log
 
@@ -18,6 +19,7 @@ object ShutdownHookConfig {
                     {
                         CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                         CSystemDll.INSTANCE.removeSystemTray()
+                        WindowUtil.saveConfig()
 //                        CSystemDll.INSTANCE.uninstall()
                         CSystemDll.INSTANCE.capture(false)
                         CSystemDll.INSTANCE.limitMouseRange(false)

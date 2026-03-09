@@ -1,25 +1,23 @@
-package club.xiaojiawei.dll
+package club.xiaojiawei.hsscript.dll
 
 import club.xiaojiawei.hsscript.bean.MemoryLogFile
 import club.xiaojiawei.hsscript.consts.GAME_DECKS_LOG_NAME
 import club.xiaojiawei.hsscript.consts.GAME_MODE_LOG_NAME
 import club.xiaojiawei.hsscript.consts.GAME_WAR_LOG_NAME
-import club.xiaojiawei.hsscript.dll.CSystemDll
-import club.xiaojiawei.hsscript.dll.LogReader
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import java.util.concurrent.CountDownLatch
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 /**
  * @author 肖嘉威
  * @date 2025/9/11 9:14
  */
-@Disabled
+@Ignore
 class LogReaderTest {
 
     @BeforeEach
@@ -44,7 +42,7 @@ class LogReaderTest {
         val waitTime = 10000L
         val start = System.currentTimeMillis()
         while (System.currentTimeMillis() - start < waitTime) {
-            if (LogReader.existChannel(logName)){
+            if (LogReader.existChannel(logName)) {
                 break
             }
             Thread.sleep(100)
@@ -56,7 +54,7 @@ class LogReaderTest {
             }
         }
         println("get channel id ========================================================")
-        println("log channel id: "+LogReader.nativeGetChannelId(logName))
+        println("log channel id: " + LogReader.nativeGetChannelId(logName))
         val memoryLogFile = MemoryLogFile(logName)
         println("read all log ========================================================")
         memoryLogFile.readAll().forEach { println(it) }

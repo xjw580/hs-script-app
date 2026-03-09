@@ -497,7 +497,7 @@ object SystemUtil {
     /**
      * 修改指定窗口的透明度
      * @param hwnd 窗口句柄
-     * @param opacity 不透明度
+     * @param opacity 不透明度[0,255]
      */
     fun changeWindowOpacity(
         hwnd: WinDef.HWND?,
