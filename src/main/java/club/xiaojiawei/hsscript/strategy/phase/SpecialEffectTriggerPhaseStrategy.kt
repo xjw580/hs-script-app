@@ -5,6 +5,7 @@ import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
+import club.xiaojiawei.hsscript.utils.*
 
 /**
  * 特殊效果触发阶段（如开局的狼王、巴库、大主教等）
@@ -13,7 +14,8 @@ import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
  */
 object SpecialEffectTriggerPhaseStrategy : AbstractPhaseStrategy() {
 
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
+        val tagChangeEntity = node.toTagChangeEntity()
         if (tagChangeEntity.tag == TagEnum.STEP && tagChangeEntity.value == StepEnum.MAIN_READY.name) {
             war.currentPhase = WarPhaseEnum.GAME_TURN
             return true

@@ -6,8 +6,8 @@ import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.bean.single.WarEx
 import club.xiaojiawei.hsscript.listener.log.PowerLogListener
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
+import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.GameUtil.addGameEndTask
-import club.xiaojiawei.hsscript.utils.SystemUtil
 import java.io.IOException
 
 /**
@@ -16,32 +16,32 @@ import java.io.IOException
  * @date 2022/11/27 13:44
  */
 object GameOverPhaseStrategy : AbstractPhaseStrategy() {
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
         over()
         return true
     }
 
-    override fun dealShowEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    override fun dealShowEntityThenIsOver(node: EntityNode): Boolean {
         over()
         return true
     }
 
-    override fun dealFullEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    override fun dealFullEntityThenIsOver(node: EntityNode): Boolean {
         over()
         return true
     }
 
-    override fun dealChangeEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    override fun dealChangeEntityThenIsOver(node: EntityNode): Boolean {
         over()
         return true
     }
 
-    override fun dealBlockIsOver(line: String, block: Block): Boolean {
+    override fun dealBlockIsOver(node: BlockNode): Boolean {
         over()
         return true
     }
 
-    override fun dealBlockEndIsOver(line: String, block: Block?): Boolean {
+    override fun dealBlockEndIsOver(node: BlockNode): Boolean {
         over()
         return true
     }

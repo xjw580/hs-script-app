@@ -23,6 +23,8 @@ object PowerLogListener :
     AbstractLogListener(GAME_WAR_LOG_NAME, 0, 50L, TimeUnit.MILLISECONDS) {
 
     private val war = WAR
+    private val parser = club.xiaojiawei.hsscript.utils.PowerLogParser()
+    private val executor = club.xiaojiawei.hsscript.utils.BlockExecutor()
 
     private const val RESERVE_SIZE_B = 4 * 1024 * 1024
 
@@ -39,25 +41,29 @@ object PowerLogListener :
                 val line = it.readLine()
                 if (line == null) {
                     return@dealNewLog
-                } else if (PowerLogUtil.isRelevance(line)) {
-                    resolveLog(line)
+                } else {
+                    parser.parse(line)
+                    parser.roots.forEach { node ->
+                        executor.execute(node)
+                        resolveLog(node)
+                    }
+                    parser.roots.clear()
                 }
             } ?: return
         }
     }
 
-    private fun resolveLog(line: String) {
-        when (war.currentPhase) {
-            WarPhaseEnum.FILL_DECK -> {
-                WarPhaseEnum.FILL_DECK.phaseStrategy?.deal(line)
-            }
-
-            WarPhaseEnum.GAME_OVER -> {
-                WarPhaseEnum.GAME_OVER.phaseStrategy?.deal(line)
-            }
-
-            else -> war.currentPhase.phaseStrategy?.deal(line)
+    private fun resolveLog(node: club.xiaojiawei.hsscript.utils.PowerNode) {
+        val strategy = when (war.currentPhase) {
+            WarPhaseEnum.FILL_DECK -> WarPhaseEnum.FILL_DECK.phaseStrategy
+            WarPhaseEnum.GAME_OVER -> WarPhaseEnum.GAME_OVER.phaseStrategy
+            else -> war.currentPhase.phaseStrategy
         }
+        
+        if (strategy is AbstractPhaseStrategy) {
+            strategy.deal(node)
+        }
+
         if (war.currentTurnStep == StepEnum.FINAL_GAMEOVER) {
             war.currentPhase = WarPhaseEnum.GAME_OVER
         }

@@ -5,6 +5,10 @@ import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.utils.CardUtil
+import club.xiaojiawei.hsscript.utils.EntityNode
+import club.xiaojiawei.hsscript.utils.TagChangeNode
+import club.xiaojiawei.hsscript.utils.toExtraEntity
+import club.xiaojiawei.hsscript.utils.toTagChangeEntity
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
@@ -52,7 +56,8 @@ object DrawnInitCardPhaseStrategy : AbstractPhaseStrategy() {
         }
     }
 
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
+        val tagChangeEntity = node.toTagChangeEntity()
         if (tagChangeEntity.tag == TagEnum.ZONE) {
             verifyPlayer(tagChangeEntity.playerId, true)
         } else if (tagChangeEntity.tag == TagEnum.NEXT_STEP && tagChangeEntity.value == StepEnum.BEGIN_MULLIGAN.name) {
@@ -62,7 +67,8 @@ object DrawnInitCardPhaseStrategy : AbstractPhaseStrategy() {
         return false
     }
 
-    override fun dealShowEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    override fun dealShowEntityThenIsOver(node: EntityNode): Boolean {
+        val extraEntity = node.toExtraEntity()
         if (Entity.isUnknownEntityName(extraEntity.entityName)) {
             verifyPlayer(extraEntity.playerId, false)
         }
@@ -71,11 +77,11 @@ object DrawnInitCardPhaseStrategy : AbstractPhaseStrategy() {
 
     /**
      * 确定一方玩家的游戏id，[.verifyPlayer]方法绝对会在此方法执行前执行
-     * @param line
-     * @param extraEntity
+     * @param node
      * @return
      */
-    override fun dealFullEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    override fun dealFullEntityThenIsOver(node: EntityNode): Boolean {
+        val extraEntity = node.toExtraEntity()
         val card = war.cardMap[extraEntity.entityId]
         card ?: let {
             log.warn { "card【entityId:${extraEntity.entityId}】不应为null" }

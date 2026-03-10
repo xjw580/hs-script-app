@@ -21,7 +21,6 @@ import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB
 import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB_NAME
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
@@ -360,7 +359,7 @@ class DeveloperSettingsController : Initializable {
                             val res = countDownLatch.await(10, TimeUnit.MINUTES)
                             runUI {
                                 progressModal.hide(progress)
-                                if (res) {
+                                if (res && newFile != null) {
                                     notificationManager.showSuccess("格式化完成", StackPane(Button("打开").apply {
                                         styleClass.addAll("btn-ui", "btn-ui-small", "btn-ui-normal")
                                         setOnAction {

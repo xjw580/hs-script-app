@@ -12,7 +12,7 @@ import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
-import club.xiaojiawei.hsscript.utils.runUI
+import club.xiaojiawei.hsscript.utils.*
 
 /**
  * 起始填充牌库阶段
@@ -21,7 +21,8 @@ import club.xiaojiawei.hsscript.utils.runUI
  */
 object FillDeckPhaseStrategy : AbstractPhaseStrategy() {
 
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
+        val tagChangeEntity = node.toTagChangeEntity()
         if (tagChangeEntity.tag == TagEnum.TURN && tagChangeEntity.value == "1") {
             war.currentPhase = WarPhaseEnum.DRAWN_INIT_CARD
             return true

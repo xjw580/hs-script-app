@@ -1,31 +1,24 @@
 package club.xiaojiawei.hsscript.strategy
 
-import club.xiaojiawei.hsscript.bean.log.Block
-import club.xiaojiawei.hsscript.bean.log.ExtraEntity
-import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.interfaces.closer.ThreadCloser
-import club.xiaojiawei.hsscript.listener.WorkTimeListener
-import club.xiaojiawei.hsscript.listener.log.PowerLogListener
 import club.xiaojiawei.hsscript.status.TaskManager
+import club.xiaojiawei.hsscript.utils.BlockNode
 import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.EntityNode
 import club.xiaojiawei.hsscript.utils.GameUtil
-import club.xiaojiawei.hsscript.utils.PowerLogUtil
-import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealChangeEntity
-import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealFullEntity
-import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealShowEntity
-import club.xiaojiawei.hsscript.utils.PowerLogUtil.dealTagChange
-import club.xiaojiawei.hsscript.utils.PowerLogUtil.isRelevance
-import club.xiaojiawei.hsscript.utils.SystemUtil
+import club.xiaojiawei.hsscript.utils.PowerLogParser.*
+import club.xiaojiawei.hsscript.utils.PowerNode
+import club.xiaojiawei.hsscript.utils.SystemNode
+import club.xiaojiawei.hsscript.utils.TagChangeNode
+import club.xiaojiawei.hsscript.utils.TagNode
 import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.hsscriptbase.interfaces.PhaseStrategy
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
-import java.io.IOException
 
 /**
  * 游戏阶段抽象类
@@ -37,66 +30,42 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
     protected val war = WAR
 
     override fun deal(line: String) {
+        // This method is kept for compatibility with PhaseStrategy interface if needed
+    }
+
+    open fun deal(node: PowerNode) {
         dealing = true
         try {
             beforeDeal()
-            dealLog(line)
+            when (node) {
+                is BlockNode -> {
+                    if (dealBlockIsOver(node)) return
+                    node.children.forEach { deal(it) }
+                    dealBlockEndIsOver(node)
+                }
+                is EntityNode -> {
+                    when (node.type) {
+                        "SHOW_ENTITY" -> dealShowEntityThenIsOver(node)
+                        "FULL_ENTITY" -> dealFullEntityThenIsOver(node)
+                        "CHANGE_ENTITY" -> dealChangeEntityThenIsOver(node)
+                    }
+                }
+                is TagChangeNode -> {
+                    dealTagChangeThenIsOver(node)
+                }
+                is SystemNode -> {
+                    dealSystemNode(node)
+                }
+                is TagNode -> {}
+            }
             afterDeal()
         } finally {
             dealing = false
         }
     }
 
-    private fun dealLog(line: String) {
-        val logFile = PowerLogListener.logFile
-        logFile ?: return
-        var l: String? = line
-        while (WorkTimeListener.working) {
-            try {
-                if (l == null) {
-                    SystemUtil.delay(100)
-                } else if (isRelevance(l)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug { l }
-                    }
-                    if (l.contains(TAG_CHANGE)) {
-                        if (dealTagChangeThenIsOver(
-                                l, dealTagChange(l)
-                            ) || war.currentTurnStep == StepEnum.FINAL_GAMEOVER
-                        ) {
-                            break
-                        }
-                    } else if (l.contains(SHOW_ENTITY)) {
-                        if (dealShowEntityThenIsOver(l, dealShowEntity(l, logFile))) {
-                            break
-                        }
-                    } else if (l.contains(FULL_ENTITY)) {
-                        if (dealFullEntityThenIsOver(l, dealFullEntity(l, logFile))) {
-                            break
-                        }
-                    } else if (l.contains(CHANGE_ENTITY)) {
-                        if (dealChangeEntityThenIsOver(l, dealChangeEntity(l, logFile))) {
-                            break
-                        }
-                    } else if (l.contains(BLOCK_TYPE) || l.contains(BLOCK_START_NULL)) {
-                        if (dealBlockIsOver(l, PowerLogUtil.dealBlock(l))) {
-                            break
-                        }
-                    } else if (l.contains(BLOCK_END) || l.contains(BLOCK_END_NULL)) {
-                        if (dealBlockEndIsOver(l, PowerLogUtil.dealBlockEnd(l))) {
-                            break
-                        }
-                    } else {
-                        if (dealOtherThenIsOver(l)) {
-                            break
-                        }
-                    }
-                }
-                l = logFile.readLine()
-            } catch (e: IOException) {
-                throw RuntimeException(e)
-            }
-        }
+    protected open fun dealSystemNode(node: SystemNode): Boolean {
+        return false
     }
 
     protected fun beforeDeal() {
@@ -111,36 +80,32 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
         }
     }
 
-    protected open fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    protected open fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
         return false
     }
 
-    protected open fun dealShowEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    protected open fun dealShowEntityThenIsOver(node: EntityNode): Boolean {
         return false
     }
 
-    protected open fun dealFullEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    protected open fun dealFullEntityThenIsOver(node: EntityNode): Boolean {
         return false
     }
 
-    protected open fun dealChangeEntityThenIsOver(line: String, extraEntity: ExtraEntity): Boolean {
+    protected open fun dealChangeEntityThenIsOver(node: EntityNode): Boolean {
         return false
     }
 
-    protected open fun dealBlockIsOver(line: String, block: Block): Boolean {
+    protected open fun dealBlockIsOver(node: BlockNode): Boolean {
         return false
     }
 
-    protected open fun dealBlockEndIsOver(line: String, block: Block?): Boolean {
-        if (ConfigUtil.getBoolean(ConfigEnum.KILLED_SURRENDER) && !WAR.isMyTurn && block != null) {
-            if (block.blockType === BlockTypeEnum.ATTACK || block.blockType === BlockTypeEnum.POWER) {
+    protected open fun dealBlockEndIsOver(node: BlockNode): Boolean {
+        if (ConfigUtil.getBoolean(ConfigEnum.KILLED_SURRENDER) && !WAR.isMyTurn) {
+            if (node.type === BlockTypeEnum.ATTACK || node.type === BlockTypeEnum.POWER) {
                 GameUtil.triggerCalcMyDeadLine()
             }
         }
-        return false
-    }
-
-    protected open fun dealOtherThenIsOver(line: String): Boolean {
         return false
     }
 

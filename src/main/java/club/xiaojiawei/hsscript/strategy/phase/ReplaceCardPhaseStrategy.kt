@@ -8,8 +8,7 @@ import club.xiaojiawei.hsscript.enums.MulliganStateEnum
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
 import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator.changeCard
-import club.xiaojiawei.hsscript.utils.ConfigUtil
-import club.xiaojiawei.hsscript.utils.GameUtil
+import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.enums.StepEnum
 import club.xiaojiawei.hsscriptbase.enums.WarPhaseEnum
 import club.xiaojiawei.kt.config.log
@@ -22,7 +21,8 @@ import club.xiaojiawei.kt.config.log
  */
 object ReplaceCardPhaseStrategy : AbstractPhaseStrategy() {
 
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
+        val tagChangeEntity = node.toTagChangeEntity()
         if (tagChangeEntity.tag === TagEnum.MULLIGAN_STATE && tagChangeEntity.value == MulliganStateEnum.INPUT.name) {
             val gameId = tagChangeEntity.entity
             val me = war.me

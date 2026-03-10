@@ -1,23 +1,8 @@
 package club.xiaojiawei.hsscript.strategy.phase
 
-import club.xiaojiawei.hsscript.bean.Behavior
-import club.xiaojiawei.hsscript.bean.DeckStrategyThread
-import club.xiaojiawei.hsscript.bean.OutCardThread
-import club.xiaojiawei.hsscript.bean.log.Block
-import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
-import club.xiaojiawei.hsscript.enums.BlockTypeEnum
-import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.enums.TagEnum
-import club.xiaojiawei.hsscript.status.PlayerBehaviorStatus
-import club.xiaojiawei.hsscript.strategy.AbstractPhaseStrategy
-import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
-import club.xiaojiawei.hsscript.utils.ConfigUtil
-import club.xiaojiawei.hsscript.utils.GameUtil
-import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.hsscriptbase.config.log
-import club.xiaojiawei.hsscriptbase.enums.StepEnum
-import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptcardsdk.bean.isValid
+import club.xiaojiawei.hsscript.utils.BlockNode
+import club.xiaojiawei.hsscript.utils.TagChangeNode
+import club.xiaojiawei.hsscript.utils.toTagChangeEntity
 
 /**
  * 游戏回合阶段
@@ -27,7 +12,8 @@ import club.xiaojiawei.hsscriptcardsdk.bean.isValid
  */
 object GameTurnPhaseStrategy : AbstractPhaseStrategy() {
 
-    override fun dealTagChangeThenIsOver(line: String, tagChangeEntity: TagChangeEntity): Boolean {
+    override fun dealTagChangeThenIsOver(node: TagChangeNode): Boolean {
+        val tagChangeEntity = node.toTagChangeEntity()
         if (tagChangeEntity.tag == TagEnum.STEP) {
             if (tagChangeEntity.value == StepEnum.MAIN_ACTION.name) {
                 if (war.me === war.currentPlayer && war.me.isValid()) {
@@ -77,10 +63,10 @@ object GameTurnPhaseStrategy : AbstractPhaseStrategy() {
     }
 
 
-    override fun dealBlockIsOver(line: String, block: Block): Boolean {
+    override fun dealBlockIsOver(node: BlockNode): Boolean {
         if (ConfigUtil.getBoolean(ConfigEnum.ONLY_ROBOT)) {
-            if (block.blockType === BlockTypeEnum.ATTACK || block.blockType === BlockTypeEnum.PLAY) {
-                val behavior = Behavior(block.blockType)
+            if (node.type === BlockTypeEnum.ATTACK || node.type === BlockTypeEnum.PLAY) {
+                val behavior = Behavior(node.type)
                 if (war.currentPlayer == war.me) {
                     PlayerBehaviorStatus.meBehavior.add(behavior)
                 } else if (war.currentPlayer == war.rival) {

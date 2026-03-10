@@ -4,7 +4,6 @@ import club.xiaojiawei.hsscript.bean.Deck
 import club.xiaojiawei.hsscript.consts.GAME_DECKS_LOG_NAME
 import club.xiaojiawei.hsscript.listener.WorkTimeListener
 import club.xiaojiawei.hsscript.status.PauseStatus
-import club.xiaojiawei.hsscript.utils.PowerLogUtil
 import java.util.*
 import java.util.concurrent.TimeUnit
 
