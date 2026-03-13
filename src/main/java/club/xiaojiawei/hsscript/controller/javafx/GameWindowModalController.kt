@@ -207,19 +207,17 @@ class GameWindowModalController : Initializable, StageHook {
         rootPane.sceneProperty().addListener { _, _, newScene ->
             newScene?.let {
                 val exec = Consumer<Window> { newWindow ->
-                    ScriptStatus.gameHWND?.let {
+                    GameUtil.findGameHWND()?.let {
                         CSystemDll.INSTANCE.calmFrontWindow(it)
                     } ?: go {
-                        GameUtil.launchPlatformAndGame()
                         SystemUtil.message("${GAME_CN_NAME}不在运行", type = MB_ICONERROR xor MB_TOPMOST)
-                        CSystemDll.INSTANCE.topWindow(ScriptStatus.gameHWND, true)
                     }
                     newWindow.showingProperty().addListener { _, _, isShow ->
                         if (isShow) {
                             updateTask?.cancel(true)
                             updateTask = go {
                                 while (!Thread.interrupted()) {
-                                    ScriptStatus.gameHWND?.let {
+                                    GameUtil.findGameHWND()?.let {
                                         val gameRect = calcGameRect(it)
                                         newWindow.x = gameRect.x
                                         newWindow.y = gameRect.y

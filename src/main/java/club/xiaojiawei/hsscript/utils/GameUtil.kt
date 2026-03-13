@@ -149,6 +149,15 @@ object GameUtil {
         )
     }
 
+    /**
+     * 时间线选择([0]:回溯，[1]:维持)
+     */
+    private val TIMELINE_RECTS by lazy {
+        arrayOf(
+            GameRect(-0.4699, -0.3743, 0.1917, 0.2889), GameRect(-0.2965, -0.2009, 0.1917, 0.2889)
+        )
+    }
+
     private val FOUR_DISCOVER_RECTS by lazy {
         arrayOf(
             GameRect(-0.3332, -0.1911, -0.1702, 0.1160),
@@ -319,6 +328,15 @@ object GameUtil {
 
     fun getWeaklyTaskProgressRect(index: Int): GameRect? = WEEKLY_TASK_PROGRESS_RECTS.getOrNull(index)
 
+    /**
+     * 保持时间线
+     */
+    fun keepTimeline() = TIMELINE_RECTS[1].lClick()
+
+    /**
+     * 回溯时间线
+     */
+    fun rewindTimeline() = TIMELINE_RECTS[0].lClick()
 
     /**
      * 谢谢表情

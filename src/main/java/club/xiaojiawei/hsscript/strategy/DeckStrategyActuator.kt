@@ -19,6 +19,7 @@ import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
 import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
+import club.xiaojiawei.hsscriptstrategysdk.TimelineEvent
 
 /**
  * 卡牌策略执行器
@@ -178,10 +179,11 @@ object DeckStrategyActuator {
 
         log.info { "执行发现选牌策略" }
 
-        SystemUtil.delayShortMedium()
+        SystemUtil.delayMedium()
         var index = -1
         try {
-            index = DeckStrategyManager.currentDeckStrategy?.executeDiscoverChooseCard(*cards.toTypedArray()) ?: 0
+            index = (DeckStrategyManager.currentDeckStrategy?.executeDiscoverChooseCard(*cards.toTypedArray())
+                ?: 0).coerceIn(0, cards.size - 1)
         } catch (e: Exception) {
             log.error(e) { "执行发现选择策略异常" }
         } finally {
@@ -190,13 +192,34 @@ object DeckStrategyActuator {
                 GameUtil.chooseDiscoverCard(index, cards.size)
             }
         }
+        val card = cards[index]
         war.me.let {
             GameUtil.chooseDiscoverCard(index, cards.size)
             SystemUtil.delayShort()
-            val card = cards[index]
-            log.info { "选择了第${index + 1}张：" + card.toSimpleString() }
         }
-        log.info { "执行发现选牌策略完毕" }
+        log.info { "执行发现选牌策略完毕，选择第${index + 1}张，${card}" }
+
+        checkSurrender()
+    }
+
+    fun chooseTimeLine(timeLineEvent: TimelineEvent) {
+        if (!canExec()) return
+
+        log.info { "执行时间线选择" }
+
+        SystemUtil.delayMedium()
+        try {
+            DeckStrategyManager.currentDeckStrategy?.execChooseTimeLine(timeLineEvent)
+        } catch (e: Exception) {
+            log.error(e) { "执行时间线选择异常" }
+        }
+
+        if (timeLineEvent.isKeepTime()) GameUtil.keepTimeline() else {
+            GameUtil.rewindTimeline()
+            SystemUtil.delayHuge()
+        }
+
+        log.info { "执行时间线选择完毕，选择${timeLineEvent.chooseEventCard}" }
 
         checkSurrender()
     }

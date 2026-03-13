@@ -1,4 +1,4 @@
-package club.xiaojiawei.util
+package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.initializer.GamePathInitializer
@@ -6,7 +6,6 @@ import club.xiaojiawei.hsscript.starter.GameStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.strategy.mode.TournamentModeStrategy
-import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.GameUtil.getChooseOneCardRect
 import club.xiaojiawei.hsscript.utils.GameUtil.updateGameRect
 import org.junit.jupiter.api.extension.AfterAllCallback

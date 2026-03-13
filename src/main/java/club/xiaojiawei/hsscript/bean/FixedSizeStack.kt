@@ -1,5 +1,7 @@
 package club.xiaojiawei.hsscript.bean
 
+import org.jetbrains.kotlin.backend.common.pop
+import org.jetbrains.kotlin.backend.common.push
 import kotlin.math.max
 
 /**
@@ -47,4 +49,8 @@ class FixedSizeStack<T>(private val maxSize: Int) {
     fun isNotEmpty(): Boolean = !isEmpty()
 
     fun size(): Int = stack.size
+
+    fun remove(removeFunc: (T) -> Boolean) {
+        stack.removeIf(removeFunc)
+    }
 }

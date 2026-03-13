@@ -1,8 +1,8 @@
-package club.xiaojiawei.util
+package club.xiaojiawei.hsscript.utils
 
 import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.log.CommonEntity
-import club.xiaojiawei.hsscript.utils.PowerLogUtil
+import kotlin.collections.iterator
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

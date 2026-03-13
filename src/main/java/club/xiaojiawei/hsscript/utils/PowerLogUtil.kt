@@ -13,7 +13,6 @@ import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.core.Core
 import club.xiaojiawei.hsscript.core.Core.restart
 import club.xiaojiawei.hsscript.enums.BlockTypeEnum
-import club.xiaojiawei.hsscript.enums.GameLogModeEnum
 import club.xiaojiawei.hsscript.enums.TagEnum
 import club.xiaojiawei.hsscript.interfaces.LogFile
 import club.xiaojiawei.hsscript.status.ScriptStatus
@@ -22,7 +21,6 @@ import club.xiaojiawei.hsscript.strategy.DeckStrategyActuator
 import club.xiaojiawei.hsscript.utils.CardUtil.exchangeAreaOfCard
 import club.xiaojiawei.hsscript.utils.CardUtil.setCardAction
 import club.xiaojiawei.hsscript.utils.CardUtil.updateCardByExtraEntity
-import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.bean.Card
@@ -31,10 +29,10 @@ import club.xiaojiawei.hsscriptcardsdk.bean.area.SetasideArea
 import club.xiaojiawei.hsscriptcardsdk.bean.isValid
 import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
+import club.xiaojiawei.hsscriptstrategysdk.TimelineEvent
+import org.jetbrains.kotlin.backend.common.pop
+import org.jetbrains.kotlin.backend.common.push
 import java.io.*
-import java.nio.charset.StandardCharsets
-import java.util.concurrent.Future
-import java.util.concurrent.TimeUnit
 import java.util.function.BiConsumer
 
 /**
@@ -110,43 +108,92 @@ object PowerLogUtil {
         return extraEntity
     }
 
-    private var chooseFuture: Future<*>? = null
+    //    维持时间线卡牌id
+    private const val KEEP_TIMELINE_CARD_ID = "TIME_000ta"
+
+    //    回溯时间线卡牌id
+    private const val REWIND_TIMELINE_CARD_ID = "TIME_000tb"
+
+    private var chooseThread: Thread? = null
 
     private fun dealTriggerChoose() {
-        if (fullCardStack.size() < 3 && war.isMyTurn) return
+        if (fullCardStack.size() < 2 && war.isMyTurn) return
         blockStack.peek()?.let { block ->
             if (block.blockType !== BlockTypeEnum.POWER && block.blockType !== BlockTypeEnum.UNKNOWN) return
 
-            val testChooseCard: (Card) -> Boolean = { testCard ->
-                val blockEntity = block.entity
-                testCard.area::class.java === SetasideArea::class.java
-                        && testCard.creator.isNotEmpty()
-                        && (blockEntity == null || testCard.creator == blockEntity.entityId)
-            }
-
-            var creator: String? = null
-            val chooseCards = mutableListOf<Card>()
+            val blockEntity = block.entity
             val cards = fullCardStack.toList()
-            for (i in cards.indices.reversed()) {
-                val chooseCard = cards[i]
-                if (creator == null) {
-                    creator = chooseCard.creator
-                } else if (chooseCard.creator != creator) {
-                    break
+            var keepTimelineCard: Card? = null
+            var rewindTimelineCard: Card? = null
+            if (cards.find { it.cardId == KEEP_TIMELINE_CARD_ID }.also {
+                    keepTimelineCard = it
+                } != null && cards.find { it.cardId == REWIND_TIMELINE_CARD_ID }.also {
+                    rewindTimelineCard = it
+                } != null) {
+//                时间线流程
+                if (keepTimelineCard != null && rewindTimelineCard != null) {
+                    val timelineEvent = TimelineEvent(rewindTimelineCard, keepTimelineCard)
+                    fullCardStack.remove {
+                        it == keepTimelineCard || it == rewindTimelineCard
+                    }
+                    chooseThread?.interrupt()
+                    WarEx.war.isChooseCardTime = true
+                    log.info { "时间线选择：${keepTimelineCard},${rewindTimelineCard}" }
+                    val chooseThread = DiscoverCardThread {
+                        try {
+                            DeckStrategyActuator.chooseTimeLine(timelineEvent)
+                        } finally {
+//                            让其他线程的鼠标任务不会被抛弃，但是堵塞他们的执行
+                            WarEx.war.isChooseCardTime = false
+                            try {
+                                DRIVER_LOCK.lock()
+                                SystemUtil.delay(2000)
+                            } finally {
+                                DRIVER_LOCK.unlock()
+                            }
+                        }
+                    }
+                    this.chooseThread = chooseThread
+                    AbstractPhaseStrategy.addTask(chooseThread)
+                    chooseThread.start()
                 }
-                if (testChooseCard(chooseCard)) {
-                    chooseCards.addFirst(chooseCard)
-                } else {
-                    break
+            } else {
+//                发现流程
+                val testChooseCard: (Card) -> Boolean = { testCard ->
+                    val blockEntity = blockEntity
+                    testCard.area::class.java === SetasideArea::class.java
+                            && testCard.creator.isNotEmpty()
+                            && (blockEntity == null || testCard.creator == blockEntity.entityId)
                 }
-            }
-            chooseCards.removeAll { it.isNightmareBonus }
-            if (chooseCards.isNotEmpty()) {
-                chooseFuture?.cancel(true)
-                chooseFuture = EXTRA_THREAD_POOL.schedule({
+
+                var creator: String? = null
+                val chooseCards = mutableListOf<Card>()
+                for (i in cards.indices.reversed()) {
+                    val chooseCard = cards[i]
+                    if (creator == null) {
+                        creator = chooseCard.creator
+                    } else if (chooseCard.creator != creator) {
+                        break
+                    }
+                    if (testChooseCard(chooseCard)) {
+                        chooseCards.addFirst(chooseCard)
+                    } else {
+                        break
+                    }
+                }
+                chooseCards.removeAll { it.isNightmareBonus }
+                if ((chooseCards.size == 2 && !war.isMyTurn) || chooseCards.size > 2 && war.isMyTurn) {
+                    fullCardStack.remove {
+                        it in chooseCards
+                    }
+//                    for (i in cards.indices.reversed()) {
+//                        val chooseCard = cards[i]
+//                        println(chooseCard.creator + "=" + chooseCard.entityName)
+//                    }
+                    chooseThread?.interrupt()
                     WarEx.war.isChooseCardTime = true
                     log.info { "发现卡牌：${chooseCards}" }
-                    (DiscoverCardThread {
+                    val discoverCardThread = DiscoverCardThread {
                         try {
                             if (chooseCards.size == 1) {
                                 GameUtil.chooseDiscoverCard(1, 3)
@@ -163,9 +210,11 @@ object PowerLogUtil {
                                 DRIVER_LOCK.unlock()
                             }
                         }
-                    }.also { AbstractPhaseStrategy.addTask(it) }).start()
-
-                }, 1500, TimeUnit.MILLISECONDS)
+                    }
+                    this.chooseThread = discoverCardThread
+                    AbstractPhaseStrategy.addTask(discoverCardThread)
+                    discoverCardThread.start()
+                }
             }
         }
     }
@@ -293,7 +342,8 @@ object PowerLogUtil {
         }
         tagChangeEntity.value = value
         if (index < 100) {
-            tagChangeEntity.entity = line.substring(line.indexOf(club.xiaojiawei.hsscript.consts.ENTITY) + 7, tagIndex).trim()
+            tagChangeEntity.entity =
+                line.substring(line.indexOf(club.xiaojiawei.hsscript.consts.ENTITY) + 7, tagIndex).trim()
         } else {
             parseCommonEntity(tagChangeEntity, line)
         }
@@ -410,7 +460,7 @@ object PowerLogUtil {
             val cardIdUIndex = line.indexOf(CARD_ID_U, endIndex)
 
             // 解析 entityName
-            commonEntity.entityName =line.substring(entityNameIndex + ENTITY_NAME.length, idIndex - 1).trim()
+            commonEntity.entityName = line.substring(entityNameIndex + ENTITY_NAME.length, idIndex - 1).trim()
 
             // 解析 id
             commonEntity.entityId = line.substring(idIndex + ID.length, zoneIndex - 1).trim()
@@ -477,4 +527,5 @@ object PowerLogUtil {
         }
         return res
     }
+
 }
