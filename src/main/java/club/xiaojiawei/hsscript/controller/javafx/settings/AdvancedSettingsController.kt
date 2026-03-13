@@ -231,12 +231,14 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
             ConfigExUtil.storeGameStartupMode(GameStartupModeEnum.entries.sortedBy { if (it == newValue) 0 else 1 })
         }
         var isCycle = false
+        onlyRuntimeProtectItem.isDisable = softProtectedModeComboBox.value === SoftProtectedModeEnum.NONE
         softProtectedModeComboBox.valueProperty().addListener { _, oldValue, newValue ->
+            onlyRuntimeProtectItem.isDisable = newValue === SoftProtectedModeEnum.NONE
             if (isCycle) return@addListener
             CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
             if (newValue === SoftProtectedModeEnum.STRONG) {
                 Modal(rootPane, "确定使用${SoftProtectedModeEnum.STRONG.comment}保护吗？", label {
-                    +"unlock.bat将备份至桌面,用于恢复"
+                    +"${UNLOCK_BATCH_NAME}将备份至桌面,用于恢复"
                     settings {
                         contentDisplay = ContentDisplay.RIGHT
                     }

@@ -2,6 +2,7 @@ package club.xiaojiawei.hsscript.controller.javafx.settings.view
 
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.component.ConfigSwitch
+import club.xiaojiawei.hsscript.component.SettingHBox
 import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
@@ -27,6 +28,12 @@ open class AdvancedSettingsView {
 
     @FXML
     protected lateinit var powerBootSwitch: ConfigSwitch
+
+    @FXML
+    protected lateinit var onlyRuntimeProtectSwitch: ConfigSwitch
+
+    @FXML
+    protected lateinit var onlyRuntimeProtectItem: SettingHBox
 
     @FXML
     protected lateinit var systemTitled: TitledPane

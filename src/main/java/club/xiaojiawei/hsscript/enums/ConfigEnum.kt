@@ -535,6 +535,15 @@ enum class ConfigEnum(
             SoftProtectedModeEnum.NONE.name
         }
     ),
+    /**
+     * 仅软件运行时保护
+     */
+    ONLY_RUNTIME_PROTECT(
+        group = SYSTEM_CONFIG_GROUP,
+        defaultValueInitializer = {
+            TRUE_STR
+        }
+    ),
 
     /**
      * 是否执行策略

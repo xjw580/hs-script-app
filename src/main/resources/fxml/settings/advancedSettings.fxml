@@ -152,6 +152,9 @@
                                 <ComboBox fx:id="softProtectedModeComboBox"
                                           styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
                             </SettingHBox>
+                            <SettingHBox fx:id="onlyRuntimeProtectItem" name="仅软件运行时保护" tabWindow="ADVANCED_SETTINGS" group="系统">
+                                <ConfigSwitch fx:id="onlyRuntimeProtectSwitch" notificationManager="${notificationManager}" config="ONLY_RUNTIME_PROTECT"/>
+                            </SettingHBox>
                             <SettingHBox fx:id="aotPane" name="AOT缓存" tabWindow="ADVANCED_SETTINGS" group="系统">
                                 <Button fx:id="aotFlushBtn" text="刷新" onAction="#refreshAOTCache"
                                         styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
