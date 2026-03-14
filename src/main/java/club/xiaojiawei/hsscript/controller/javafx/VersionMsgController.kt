@@ -36,10 +36,8 @@ class VersionMsgController : Initializable {
         versionDescription.text =
             """
             🚀 新功能
-            1. 支持自动解析卡牌描述[策略设置->分析卡牌描述]
-            
-            🔧 重构与优化
-            1. 合并卡牌权重和卡牌信息为卡牌组，支持多个卡牌组应用
+            1. 增加软件保护时效设置项
+            2. 增加回溯事件的支持
             """.trimIndent()
     }
 

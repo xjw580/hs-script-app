@@ -884,6 +884,9 @@
       "type": "club.xiaojiawei.controls.ico.Label"
     },
     {
+      "type": "club.xiaojiawei.controls.ico.ListView"
+    },
+    {
       "type": "club.xiaojiawei.controls.ico.LoadingIco",
       "methods": [
         {
@@ -950,6 +953,9 @@
       "type": "club.xiaojiawei.controls.ico.ProgressBar"
     },
     {
+      "type": "club.xiaojiawei.controls.ico.Region"
+    },
+    {
       "type": "club.xiaojiawei.controls.ico.RowConstraints"
     },
     {
@@ -999,6 +1005,9 @@
     },
     {
       "type": "club.xiaojiawei.controls.ico.Text"
+    },
+    {
+      "type": "club.xiaojiawei.controls.ico.TextField"
     },
     {
       "type": "club.xiaojiawei.controls.ico.TimeIco",
@@ -1526,6 +1535,9 @@
       "type": "club.xiaojiawei.hsscript.component.CardField",
       "fields": [
         {
+          "name": "fuzzySearchCheckBox"
+        },
+        {
           "name": "limit"
         },
         {
@@ -1698,6 +1710,9 @@
       "type": "club.xiaojiawei.hsscript.component.Label"
     },
     {
+      "type": "club.xiaojiawei.hsscript.component.ListView"
+    },
+    {
       "type": "club.xiaojiawei.hsscript.component.PluginDeckStrategyItem",
       "fields": [
         {
@@ -1742,6 +1757,9 @@
     },
     {
       "type": "club.xiaojiawei.hsscript.component.RadioButton"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.component.Region"
     },
     {
       "type": "club.xiaojiawei.hsscript.component.ScrollPane"
@@ -2331,6 +2349,77 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscript.controller.javafx.settings.CardGroupSettingsController",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.controller.javafx.settings.CardGroupSettingsView",
+      "fields": [
+        {
+          "name": "cardGroupCardTable"
+        },
+        {
+          "name": "cardGroupCardTableProxy"
+        },
+        {
+          "name": "cardGroupListView"
+        },
+        {
+          "name": "cardGroupNameField"
+        },
+        {
+          "name": "cardIdCol"
+        },
+        {
+          "name": "cardTable"
+        },
+        {
+          "name": "changeWeightCheckBox"
+        },
+        {
+          "name": "changeWeightCol"
+        },
+        {
+          "name": "effectTypeCol"
+        },
+        {
+          "name": "enabledCheckBox"
+        },
+        {
+          "name": "nameCol"
+        },
+        {
+          "name": "noCol"
+        },
+        {
+          "name": "notificationManager"
+        },
+        {
+          "name": "playActionCol"
+        },
+        {
+          "name": "powerActionCol"
+        },
+        {
+          "name": "powerWeightCol"
+        },
+        {
+          "name": "progressModal"
+        },
+        {
+          "name": "rootPane"
+        },
+        {
+          "name": "weightCol"
+        }
+      ]
+    },
+    {
       "type": "club.xiaojiawei.hsscript.controller.javafx.settings.CardInfoSettingsController",
       "fields": [
         {
@@ -2775,6 +2864,12 @@
           "name": "notificationManager"
         },
         {
+          "name": "onlyRuntimeProtectItem"
+        },
+        {
+          "name": "onlyRuntimeProtectSwitch"
+        },
+        {
           "name": "pauseHotKey"
         },
         {
@@ -2827,6 +2922,44 @@
         },
         {
           "name": "windowTitled"
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.controller.javafx.settings.view.SettingsView",
+      "fields": [
+        {
+          "name": "aboutTab"
+        },
+        {
+          "name": "advancedTab"
+        },
+        {
+          "name": "cardGroupTab"
+        },
+        {
+          "name": "developerTab"
+        },
+        {
+          "name": "initTab"
+        },
+        {
+          "name": "pluginTab"
+        },
+        {
+          "name": "progressModal"
+        },
+        {
+          "name": "rootPane"
+        },
+        {
+          "name": "searchField"
+        },
+        {
+          "name": "strategyTab"
+        },
+        {
+          "name": "tabPane"
         }
       ]
     },
@@ -6785,6 +6918,12 @@
         {
           "name": "<init>",
           "parameterTypes": []
+        },
+        {
+          "name": "setSelected",
+          "parameterTypes": [
+            "boolean"
+          ]
         }
       ]
     },
@@ -6928,6 +7067,9 @@
           "parameterTypes": []
         }
       ]
+    },
+    {
+      "type": "javafx.scene.control.Region"
     },
     {
       "type": "javafx.scene.control.RowConstraints"
@@ -7550,6 +7692,10 @@
     {
       "type": "javafx.scene.layout.Region",
       "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
         {
           "name": "getHeight",
           "parameterTypes": []
