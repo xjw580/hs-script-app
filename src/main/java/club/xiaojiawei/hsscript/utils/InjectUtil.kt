@@ -27,7 +27,9 @@ object InjectUtil {
                 log.error { "${dllPath}不存在，注入失败" }
                 return false
             }
-            val result = CMDUtil.exec(arrayOf(injectUtilPath, targetProcessName, dllPath))
+            val tempDll = File(System.getProperty("java.io.tmpdir"), dllFile.name)
+            dllFile.copyTo(tempDll, overwrite = true)
+            val result = CMDUtil.exec(arrayOf(injectUtilPath, targetProcessName, tempDll.absolutePath))
             if (result.output.contains("completed")) {
                 log.info { "注入${dllFile.name}成功" }
                 return true
