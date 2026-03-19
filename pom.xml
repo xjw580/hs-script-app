@@ -8,10 +8,11 @@
         <version>v4.15.0-GA</version>
     </parent>
 
-    <groupId>com.github.xjw580</groupId>
-    <artifactId>hs-script-app</artifactId>
     <name>hs-script-app</name>
     <description>炉石传说脚本</description>
+    <groupId>com.github.xjw580</groupId>
+    <artifactId>hs-script-app</artifactId>
+    <version>v4.15.0.1-DEV</version>
 
     <repositories>
         <repository>

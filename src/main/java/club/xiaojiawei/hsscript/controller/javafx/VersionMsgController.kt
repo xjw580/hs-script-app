@@ -35,9 +35,8 @@ class VersionMsgController : Initializable {
         //        TODO 版本更新时修改！！！
         versionDescription.text =
             """
-            🚀 新功能
-            1. 增加软件保护时效设置项
-            2. 增加回溯事件的支持
+            🐛 Bug修复
+            1. 修复开启保护模式后注入dll会失败的问题
             """.trimIndent()
     }
 
