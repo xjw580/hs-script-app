@@ -156,6 +156,8 @@
                         </TableColumn>
                         <TableColumn text="效果类型" minWidth="${colMinWeight}" prefWidth="50"
                                      fx:id="effectTypeCol"/>
+                        <TableColumn text="费用" minWidth="${colMinWeight}" maxWidth="40"
+                                     fx:id="costCol"/>
                         <TableColumn text="打出行为" minWidth="${colMinWeight}" prefWidth="50"
                                      fx:id="playActionCol"/>
                         <TableColumn text="使用行为" minWidth="${colMinWeight}" prefWidth="50"

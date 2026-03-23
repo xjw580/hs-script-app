@@ -27,6 +27,7 @@ class CardGroupCard : Cloneable {
     @JsonIgnore
     val effectTypeProperty = SimpleObjectProperty(CardEffectTypeEnum.UNKNOWN)
 
+
     @JsonIgnore
     val playActionsProperty = SimpleObjectProperty(emptyList<CardActionEnum>())
 
@@ -77,6 +78,7 @@ class CardGroupCard : Cloneable {
         set(value) {
             effectTypeProperty.set(value)
         }
+
 
     /**
      * 打出行为

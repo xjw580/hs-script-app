@@ -87,6 +87,9 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
         }
     }
 
+    @FXML
+    private lateinit var costCol: javafx.scene.control.TableColumn<CardGroupCard, Number?>
+
     private var progress: DoubleProperty? = null
 
     override fun onShown() {
@@ -257,6 +260,13 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
                 return null
             }
         }
+        // cost column
+        costCol.setCellValueFactory { param ->
+            javafx.beans.property.SimpleIntegerProperty(
+                club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil.queryCardById(param.value.cardId).firstOrNull()?.cost ?: 0
+            )
+        }
+
         playActionCol.setCellValueFactory { it.value.playActionsProperty }
         playActionCol.setCellFactory {
             object : NoEditTextFieldTableCell<CardGroupCard?, List<CardActionEnum>?>(actionConverter) {
