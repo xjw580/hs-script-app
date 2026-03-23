@@ -28,7 +28,23 @@ object InjectUtil {
                 return false
             }
             val tempDll = File(System.getProperty("java.io.tmpdir"), dllFile.name)
-            dllFile.copyTo(tempDll, overwrite = true)
+            when (FileUtil.checkFileStatus(tempDll.absolutePath)) {
+                FileStatus.AVAILABLE -> {
+                    dllFile.copyTo(tempDll, overwrite = true)
+                }
+
+                FileStatus.NOT_EXISTS -> {
+                    dllFile.copyTo(tempDll, overwrite = true)
+                }
+
+                FileStatus.LOCKED_BY_OTHER_PROCESS -> {
+                    log.warn { "临时DLL ${tempDll.absolutePath} 正在被占用，跳过覆写" }
+                }
+
+                else -> {
+                    dllFile.copyTo(tempDll, overwrite = true)
+                }
+            }
             val result = CMDUtil.exec(arrayOf(injectUtilPath, targetProcessName, tempDll.absolutePath))
             if (result.output.contains("completed")) {
                 log.info { "注入${dllFile.name}成功" }
