@@ -42,6 +42,8 @@ val DEV_CONFIG_GROUP = ConfigGroup("dev")
 
 val WEIGHT_CONFIG_GROUP = ConfigGroup("weight")
 
+val LAYOUT_CONFIG_GROUP = ConfigGroup("layout")
+
 private const val WORK_TIME_RULE_PRESETS_ONE = "presets-one"
 private const val WORK_TIME_RULE_PRESETS_EMPTY = ""
 private const val WORK_TIME_RULE_PRESETS_TWO = "presets-two"
@@ -619,7 +621,7 @@ enum class ConfigEnum(
      * 卡牌搜索表列显示配置
      */
     CARD_SEARCH_TABLE_COLUMNS(
-        group = WINDOW_CONFIG_GROUP,
+        group = LAYOUT_CONFIG_GROUP,
         defaultValueInitializer = { objectMapper.writeValueAsString(SearchCardTableColumnConfig()) },
     ),
 
@@ -627,7 +629,7 @@ enum class ConfigEnum(
      * 卡牌组表列显示配置
      */
     CARD_GROUP_TABLE_COLUMNS(
-        group = WINDOW_CONFIG_GROUP,
+        group = LAYOUT_CONFIG_GROUP,
         defaultValueInitializer = { objectMapper.writeValueAsString(CardGroupTableColumnConfig()) },
     ),
 

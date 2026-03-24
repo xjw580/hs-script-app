@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <fx:root type="HBox" xmlns="http://javafx.com/javafx"
-         style="-fx-padding: 10;-fx-spacing: 10;-fx-alignment: CENTER"
+         style="-fx-padding: 6;-fx-spacing: 6;-fx-alignment: CENTER"
          xmlns:fx="http://javafx.com/fxml">
     <FilterField fx:id="searchCardField" HBox.hgrow="ALWAYS" styleClass="text-field-ui, text-field-ui-small"
                  promptText="输入卡牌名，支持通配符%和_"/>

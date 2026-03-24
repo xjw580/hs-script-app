@@ -36,7 +36,13 @@ class VersionMsgController : Initializable {
         versionDescription.text =
             """
             🐛 Bug修复
-            1. 修复开启保护模式后注入dll会失败的问题
+            1. 修复临时dll被占用时导致复制失败的问题
+            
+            🔧 重构与优化
+            1. 卡牌行为表格添加费用列
+            
+            🚀 新功能
+            1. 卡牌行为设置页增加隐藏列功能
             """.trimIndent()
     }
 

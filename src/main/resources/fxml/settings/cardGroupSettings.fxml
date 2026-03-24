@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
 <?import club.xiaojiawei.controls.ProgressModal?>
+<?import club.xiaojiawei.hsscript.component.svg.ShowAllIco?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/cardGroupSettings.css"
@@ -88,21 +89,29 @@
                 <CardField fx:id="cardField"/>
             </fx:define>
             <CardSearcher minWidth="0" cardField="$cardField" cardTableView="$cardTable" VBox.vgrow="ALWAYS"/>
-            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0">
-                <Button fx:id="cardTableColumnSettingBtn" text="列设置" styleClass="btn-ui, btn-ui-small">
-                    <graphic>
-                        <SettingsIco/>
-                    </graphic>
-                    <tooltip>
-                        <Tooltip text="选择搜索表要显示的列"/>
-                    </tooltip>
-                </Button>
-            </HBox>
         </VBox>
 
         <!-- 右侧：卡牌组详情 -->
         <HBox minWidth="0">
-            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 5">
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 1 5 5 5">
+                <VBox VBox.vgrow="ALWAYS" alignment="TOP_CENTER" spacing="12">
+                    <Button fx:id="cardTableColumnSettingBtn" styleClass="btn-ui, btn-ui-small">
+                        <graphic>
+                            <ShowAllIco color="main-color"/>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="选择要显示的列"/>
+                        </tooltip>
+                    </Button>
+                    <Button fx:id="columnSettingBtn" styleClass="btn-ui, btn-ui-small">
+                        <graphic>
+                            <ShowAllIco color="main-color"/>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="选择要显示的列"/>
+                        </tooltip>
+                    </Button>
+                </VBox>
                 <Button styleClass="btn-ui, btn-ui-small, control-btn" onAction="#addCard">
                     <graphic>
                         <Label>
@@ -127,10 +136,11 @@
                         </Label>
                     </graphic>
                 </Button>
+                <VBox VBox.vgrow="ALWAYS"/>
             </VBox>
             <VBox HBox.hgrow="ALWAYS">
                 <!-- 卡牌组信息区域 -->
-                <HBox spacing="10" style="-fx-padding: 10" alignment="CENTER_LEFT">
+                <HBox spacing="10" style="-fx-padding: 6" alignment="CENTER_LEFT">
                     <Label text="卡牌组名称:"/>
                     <TextField fx:id="cardGroupNameField" prefWidth="150"
                                styleClass="text-field-ui, text-field-ui-small"/>
@@ -214,21 +224,13 @@
                 </TableView>
 
                 <!-- 底部操作栏 -->
-                <HBox spacing="10" style="-fx-padding: 10 10 10 0" alignment="CENTER_LEFT">
+                <HBox spacing="10" style="-fx-padding: 6 6 6 0" alignment="CENTER_LEFT">
                     <Button styleClass="btn-ui, btn-ui-small" onAction="#copyCard">
                         <graphic>
                             <CopyIco color="main-color"/>
                         </graphic>
                         <tooltip>
                             <Tooltip text="复制选中的卡牌"/>
-                        </tooltip>
-                    </Button>
-                    <Button fx:id="columnSettingBtn" text="列设置" styleClass="btn-ui, btn-ui-small">
-                        <graphic>
-                            <SettingsIco/>
-                        </graphic>
-                        <tooltip>
-                            <Tooltip text="选择要显示的列"/>
                         </tooltip>
                     </Button>
                     <HBox HBox.hgrow="ALWAYS"/>
