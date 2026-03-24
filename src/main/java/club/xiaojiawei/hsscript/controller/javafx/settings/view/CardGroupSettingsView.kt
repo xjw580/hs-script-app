@@ -34,6 +34,9 @@ abstract class CardGroupSettingsView {
     @FXML
     protected lateinit var cardTable: CardTableView
 
+    @FXML
+    protected lateinit var cardTableColumnSettingBtn: Button
+
     // 卡牌组列表
     @FXML
     protected lateinit var cardGroupListView: ListView<CardGroupInfo>
@@ -44,6 +47,9 @@ abstract class CardGroupSettingsView {
 
     @FXML
     protected lateinit var enabledCheckBox: CheckBox
+
+    @FXML
+    protected lateinit var columnSettingBtn: Button
 
     // 卡牌表格
     @FXML

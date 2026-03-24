@@ -616,6 +616,22 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 卡牌搜索表列显示配置
+     */
+    CARD_SEARCH_TABLE_COLUMNS(
+        group = WINDOW_CONFIG_GROUP,
+        defaultValueInitializer = { objectMapper.writeValueAsString(SearchCardTableColumnConfig()) },
+    ),
+
+    /**
+     * 卡牌组表列显示配置
+     */
+    CARD_GROUP_TABLE_COLUMNS(
+        group = WINDOW_CONFIG_GROUP,
+        defaultValueInitializer = { objectMapper.writeValueAsString(CardGroupTableColumnConfig()) },
+    ),
+
+    /**
      * 启用换牌权重
      */
     ENABLE_CHANGE_WEIGHT(

@@ -88,6 +88,16 @@
                 <CardField fx:id="cardField"/>
             </fx:define>
             <CardSearcher minWidth="0" cardField="$cardField" cardTableView="$cardTable" VBox.vgrow="ALWAYS"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0">
+                <Button fx:id="cardTableColumnSettingBtn" text="列设置" styleClass="btn-ui, btn-ui-small">
+                    <graphic>
+                        <SettingsIco/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="选择搜索表要显示的列"/>
+                    </tooltip>
+                </Button>
+            </HBox>
         </VBox>
 
         <!-- 右侧：卡牌组详情 -->
@@ -211,6 +221,14 @@
                         </graphic>
                         <tooltip>
                             <Tooltip text="复制选中的卡牌"/>
+                        </tooltip>
+                    </Button>
+                    <Button fx:id="columnSettingBtn" text="列设置" styleClass="btn-ui, btn-ui-small">
+                        <graphic>
+                            <SettingsIco/>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="选择要显示的列"/>
                         </tooltip>
                     </Button>
                     <HBox HBox.hgrow="ALWAYS"/>

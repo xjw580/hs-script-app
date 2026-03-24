@@ -2,12 +2,22 @@ package club.xiaojiawei.hsscript.component
 
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.TableFilterManagerGroup
+import club.xiaojiawei.hsscript.bean.SearchCardTableColumnConfig
 import club.xiaojiawei.hsscript.bean.tableview.NoEditTextFieldTableCell
+import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
+import club.xiaojiawei.kt.dsl.contextMenu
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Side
+import javafx.scene.control.Button
+import javafx.scene.control.CheckMenuItem
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -54,6 +64,23 @@ class CardTableView : TableView<DBCard>() {
 
     private val cardTableProxy: TableFilterManagerGroup<DBCard, DBCard> = TableFilterManagerGroup()
 
+    private val columnVisibilityConfig =
+        ConfigUtil.getObject(ConfigEnum.CARD_SEARCH_TABLE_COLUMNS, SearchCardTableColumnConfig::class.java)
+            ?: SearchCardTableColumnConfig()
+
+    private val noColVisible = SimpleBooleanProperty(columnVisibilityConfig.no)
+    private val cardIdColVisible = SimpleBooleanProperty(columnVisibilityConfig.cardId)
+    private val nameColVisible = SimpleBooleanProperty(columnVisibilityConfig.name)
+    private val attackColVisible = SimpleBooleanProperty(columnVisibilityConfig.attack)
+    private val healthColVisible = SimpleBooleanProperty(columnVisibilityConfig.health)
+    private val costColVisible = SimpleBooleanProperty(columnVisibilityConfig.cost)
+    private val textColVisible = SimpleBooleanProperty(columnVisibilityConfig.text)
+    private val typeColVisible = SimpleBooleanProperty(columnVisibilityConfig.type)
+    private val cardSetColVisible = SimpleBooleanProperty(columnVisibilityConfig.cardSet)
+    private val columnSettingMenu = contextMenu {
+        style()
+    }
+
     init {
         val fxmlLoader = FXMLLoader(javaClass.getResource("/fxml/component/CardTableView.fxml"))
         fxmlLoader.setRoot(this)
@@ -68,6 +95,65 @@ class CardTableView : TableView<DBCard>() {
 
     private fun afterLoaded() {
         initTable()
+        initColumnSettingMenu()
+        updateColumnVisibility()
+    }
+
+    private fun initColumnSettingMenu() {
+        addColumnToggleItem("序号", noColVisible)
+        addColumnToggleItem("ID", cardIdColVisible)
+        addColumnToggleItem("名字", nameColVisible)
+        addColumnToggleItem("攻击力", attackColVisible)
+        addColumnToggleItem("血量", healthColVisible)
+        addColumnToggleItem("费用", costColVisible)
+        addColumnToggleItem("描述", textColVisible)
+        addColumnToggleItem("类型", typeColVisible)
+        addColumnToggleItem("扩展包", cardSetColVisible)
+    }
+
+    private fun addColumnToggleItem(text: String, property: BooleanProperty) {
+        val item = CheckMenuItem(text)
+        item.selectedProperty().bindBidirectional(property)
+        property.addListener { _, _, _ ->
+            saveColumnVisibilityConfig()
+            updateColumnVisibility()
+        }
+        columnSettingMenu.items.add(item)
+    }
+
+    private fun saveColumnVisibilityConfig() {
+        ConfigUtil.putObject(
+            ConfigEnum.CARD_SEARCH_TABLE_COLUMNS,
+            SearchCardTableColumnConfig(
+                no = noColVisible.get(),
+                cardId = cardIdColVisible.get(),
+                name = nameColVisible.get(),
+                attack = attackColVisible.get(),
+                health = healthColVisible.get(),
+                cost = costColVisible.get(),
+                text = textColVisible.get(),
+                type = typeColVisible.get(),
+                cardSet = cardSetColVisible.get(),
+            )
+        )
+    }
+
+    private fun updateColumnVisibility() {
+        noCol.isVisible = noColVisible.get()
+        cardIdCol.isVisible = cardIdColVisible.get()
+        nameCol.isVisible = nameColVisible.get()
+        attackCol.isVisible = attackColVisible.get()
+        healthCol.isVisible = healthColVisible.get()
+        costCol.isVisible = costColVisible.get()
+        textCol.isVisible = textColVisible.get()
+        typeCol.isVisible = typeColVisible.get()
+        cardSetCol.isVisible = cardSetColVisible.get()
+    }
+
+    fun bindColumnSettingButton(button: Button) {
+        button.setOnAction {
+            columnSettingMenu.show(button, Side.BOTTOM, 0.0, 0.0)
+        }
     }
 
     private fun initTable() {

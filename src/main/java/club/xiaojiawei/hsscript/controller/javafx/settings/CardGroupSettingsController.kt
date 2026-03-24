@@ -26,12 +26,17 @@ import club.xiaojiawei.tablecell.NumberFieldTableCellUI
 import club.xiaojiawei.tablecell.TextFieldTableCellUI
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.value.ChangeListener
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.geometry.Side
 import javafx.scene.control.CheckBox
+import javafx.scene.control.CheckMenuItem
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.ListCell
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TextField
@@ -74,17 +79,34 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
 
     private var hasNotifiedUser = false
 
+    private val columnVisibilityConfig =
+        ConfigUtil.getObject(ConfigEnum.CARD_GROUP_TABLE_COLUMNS, CardGroupTableColumnConfig::class.java)
+            ?: CardGroupTableColumnConfig()
+
+    private val noColVisible = SimpleBooleanProperty(columnVisibilityConfig.no)
+    private val cardIdColVisible = SimpleBooleanProperty(columnVisibilityConfig.cardId)
+    private val nameColVisible = SimpleBooleanProperty(columnVisibilityConfig.name)
+    private val effectTypeColVisible = SimpleBooleanProperty(columnVisibilityConfig.effectType)
+    private val costColVisible = SimpleBooleanProperty(columnVisibilityConfig.cost)
+    private val playActionColVisible = SimpleBooleanProperty(columnVisibilityConfig.playAction)
+    private val powerActionColVisible = SimpleBooleanProperty(columnVisibilityConfig.powerAction)
+    private val weightColVisible = SimpleBooleanProperty(columnVisibilityConfig.weight)
+    private val powerWeightColVisible = SimpleBooleanProperty(columnVisibilityConfig.powerWeight)
+    private val changeWeightColVisible = SimpleBooleanProperty(columnVisibilityConfig.changeWeight)
+
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         initCardGroupListView()
         initCardTable()
         initCardGroupCardTable()
+        initColumnSettingMenu()
 
         cardGroupNameField.addEnterKeyFilter { _, _ -> renameCardGroup() }
         changeWeightCheckBox.isSelected = ConfigUtil.getBoolean(ConfigEnum.ENABLE_CHANGE_WEIGHT)
-        changeWeightCol.visibleProperty().bind(changeWeightCheckBox.selectedProperty())
         changeWeightCheckBox.selectedProperty().addListener { _, _, newValue ->
             ConfigUtil.putBoolean(ConfigEnum.ENABLE_CHANGE_WEIGHT, newValue)
+            updateColumnVisibility()
         }
+        updateColumnVisibility()
     }
 
     @FXML
@@ -148,6 +170,71 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
 
     private fun initCardTable() {
         cardTable.notificationManager = this.notificationManager
+        cardTable.bindColumnSettingButton(cardTableColumnSettingBtn)
+    }
+
+    private fun initColumnSettingMenu() {
+        val menu = contextMenu {
+            style()
+        }
+        addColumnToggleItem(menu, "序号", noColVisible)
+        addColumnToggleItem(menu, "ID", cardIdColVisible)
+        addColumnToggleItem(menu, "名字", nameColVisible)
+        addColumnToggleItem(menu, "效果类型", effectTypeColVisible)
+        addColumnToggleItem(menu, "费用", costColVisible)
+        addColumnToggleItem(menu, "打出行为", playActionColVisible)
+        addColumnToggleItem(menu, "使用行为", powerActionColVisible)
+        addColumnToggleItem(menu, "权重", weightColVisible)
+        addColumnToggleItem(menu, "使用权重", powerWeightColVisible)
+        addColumnToggleItem(menu, "换牌权重", changeWeightColVisible)
+        columnSettingBtn.setOnAction {
+            menu.show(columnSettingBtn, Side.BOTTOM, 0.0, 0.0)
+        }
+    }
+
+    private fun addColumnToggleItem(
+        menu: ContextMenu,
+        text: String,
+        property: BooleanProperty,
+    ) {
+        val item = CheckMenuItem(text)
+        item.selectedProperty().bindBidirectional(property)
+        property.addListener { _, _, _ ->
+            saveColumnVisibilityConfig()
+            updateColumnVisibility()
+        }
+        menu.items.add(item)
+    }
+
+    private fun saveColumnVisibilityConfig() {
+        ConfigUtil.putObject(
+            ConfigEnum.CARD_GROUP_TABLE_COLUMNS,
+            CardGroupTableColumnConfig(
+                no = noColVisible.get(),
+                cardId = cardIdColVisible.get(),
+                name = nameColVisible.get(),
+                effectType = effectTypeColVisible.get(),
+                cost = costColVisible.get(),
+                playAction = playActionColVisible.get(),
+                powerAction = powerActionColVisible.get(),
+                weight = weightColVisible.get(),
+                powerWeight = powerWeightColVisible.get(),
+                changeWeight = changeWeightColVisible.get(),
+            )
+        )
+    }
+
+    private fun updateColumnVisibility() {
+        noCol.isVisible = noColVisible.get()
+        cardIdCol.isVisible = cardIdColVisible.get()
+        nameCol.isVisible = nameColVisible.get()
+        effectTypeCol.isVisible = effectTypeColVisible.get()
+        costCol.isVisible = costColVisible.get()
+        playActionCol.isVisible = playActionColVisible.get()
+        powerActionCol.isVisible = powerActionColVisible.get()
+        weightCol.isVisible = weightColVisible.get()
+        powerWeightCol.isVisible = powerWeightColVisible.get()
+        changeWeightCol.isVisible = changeWeightCheckBox.isSelected && changeWeightColVisible.get()
     }
 
     private fun initCardGroupCardTable() {
