@@ -17,7 +17,7 @@ object TaskManager {
                 closeAllTasks()
             }
         }
-        WorkTimeListener.addChangeListener { _, _, isWorking ->
+        WorkTimeListener.addWorkStatusListener { _, _, isWorking ->
             if (!PauseStatus.isPause && !isWorking) {
                 closeAllTasks()
             }

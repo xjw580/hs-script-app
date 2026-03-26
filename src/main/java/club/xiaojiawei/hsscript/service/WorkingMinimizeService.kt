@@ -26,12 +26,12 @@ object WorkingMinimizeService : Service<Boolean>() {
     }
 
     override fun execStart(): Boolean {
-        WorkTimeListener.addChangeListener(changeListener)
+        WorkTimeListener.addWorkStatusListener(changeListener)
         return true
     }
 
     override fun execStop(): Boolean {
-        WorkTimeListener.removeChangeListener(changeListener)
+        WorkTimeListener.removeWorkStatusListener(changeListener)
         return true
     }
 

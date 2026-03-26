@@ -38,7 +38,7 @@ object InjectUtil {
                 }
 
                 FileStatus.LOCKED_BY_OTHER_PROCESS -> {
-//                    log.warn { "临时DLL ${tempDll.absolutePath} 正在被占用，跳过覆写" }
+                    log.warn { "临时DLL ${tempDll.absolutePath} 正在被占用，跳过覆写" }
                 }
 
                 else -> {

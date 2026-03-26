@@ -31,13 +31,13 @@ object LimitMouseRangeService : Service<Boolean>() {
             CSystemDll.INSTANCE.limitMouseRange(true)
         }
         ScriptStatus.gameHWNDProperty().addListener(hwndListener)
-        WorkTimeListener.addChangeListener(workingListener)
+        WorkTimeListener.addWorkStatusListener(workingListener)
         return true
     }
 
     override fun execStop(): Boolean {
         ScriptStatus.gameHWNDProperty().removeListener(hwndListener)
-        WorkTimeListener.removeChangeListener(workingListener)
+        WorkTimeListener.removeWorkStatusListener(workingListener)
         CSystemDll.INSTANCE.limitMouseRange(false)
         return true
     }

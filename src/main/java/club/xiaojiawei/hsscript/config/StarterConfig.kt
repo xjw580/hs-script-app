@@ -1,7 +1,7 @@
 package club.xiaojiawei.hsscript.config
 
-import club.xiaojiawei.hsscript.starter.*
-import club.xiaojiawei.hsscript.status.TaskManager
+import club.xiaojiawei.builder.buildStarter
+import club.xiaojiawei.hsscript.starter.AbstractStarter
 
 /**
  * Starter的责任链配置
@@ -10,16 +10,17 @@ import club.xiaojiawei.hsscript.status.TaskManager
  */
 object StarterConfig {
 
-    val starter: AbstractStarter = ClearStarter().also {
-        TaskManager.addTask(it)
-        it.setNextStarter(PrepareStarter())
-            .setNextStarter(PlatformStarter().apply { TaskManager.addTask(this) })
-            .setNextStarter(LoginPlatformStarter().apply { TaskManager.addTask(this) })
-            .setNextStarter(GameStarter().apply { TaskManager.addTask(this) })
-            .setNextStarter(InjectStarter())
-            .setNextStarter(InjectedAfterStarter())
-            .setNextStarter(LogListenStarter())
-            .setNextStarter(ExceptionListenStarter().apply { TaskManager.addTask(this) })
+    val starter: AbstractStarter = buildStarter {
+        registerTask()
+        clear()
+        prepare()
+        platform()
+        loginPlatform()
+        game()
+        inject()
+        injectedAfter()
+        logListener()
+        exceptionListen()
     }
 
 }

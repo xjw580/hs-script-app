@@ -34,7 +34,7 @@ object UpdateGameWindowService : Service<Boolean>() {
     }
 
     override fun execStart(): Boolean {
-        WorkTimeListener.addChangeListener(workingChangeListener)
+        WorkTimeListener.addWorkStatusListener(workingChangeListener)
         CSystemDll.INSTANCE.limitWindowResize(ScriptStatus.gameHWND, false)
         thread =
             Thread({
@@ -60,7 +60,7 @@ object UpdateGameWindowService : Service<Boolean>() {
     }
 
     override fun execStop(): Boolean {
-        WorkTimeListener.removeChangeListener(workingChangeListener)
+        WorkTimeListener.removeWorkStatusListener(workingChangeListener)
         CSystemDll.INSTANCE.limitWindowResize(ScriptStatus.gameHWND, WorkTimeListener.working)
         thread?.let {
             it.isAlive.isTrue {

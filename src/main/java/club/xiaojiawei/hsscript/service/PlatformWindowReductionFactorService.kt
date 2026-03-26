@@ -46,13 +46,13 @@ object PlatformWindowReductionFactorService : Service<Float>() {
             changeWindowSize(ScriptStatus.platformHWND)
         }
         ScriptStatus.platformHWNDProperty().addListener(windowChangeListener)
-        WorkTimeListener.addChangeListener(workingChangeListener)
+        WorkTimeListener.addWorkStatusListener(workingChangeListener)
         return true
     }
 
     override fun execStop(): Boolean {
         ScriptStatus.platformHWNDProperty().removeListener(windowChangeListener)
-        WorkTimeListener.removeChangeListener(workingChangeListener)
+        WorkTimeListener.removeWorkStatusListener(workingChangeListener)
         return true
     }
 

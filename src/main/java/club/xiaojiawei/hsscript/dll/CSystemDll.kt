@@ -221,6 +221,10 @@ interface CSystemDll : Library {
 
     fun developer(enable: Boolean)
 
+    fun showMouseTrack(enable: Boolean)
+    
+    fun presentDraw(enable: Boolean)
+
     fun isConnected(): Boolean
 
     // ===================================tray===================================

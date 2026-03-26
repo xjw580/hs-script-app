@@ -1,15 +1,20 @@
 package club.xiaojiawei.hsscript.controller.javafx
 
+import club.xiaojiawei.builder.buildStarter
+import club.xiaojiawei.controls.Notification
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.bean.FrameData
 import club.xiaojiawei.hsscript.bean.FrameReader
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.interfaces.StageHook
+import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.kt.dsl.StyleSize
+import club.xiaojiawei.kt.dsl.button
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.image.ImageView
@@ -18,6 +23,7 @@ import javafx.scene.image.WritableImage
 import javafx.scene.layout.StackPane
 import java.net.URL
 import java.util.*
+import java.util.concurrent.Future
 
 /**
  * @author 肖嘉威
@@ -27,7 +33,7 @@ import java.util.*
 class GameFrameController : Initializable, StageHook {
 
     @FXML
-    protected lateinit var notificationManager: NotificationManager<String>
+    protected lateinit var notificationManager: NotificationManager<Any>
 
     @FXML
     protected lateinit var gameFrameView: ImageView
@@ -73,12 +79,7 @@ class GameFrameController : Initializable, StageHook {
     @Volatile
     private var running = false
 
-    @FXML
-    protected fun startCapture() {
-        if (running) return
-        if (!GameUtil.isAliveOfGame()) {
-            notificationManager.showInfo("请先打开${GAME_CN_NAME}", 2)
-        }
+    private fun execCapture() {
         InjectStarter().start()
         CSystemDll.INSTANCE.capture(true)
         val frameReader = FrameReader().apply {
@@ -96,6 +97,46 @@ class GameFrameController : Initializable, StageHook {
             }
             frameReader.close()
             CSystemDll.INSTANCE.capture(false)
+        }
+    }
+
+    private fun startTimer(): Future<*> = go {
+        (0 until 3).forEach { _ ->
+            if (Thread.interrupted()) return@go
+            Thread.sleep(1000)
+        }
+        val lastStarer = object : AbstractStarter() {
+            override fun execStart() {
+                execCapture()
+            }
+        }
+        buildStarter {
+            platform()
+            game()
+            custom(lastStarer)
+        }.start()
+    }
+
+    @FXML
+    protected fun startCapture() {
+        if (running) return
+        if (GameUtil.isAliveOfGame()) {
+            execCapture()
+        } else {
+            val future = startTimer()
+            var notification: Notification<Any>? = null
+            notification = notificationManager.showInfo(
+                "${GAME_CN_NAME}没有打开，3秒后自动打开",
+                button {
+                    +"取消"
+                    styleNormal(StyleSize.SMALL)
+                    onAction {
+                        future.cancel(true)
+                        notification?.hide()
+                    }
+                },
+                3
+            )
         }
     }
 

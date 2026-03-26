@@ -280,7 +280,7 @@ class MainController : MainView() {
             }
         }
 //        工作状态监听
-        WorkTimeListener.addChangeListener { _, _, t1: Boolean ->
+        WorkTimeListener.addWorkStatusListener { _, _, t1: Boolean ->
             if (t1) {
                 accordion.expandedPane = titledPaneLog
             } else {

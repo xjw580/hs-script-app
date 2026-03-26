@@ -67,7 +67,7 @@ object Core {
                     log.info { "当前处于【开始】状态" }
                 }
         }
-        WorkTimeListener.addChangeListener { _, _, isWorking: Boolean ->
+        WorkTimeListener.addWorkStatusListener { _, _, isWorking: Boolean ->
             if (isWorking) {
                 start(true)
             }

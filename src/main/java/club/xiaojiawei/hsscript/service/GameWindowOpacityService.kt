@@ -36,13 +36,13 @@ object GameWindowOpacityService : Service<Int>() {
             changeOpacity(ConfigUtil.getInt(ConfigEnum.GAME_WINDOW_OPACITY))
         }
         ScriptStatus.gameHWNDProperty().addListener(windowChangeListener)
-        WorkTimeListener.addChangeListener(workingChangeListener)
+        WorkTimeListener.addWorkStatusListener(workingChangeListener)
         return true
     }
 
     override fun execStop(): Boolean {
         ScriptStatus.gameHWNDProperty().removeListener(windowChangeListener)
-        WorkTimeListener.removeChangeListener(workingChangeListener)
+        WorkTimeListener.removeWorkStatusListener(workingChangeListener)
         changeOpacity(ConfigEnum.GAME_WINDOW_OPACITY.defaultValue.toInt())
         return true
     }

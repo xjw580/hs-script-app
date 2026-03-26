@@ -1,6 +1,7 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
+import club.xiaojiawei.builder.buildInjectStarter
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
@@ -11,9 +12,6 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.starter.AbstractStarter
-import club.xiaojiawei.hsscript.starter.GameStarter
-import club.xiaojiawei.hsscript.starter.InjectStarter
-import club.xiaojiawei.hsscript.starter.PlatformStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
@@ -21,7 +19,6 @@ import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
-import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB
 import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB_NAME
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
@@ -204,15 +201,12 @@ class DeveloperSettingsController : Initializable {
             CSystemDll.INSTANCE.developer(true)
         } else {
             WindowUtil.createAlert("${GAME_CN_NAME}没有启动", "是否启动", {
-                val starter = PlatformStarter()
-                starter.setNextStarter(GameStarter()).setNextStarter(InjectStarter().apply {
-                    setNextStarter(object : AbstractStarter() {
-                        override fun execStart() {
-                            CSystemDll.INSTANCE.developer(true)
-                        }
-                    })
-                })
-                starter.start()
+                val lastStarer = object : AbstractStarter() {
+                    override fun execStart() {
+                        CSystemDll.INSTANCE.developer(true)
+                    }
+                }
+                buildInjectStarter(lastStarer) { true }.start()
             }, {}, WindowEnum.SETTINGS, "是", "否").show()
 
         }

@@ -32,13 +32,13 @@ object TopGameWindowService : Service<Boolean>() {
             changeTop(true)
         }
         ScriptStatus.gameHWNDProperty().addListener(changeListener)
-        WorkTimeListener.addChangeListener(workingChangeListener)
+        WorkTimeListener.addWorkStatusListener(workingChangeListener)
         return true
     }
 
     override fun execStop(): Boolean {
         ScriptStatus.gameHWNDProperty().removeListener(changeListener)
-        WorkTimeListener.removeChangeListener(workingChangeListener)
+        WorkTimeListener.removeWorkStatusListener(workingChangeListener)
         changeTop(false)
         return true
     }

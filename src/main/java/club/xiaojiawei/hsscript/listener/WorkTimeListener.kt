@@ -135,11 +135,11 @@ object WorkTimeListener {
             workingProperty.set(value)
         }
 
-    fun addChangeListener(listener: ChangeListener<Boolean>) {
+    fun addWorkStatusListener(listener: ChangeListener<Boolean>) {
         workingProperty.addListener(listener)
     }
 
-    fun removeChangeListener(listener: ChangeListener<Boolean>) {
+    fun removeWorkStatusListener(listener: ChangeListener<Boolean>) {
         workingProperty.removeListener(listener)
     }
 

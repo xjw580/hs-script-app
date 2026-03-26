@@ -537,6 +537,7 @@ enum class ConfigEnum(
             SoftProtectedModeEnum.NONE.name
         }
     ),
+
     /**
      * 仅软件运行时保护
      */
@@ -575,6 +576,15 @@ enum class ConfigEnum(
         defaultValueInitializer = { FALSE_STR },
         service = DisplayGameRectPosService,
         isEnable = false,
+    ),
+
+    /**
+     * 显示鼠标轨迹
+     */
+    DISPLAY_MOUSE_TRACK(
+        group = DEV_CONFIG_GROUP,
+        defaultValueInitializer = { FALSE_STR },
+        service = DisplayMouseTrackService,
     ),
 
     /**

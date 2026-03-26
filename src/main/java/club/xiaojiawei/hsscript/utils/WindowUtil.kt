@@ -63,23 +63,6 @@ object WindowUtil {
         )
     }
 
-    fun createMenuPopup(vararg labels: Label?): Popup {
-        val popup = Popup()
-
-        val vBox: VBox =
-            object : VBox() {
-                init {
-                    style =
-                        "-fx-effect: dropshadow(gaussian, rgba(128, 128, 128, 0.67), 10, 0, 3, 3);-fx-padding: 5 3 5 3;-fx-background-color: white"
-                }
-            }
-        vBox.styleClass.add("radius-ui")
-
-        popup.isAutoHide = true
-        popup.content.add(vBox)
-        return popup
-    }
-
     fun createAlert(
         headerText: String? = null,
         contentText: String? = null,
@@ -509,5 +492,22 @@ object WindowUtil {
         findHWND("ZLaunch Class", null)?.let { launchWindow ->
             CSystemDll.INSTANCE.quitWindow(launchWindow)
         }
+    }
+
+    fun createMenuPopup(vararg labels: Label?): Popup {
+        val popup = Popup()
+
+        val vBox: VBox =
+            object : VBox() {
+                init {
+                    style =
+                        "-fx-effect: dropshadow(gaussian, rgba(128, 128, 128, 0.67), 10, 0, 3, 3);-fx-padding: 5 3 5 3;-fx-background-color: white"
+                }
+            }
+        vBox.styleClass.add("radius-ui")
+
+        popup.isAutoHide = true
+        popup.content.add(vBox)
+        return popup
     }
 }

@@ -27,6 +27,10 @@ class InjectedAfterStarter : AbstractStarter() {
         if (ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)) {
             CSystemDll.INSTANCE.limitMouseRange(true)
         }
+        if (ConfigUtil.getBoolean(ConfigEnum.DISPLAY_MOUSE_TRACK)) {
+            CSystemDll.INSTANCE.presentDraw(true)
+            CSystemDll.INSTANCE.showMouseTrack(true)
+        }
 //        if (ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR.service?.getStatus(null) == true) {
 //            CSystemDll.INSTANCE.resizeGameWindow(true)
 //        }

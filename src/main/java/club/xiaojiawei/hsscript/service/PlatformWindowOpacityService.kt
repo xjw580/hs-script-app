@@ -37,13 +37,13 @@ object PlatformWindowOpacityService : Service<Int>() {
             changeOpacity(ConfigUtil.getInt(ConfigEnum.PLATFORM_WINDOW_OPACITY))
         }
         ScriptStatus.platformHWNDProperty().addListener(windowChangeListener)
-        WorkTimeListener.addChangeListener(workingChangeListener)
+        WorkTimeListener.addWorkStatusListener(workingChangeListener)
         return true
     }
 
     override fun execStop(): Boolean {
         ScriptStatus.platformHWNDProperty().removeListener(windowChangeListener)
-        WorkTimeListener.removeChangeListener(workingChangeListener)
+        WorkTimeListener.removeWorkStatusListener(workingChangeListener)
         changeOpacity(ConfigEnum.PLATFORM_WINDOW_OPACITY.defaultValue.toInt())
         return true
     }

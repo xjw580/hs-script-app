@@ -24,24 +24,33 @@
                             <SettingHBox name="启用鼠标" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="ENABLE_MOUSE"/>
                             </SettingHBox>
-                            <SettingHBox name="执行策略" tip="是否执行卡组策略" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                            <SettingHBox name="执行策略" tip="是否执行卡组策略" tabWindow="DEVELOPER_SETTINGS"
+                                         group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="STRATEGY"/>
                             </SettingHBox>
                             <SettingHBox name="允许注入" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <Label text="炉石传说" contentDisplay="RIGHT">
                                     <graphic>
-                                        <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_GAME_INJECT"/>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="ALLOW_GAME_INJECT"/>
                                     </graphic>
                                 </Label>
                                 <Label text="战网" contentDisplay="RIGHT">
                                     <graphic>
-                                        <ConfigSwitch notificationManager="${notificationManager}" config="ALLOW_PLATFORM_INJECT"/>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="ALLOW_PLATFORM_INJECT"/>
                                     </graphic>
                                 </Label>
                             </SettingHBox>
                             <SettingHBox name="显示游戏控件位置" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <ConfigSwitch fx:id="displayGameRectPosSwitch" notificationManager="${notificationManager}"
+                                <ConfigSwitch fx:id="displayGameRectPosSwitch"
+                                              notificationManager="${notificationManager}"
                                               config="DISPLAY_GAME_RECT_POS"/>
+                            </SettingHBox>
+                            <SettingHBox name="显示鼠标轨迹" tip="显示脚本驱动鼠标时的轨迹"
+                                         tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="DISPLAY_MOUSE_TRACK"/>
                             </SettingHBox>
                             <SettingHBox name="保存OCR图片" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
@@ -62,8 +71,10 @@
                                 </ComboBox>
                             </SettingHBox>
                             <SettingHBox name="控制台" tip="快捷键Alt+A" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <Button text="启动" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openConsole"/>
-                                <Button text="关闭" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#closeConsole"/>
+                                <Button text="启动" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#openConsole"/>
+                                <Button text="关闭" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#closeConsole"/>
                                 <Label text="启用热键" contentDisplay="RIGHT">
                                     <graphic>
                                         <ConfigSwitch config="ENABLE_CONSOLE_HOTKEY"/>
@@ -87,20 +98,27 @@
                     <TitledPane fx:id="toolTitled" text="工具"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="启用设置搜索服务" tip="关闭可提高设置页首次打开速度，重启软件生效" tabWindow="DEVELOPER_SETTINGS" group="工具">
-                                <ConfigSwitch notificationManager="${notificationManager}" config="ENABLE_SETTINGS_SEARCH_SERVICE"/>
+                            <SettingHBox name="启用设置搜索服务" tip="关闭可提高设置页首次打开速度，重启软件生效"
+                                         tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="ENABLE_SETTINGS_SEARCH_SERVICE"/>
                             </SettingHBox>
                             <SettingHBox name="测量游戏控件" tabWindow="DEVELOPER_SETTINGS" group="工具">
-                                <Button text="打开" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#openMeasureUtil"/>
+                                <Button text="打开" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#openMeasureUtil"/>
                             </SettingHBox>
                             <SettingHBox name="捕获游戏画面" tabWindow="DEVELOPER_SETTINGS" group="工具">
-                                <Button text="捕获" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#captureGameFrame"/>
+                                <Button text="捕获" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#captureGameFrame"/>
                             </SettingHBox>
-                            <SettingHBox name="更新卡牌数据库" tip="更新hs_cards.db，需要魔法" tabWindow="DEVELOPER_SETTINGS" group="工具">
-                                <Button text="更新" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#updateCardDB"/>
+                            <SettingHBox name="更新卡牌数据库" tip="更新hs_cards.db，需要魔法"
+                                         tabWindow="DEVELOPER_SETTINGS" group="工具">
+                                <Button text="更新" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#updateCardDB"/>
                             </SettingHBox>
                             <SettingHBox name="检查目标程序权限" tabWindow="DEVELOPER_SETTINGS" group="工具">
-                                <Button text="检查" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#checkPermission"/>
+                                <Button text="检查" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                        onAction="#checkPermission"/>
                             </SettingHBox>
                             <SettingHBox name="格式化日志" tabWindow="DEVELOPER_SETTINGS" group="工具">
                                 <Button text="Power.log" styleClass="btn-ui, btn-ui-normal, btn-ui-small"

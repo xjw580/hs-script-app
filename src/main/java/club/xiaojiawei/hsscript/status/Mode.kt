@@ -24,7 +24,7 @@ object Mode {
     private var nextModeTimeoutTask: Future<*>? = null
 
     init {
-        WorkTimeListener.addChangeListener { _, oldValue, newValue ->
+        WorkTimeListener.addWorkStatusListener { _, oldValue, newValue ->
             if (!newValue) {
                 stopTask()
             }
