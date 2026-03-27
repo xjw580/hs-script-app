@@ -134,7 +134,7 @@ abstract class AbstractPhaseStrategy : PhaseStrategy {
     protected open fun dealBlockEndIsOver(line: String, block: Block?): Boolean {
         if (ConfigUtil.getBoolean(ConfigEnum.KILLED_SURRENDER) && !WAR.isMyTurn && block != null) {
             if (block.blockType === BlockTypeEnum.ATTACK || block.blockType === BlockTypeEnum.POWER) {
-                GameUtil.triggerCalcMyDeadLine()
+                GameUtil.triggerReachingMyHeroDeadLine()
             }
         }
         return false

@@ -46,7 +46,7 @@ object GameTurnPhaseStrategy : AbstractPhaseStrategy() {
                         val start = System.currentTimeMillis()
                         DeckStrategyActuator.outCard()
                         if (ConfigUtil.getBoolean(ConfigEnum.KILLED_SURRENDER)) {
-                            GameUtil.triggerCalcMyDeadLine()
+                            GameUtil.triggerReachingMyHeroDeadLine()
                         }
                         if (ConfigUtil.getBoolean(ConfigEnum.RANDOM_EMOTION) && System.currentTimeMillis() - start > 60_000) {
                             GameUtil.sendErrorEmoji()

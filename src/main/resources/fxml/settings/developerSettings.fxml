@@ -47,7 +47,7 @@
                                               notificationManager="${notificationManager}"
                                               config="DISPLAY_GAME_RECT_POS"/>
                             </SettingHBox>
-                            <SettingHBox name="显示鼠标轨迹" tip="显示脚本驱动鼠标时的轨迹"
+                            <SettingHBox name="显示鼠标轨迹" tip="显示脚本驱动鼠标时在游戏内的轨迹"
                                          tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}"
                                               config="DISPLAY_MOUSE_TRACK"/>

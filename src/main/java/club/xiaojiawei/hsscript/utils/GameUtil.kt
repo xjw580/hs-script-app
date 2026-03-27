@@ -54,7 +54,7 @@ object GameUtil {
 
     val CONFIRM_RECT: GameRect by lazy { GameRect(-0.0546, 0.0601, 0.2709, 0.3222) }
 
-    val END_TURN_RECT: GameRect by lazy { GameRect(0.3550, 0.4533, -0.0636, -0.0196) }
+    val END_TURN_RECT: GameRect by lazy { GameRect(0.3700, 0.4525, -0.0572, -0.0181) }
 
     val RECONNECT_RECT: GameRect by lazy { GameRect(-0.1845, -0.0396, 0.2282, 0.2904) }
 
@@ -76,7 +76,7 @@ object GameUtil {
     val WONDER_RECT: GameRect by lazy { GameRect(0.0444, 0.1644, 0.1174, 0.1523) }
 
     val RIVAL_HERO_RECT: GameRect by lazy { GameRect(-0.0453, 0.0488, -0.3620, -0.2355) }
-    val MY_HERO_RECT: GameRect by lazy { GameRect(-0.0453, 0.0488, 0.2229, 0.3494) }
+    val MY_HERO_RECT: GameRect by lazy { GameRect(-0.0357, 0.0342, 0.1978, 0.2691) }
 
     val RIVAL_POWER_RECT: GameRect by lazy { GameRect(0.0840, 0.1554, -0.3260, -0.2338) }
     val MY_POWER_RECT: GameRect by lazy { GameRect(0.0855, 0.1569, 0.2254, 0.3176) }
@@ -491,7 +491,10 @@ object GameUtil {
         }
     }
 
-    fun triggerCalcMyDeadLine() {
+    /**
+     * 计算我方是否已达对方斩杀线
+     */
+    fun reachingMyHeroDeadLine(): Boolean {
         WAR.me.playArea.hero?.let { myHero ->
             val rivalAllDamage = (WAR.rival.playArea.cards.sumOf {
                 if (it.canAttack()) {
@@ -504,10 +507,20 @@ object GameUtil {
             } ?: 0)
             val myTauntBlood = WAR.me.playArea.cards.sumOf { card -> if (card.isTaunt) card.blood() else 0 }
             val myHeroBlood = myHero.blood()
-            if (rivalAllDamage - myHeroBlood - myTauntBlood >= 0) {
+            if (rivalAllDamage - myHeroBlood - myTauntBlood >= 0){
                 log.info { "敌方已能斩杀我方，敌方伤害:${rivalAllDamage}，我方血量:${myHeroBlood}，我方嘲讽随从血量:${myTauntBlood}" }
-                surrender()
+                return true
             }
+        }
+        return false
+    }
+
+    /**
+     * 计算我方是否已达对方斩杀线并做相应动作
+     */
+    fun triggerReachingMyHeroDeadLine() {
+        if (reachingMyHeroDeadLine()) {
+            surrender()
         }
     }
 
@@ -551,9 +564,7 @@ object GameUtil {
     /**
      * 点击回合结束按钮
      */
-    fun lClickTurnOver(isCancel: Boolean = true) {
-        END_TURN_RECT.lClick(isCancel)
-    }
+    fun lClickTurnOver(isCancel: Boolean = true) = END_TURN_RECT.lClick(isCancel)
 
     /**
      * 点击设置按钮
@@ -574,7 +585,7 @@ object GameUtil {
 
     fun rClickCenter() = CENTER_RECT.rClick()
 
-    fun reconnect() = RECONNECT_RECT.lClick()
+    fun reconnectAction() = RECONNECT_RECT.lClick()
 
     /**
      * 点掉游戏结束结算页面

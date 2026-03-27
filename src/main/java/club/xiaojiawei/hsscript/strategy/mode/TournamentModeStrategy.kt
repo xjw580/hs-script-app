@@ -10,7 +10,7 @@ import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.strategy.AbstractModeStrategy
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.GameUtil
-import club.xiaojiawei.hsscript.utils.GameUtil.reconnect
+import club.xiaojiawei.hsscript.utils.GameUtil.reconnectAction
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.bean.LRunnable
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
@@ -204,7 +204,7 @@ object TournamentModeStrategy : AbstractModeStrategy<Any?>() {
 //                点击错误按钮
                         ERROR_RECT.lClick()
                         SystemUtil.delayShort()
-                        reconnect()
+                        reconnectAction()
                         afterEnter(null)
                     }
                 },

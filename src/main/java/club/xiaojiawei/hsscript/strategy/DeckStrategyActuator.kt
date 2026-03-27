@@ -168,7 +168,7 @@ object DeckStrategyActuator {
                     GameUtil.getThreeDiscoverCardRect(0).lClick()
                     SystemUtil.delayShortMedium()
                 }
-                GameUtil.END_TURN_RECT.lClick(false)
+                GameUtil.lClickTurnOver(false)
                 SystemUtil.delayShortMedium()
             }
         }
