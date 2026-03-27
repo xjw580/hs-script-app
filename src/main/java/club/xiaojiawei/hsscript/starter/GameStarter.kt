@@ -3,6 +3,8 @@ package club.xiaojiawei.hsscript.starter
 import club.xiaojiawei.hsscript.config.StarterConfig
 import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
+import club.xiaojiawei.hsscript.dll.User32ExDll
+import club.xiaojiawei.hsscript.dll.User32ExDll.Companion.HWND_BOTTOM
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
@@ -12,7 +14,9 @@ import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef.HWND
+import com.sun.jna.platform.win32.WinUser.*
 import java.util.concurrent.TimeUnit
+
 
 /**
  * 启动游戏
@@ -85,6 +89,7 @@ class GameStarter : AbstractStarter() {
         )
     }
 
+
     private fun next(gameHWND: HWND) {
         updateGameMsg(gameHWND)
         if (ConfigEnum.PREVENT_ADMIN_LAUNCH_GAME.getBoolean() && GameUtil.getGameProgramPermission()
@@ -94,6 +99,16 @@ class GameStarter : AbstractStarter() {
         } else {
             log.info { GAME_CN_NAME + "正在运行" }
         }
+//        将战网窗口置底
+        User32ExDll.INSTANCE.SetWindowPos(
+            ScriptStatus.platformHWND,
+            HWND_BOTTOM,
+            0,
+            0,
+            0,
+            0,
+            SWP_NOACTIVATE xor SWP_NOMOVE xor SWP_NOSIZE
+        )
         startNextStarter()
     }
 
