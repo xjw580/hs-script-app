@@ -42,6 +42,10 @@
                                     </graphic>
                                 </Label>
                             </SettingHBox>
+                            <SettingHBox name="管理游戏注入" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Button text="注入" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#injectGame"/>
+                                <Button text="卸载" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#uninstallGame"/>
+                            </SettingHBox>
                             <SettingHBox name="显示游戏控件位置" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}"
                                               config="DISPLAY_GAME_RECT_POS"/>

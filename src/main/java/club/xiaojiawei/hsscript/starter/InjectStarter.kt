@@ -4,7 +4,6 @@ import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
-import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.config.log
 
@@ -14,7 +13,10 @@ import club.xiaojiawei.hsscriptbase.config.log
  * @author 肖嘉威
  * @date 2023/7/5 14:38
  */
-class InjectStarter(val enableDebug: () -> Boolean = { ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY) }) :
+class InjectStarter(
+    val enableDebug: () -> Boolean = { ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY) },
+    val force: Boolean = false
+) :
     AbstractStarter() {
 
     override fun execStart() {
@@ -29,7 +31,8 @@ class InjectStarter(val enableDebug: () -> Boolean = { ConfigUtil.getBoolean(Con
 
         log.info { "鼠标控制模式：${mouseControlMode.name}" }
         log.info { "阻止游戏反作弊：$acHook" }
-        if (mouseHook ||
+        if (force ||
+            mouseHook ||
             acHook ||
             limitMouseRange ||
             autoRefreshGameTask ||

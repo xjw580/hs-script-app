@@ -474,7 +474,10 @@ class MainApplication : Application() {
                     CSystemDll.INSTANCE.unprotectDirectory(PROTECT_PATH)
                 }
             }
-            WindowUtil.hideLaunchPage()
+            go {
+                Thread.sleep(1000)
+                WindowUtil.hideLaunchPage()
+            }
             if (aoting) {
                 runUI {
                     WindowUtil.showStage(WindowEnum.SETTINGS, WindowUtil.getStage(WindowEnum.MAIN))

@@ -6,12 +6,12 @@ import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.controls.ico.FileIco
-import club.xiaojiawei.hsscript.component.ConfigSwitch
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
 import club.xiaojiawei.hsscript.starter.AbstractStarter
+import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
@@ -36,7 +36,6 @@ import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
@@ -447,4 +446,15 @@ class DeveloperSettingsController : Initializable {
     protected fun scrollTool(actionEvent: ActionEvent) {
         scrollTo(toolPane)
     }
+
+    @FXML
+    protected fun uninstallGame() {
+        CSystemDll.INSTANCE.uninstall()
+    }
+
+    @FXML
+    protected fun injectGame() {
+        InjectStarter(force = true).start()
+    }
+
 }
