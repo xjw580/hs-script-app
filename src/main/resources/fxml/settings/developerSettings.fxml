@@ -6,7 +6,7 @@
 <?import club.xiaojiawei.hsscript.component.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <StackPane xmlns="http://javafx.com/javafx"
@@ -43,8 +43,7 @@
                                 </Label>
                             </SettingHBox>
                             <SettingHBox name="显示游戏控件位置" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <ConfigSwitch fx:id="displayGameRectPosSwitch"
-                                              notificationManager="${notificationManager}"
+                                <ConfigSwitch notificationManager="${notificationManager}"
                                               config="DISPLAY_GAME_RECT_POS"/>
                             </SettingHBox>
                             <SettingHBox name="显示鼠标轨迹" tip="显示脚本驱动鼠标时在游戏内的轨迹"

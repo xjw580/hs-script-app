@@ -222,8 +222,23 @@ interface CSystemDll : Library {
     fun developer(enable: Boolean)
 
     fun showMouseTrack(enable: Boolean)
-    
+
     fun presentDraw(enable: Boolean)
+
+    fun clearPresentDraw()
+
+    fun drawPresentRect(
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        thickness: Float,
+        filled: Boolean,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+    )
 
     fun isConnected(): Boolean
 

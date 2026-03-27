@@ -5,6 +5,8 @@ import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.getBoolean
+import club.xiaojiawei.hsscript.utils.getInt
 
 
 /**
@@ -15,21 +17,24 @@ import club.xiaojiawei.hsscript.utils.ConfigUtil
 class InjectedAfterStarter : AbstractStarter() {
 
     override fun execStart() {
-        if (ConfigUtil.getInt(ConfigEnum.GAME_LOG_LIMIT) == -1) {
+        if (ConfigEnum.GAME_LOG_LIMIT.getInt() == -1) {
             CSystemDll.INSTANCE.logHook(true)
         }
         if (ConfigExUtil.getMouseControlMode() === MouseControlModeEnum.MESSAGE) {
             CSystemDll.INSTANCE.mouseHook(true)
         }
-        if (ConfigUtil.getBoolean(ConfigEnum.AUTO_REFRESH_GAME_TASK)) {
+        if (ConfigEnum.AUTO_REFRESH_GAME_TASK.getBoolean()) {
             CSystemDll.INSTANCE.capture(true)
         }
-        if (ConfigUtil.getBoolean(ConfigEnum.LIMIT_MOUSE_RANGE)) {
+        if (ConfigEnum.LIMIT_MOUSE_RANGE.getBoolean()) {
             CSystemDll.INSTANCE.limitMouseRange(true)
         }
-        if (ConfigUtil.getBoolean(ConfigEnum.DISPLAY_MOUSE_TRACK)) {
+        val displayMouseTrack = ConfigEnum.DISPLAY_MOUSE_TRACK.getBoolean()
+        if (displayMouseTrack || ConfigEnum.DISPLAY_GAME_RECT_POS.getBoolean()) {
             CSystemDll.INSTANCE.presentDraw(true)
-            CSystemDll.INSTANCE.showMouseTrack(true)
+            if (displayMouseTrack){
+                CSystemDll.INSTANCE.showMouseTrack(true)
+            }
         }
 //        if (ConfigEnum.GAME_WINDOW_REDUCTION_FACTOR.service?.getStatus(null) == true) {
 //            CSystemDll.INSTANCE.resizeGameWindow(true)

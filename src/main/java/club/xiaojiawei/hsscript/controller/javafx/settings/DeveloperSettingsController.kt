@@ -61,9 +61,6 @@ class DeveloperSettingsController : Initializable {
     protected lateinit var progressModal: ProgressModal
 
     @FXML
-    protected lateinit var displayGameRectPosSwitch: ConfigSwitch
-
-    @FXML
     protected lateinit var rootPane: StackPane
 
     @FXML
@@ -180,13 +177,6 @@ class DeveloperSettingsController : Initializable {
     @FXML
     protected fun openLogFile(actionEvent: ActionEvent?) {
         SystemUtil.openFile(LOG_PATH)
-    }
-
-    @FXML
-    protected fun enableDisplayGameRectPos(mouseEvent: MouseEvent) {
-        if (mouseEvent.clickCount >= 3) {
-            displayGameRectPosSwitch.isDisable = !displayGameRectPosSwitch.isDisable
-        }
     }
 
     @FXML

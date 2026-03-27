@@ -1,40 +1,74 @@
 package club.xiaojiawei.hsscript.service
 
-import club.xiaojiawei.hsscript.controller.javafx.GameWindowModalController
+import club.xiaojiawei.hsscript.bean.GameRect
+import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.enums.WindowEnum
-import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.ConfigUtil
-import club.xiaojiawei.hsscript.utils.WindowUtil
-import com.sun.jna.platform.win32.WinDef.HWND
-import javafx.beans.value.ChangeListener
 
 /**
  * @author 肖嘉威
  * @date 2025/3/24 17:21
  */
 object DisplayGameRectPosService : Service<Boolean>() {
-    private val hwndListener: ChangeListener<HWND?> by lazy {
-        ChangeListener<HWND?> { _, _, newValue ->
-            show()
+    private const val MAX_RECT_COUNT = 3
+    private const val RECT_THICKNESS = 2f
+
+    private val rectQueue = ArrayDeque<GameRect>()
+
+    @Synchronized
+    fun show(gameRect: GameRect) {
+        if (!isRunning || !CSystemDll.INSTANCE.isConnected()) {
+            return
+        }
+        if (rectQueue.size >= MAX_RECT_COUNT) {
+            rectQueue.removeFirst()
+        }
+        rectQueue.addLast(gameRect)
+        redraw()
+    }
+
+    @Synchronized
+    private fun redraw() {
+        if (!CSystemDll.INSTANCE.isConnected()) {
+            return
+        }
+        CSystemDll.INSTANCE.presentDraw(true)
+        CSystemDll.INSTANCE.clearPresentDraw()
+        rectQueue.forEach { gameRect ->
+            val rect = gameRect.getRelativeRect()
+            CSystemDll.INSTANCE.drawPresentRect(
+                rect.x.toFloat(),
+                rect.y.toFloat(),
+                rect.width.toFloat(),
+                rect.height.toFloat(),
+                RECT_THICKNESS,
+                false,
+                1f,
+                0f,
+                0f,
+                1f,
+            )
         }
     }
 
-    private fun show() {
-        WindowUtil.showStage(WindowEnum.GAME_WINDOW_CONTROL_MODAL)
-        val controller = WindowUtil.getController(WindowEnum.GAME_WINDOW_CONTROL_MODAL)
-        if (controller is GameWindowModalController) {
-            controller.setOpacity(0.0)
+    @Synchronized
+    private fun clear() {
+        rectQueue.clear()
+        if (CSystemDll.INSTANCE.isConnected()) {
+            CSystemDll.INSTANCE.clearPresentDraw()
         }
     }
 
     override fun execStart(): Boolean {
-        ScriptStatus.gameHWNDProperty().addListener(hwndListener)
+        clear()
+        if (CSystemDll.INSTANCE.isConnected()) {
+            CSystemDll.INSTANCE.presentDraw(true)
+        }
         return true
     }
 
     override fun execStop(): Boolean {
-        WindowUtil.hideStage(WindowEnum.GAME_WINDOW_CONTROL_MODAL)
+        clear()
         return true
     }
 

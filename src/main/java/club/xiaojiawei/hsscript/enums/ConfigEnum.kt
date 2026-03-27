@@ -575,7 +575,6 @@ enum class ConfigEnum(
         group = DEV_CONFIG_GROUP,
         defaultValueInitializer = { FALSE_STR },
         service = DisplayGameRectPosService,
-        isEnable = false,
     ),
 
     /**

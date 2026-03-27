@@ -1,14 +1,11 @@
 package club.xiaojiawei.hsscript.bean
 
 import club.xiaojiawei.hsscript.consts.GameRationConst
-import club.xiaojiawei.hsscript.controller.javafx.GameWindowModalController
-import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.service.DisplayGameRectPosService
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus.GAME_RECT
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
-import club.xiaojiawei.hsscript.utils.WindowUtil
-import club.xiaojiawei.hsscript.utils.runUI
 import club.xiaojiawei.hsscriptbase.util.RandomUtil
 import java.awt.Point
 import java.util.function.Consumer
@@ -58,19 +55,7 @@ data class GameRect(
 
     fun showControlPos(gameRect: GameRect = this) {
         if (ScriptStatus.testMode) return
-        WindowUtil.getStage(WindowEnum.GAME_WINDOW_CONTROL_MODAL)?.let {
-            if (it.isShowing) {
-                val controller = WindowUtil.getController(WindowEnum.GAME_WINDOW_CONTROL_MODAL)
-                if (controller is GameWindowModalController) {
-                    runUI {
-                        if (controller.gameRectSize() > 3) {
-                            controller.removeFirstGameRect()
-                        }
-                        controller.drawGameRect(gameRect)
-                    }
-                }
-            }
-        }
+        DisplayGameRectPosService.show(gameRect)
     }
 
     /**
