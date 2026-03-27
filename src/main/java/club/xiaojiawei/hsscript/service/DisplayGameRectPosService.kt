@@ -32,7 +32,7 @@ object DisplayGameRectPosService : Service<Boolean>() {
         if (!CSystemDll.INSTANCE.isConnected()) {
             return
         }
-        CSystemDll.INSTANCE.presentDraw(true)
+//        CSystemDll.INSTANCE.presentDraw(true)
         CSystemDll.INSTANCE.clearPresentDraw()
         rectQueue.forEach { gameRect ->
             val rect = gameRect.getRelativeRect()
@@ -54,16 +54,12 @@ object DisplayGameRectPosService : Service<Boolean>() {
     @Synchronized
     private fun clear() {
         rectQueue.clear()
-        if (CSystemDll.INSTANCE.isConnected()) {
-            CSystemDll.INSTANCE.clearPresentDraw()
-        }
+        CSystemDll.INSTANCE.clearPresentDraw()
     }
 
     override fun execStart(): Boolean {
         clear()
-        if (CSystemDll.INSTANCE.isConnected()) {
-            CSystemDll.INSTANCE.presentDraw(true)
-        }
+        CSystemDll.INSTANCE.presentDraw(true)
         return true
     }
 

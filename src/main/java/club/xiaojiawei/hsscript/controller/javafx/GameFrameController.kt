@@ -12,6 +12,7 @@ import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.go
+import club.xiaojiawei.hsscript.utils.runUI
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.kt.dsl.StyleSize
 import club.xiaojiawei.kt.dsl.button
@@ -24,6 +25,7 @@ import javafx.scene.layout.StackPane
 import java.net.URL
 import java.util.*
 import java.util.concurrent.Future
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author 肖嘉威
@@ -46,32 +48,61 @@ class GameFrameController : Initializable, StageHook {
         rootPane.scene?.window?.hide()
     }
 
+    private data class FrameSnapshot(
+        val width: Int,
+        val height: Int,
+        val buffer: ByteArray,
+    )
+
+    @Volatile
+    private var latestFrame: FrameSnapshot? = null
+
+    private val frameUpdateScheduled = AtomicBoolean(false)
+
     fun handleFrame(frameData: FrameData) {
-        go {
-            val width = frameData.width
-            val height = frameData.height
-            val image = let {
-                var img = gameFrameView.image
-                if (img != null && (img.width.toInt() != width || img.height.toInt() != height)) {
-                    img = null
+        val data = ByteArray(frameData.width * frameData.height * 4)
+        val source = frameData.buffer.duplicate().apply {
+            clear()
+        }
+        source.get(data)
+        latestFrame = FrameSnapshot(frameData.width, frameData.height, data)
+        requestFrameRender()
+    }
+
+    private fun requestFrameRender() {
+        if (!frameUpdateScheduled.compareAndSet(false, true)) {
+            return
+        }
+        runUI {
+            try {
+                if (!running || rootPane.scene?.window?.isShowing != true) {
+                    latestFrame = null
+                    return@runUI
                 }
-                img
-            } ?: let {
-                val img = WritableImage(width, height)
-                gameFrameView.image = img
-                img
-            }
-            if (image is WritableImage) {
-                val pixelWriter = image.pixelWriter
-                pixelWriter.setPixels(
+                val frame = latestFrame ?: return@runUI
+                latestFrame = null
+                val image = (gameFrameView.image as? WritableImage)
+                    ?.takeIf { it.width.toInt() == frame.width && it.height.toInt() == frame.height }
+                    ?: WritableImage(frame.width, frame.height).also {
+                        gameFrameView.image = it
+                    }
+                image.pixelWriter.setPixels(
                     0,
                     0,
-                    width,
-                    height,
+                    frame.width,
+                    frame.height,
                     PixelFormat.getByteBgraInstance(),
-                    frameData.buffer,
-                    width * 4
+                    frame.buffer,
+                    0,
+                    frame.width * 4,
                 )
+            } catch (e: Exception) {
+                log.warn(e) { "更新捕获画面失败" }
+            } finally {
+                frameUpdateScheduled.set(false)
+                if (latestFrame != null && running && rootPane.scene?.window?.isShowing == true) {
+                    requestFrameRender()
+                }
             }
         }
     }
@@ -144,6 +175,7 @@ class GameFrameController : Initializable, StageHook {
     protected fun stopCapture() {
         if (!running) return
         running = false
+        latestFrame = null
         log.info { "停止捕获" }
     }
 
