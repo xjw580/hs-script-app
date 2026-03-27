@@ -21,6 +21,22 @@ import java.io.File
  * @author 肖嘉威
  * @date 2024/10/14 17:42
  */
+fun main(args: Array<String>) {
+    System.setProperty("jna.library.path", "lib")
+    ScriptStatus.aotMode = args.any { it.startsWith(ARG_AOT) }
+
+    if (!createProgramLock() && !ScriptStatus.aotMode){
+        WindowUtil.hideLaunchPage()
+        return
+    }
+
+    setLogPath()
+
+    ScriptStatus.programArgs = args.toList()
+
+    Application.launch(MainApplication::class.java, *args)
+}
+
 private fun setLogPath() {
     try {
         val context = LoggerFactory.getILoggerFactory()
@@ -62,20 +78,4 @@ private fun createProgramLock(): Boolean {
         WinError.ERROR_ALREADY_EXISTS -> false
         else -> true
     }
-}
-
-fun main(args: Array<String>) {
-    System.setProperty("jna.library.path", "lib")
-    ScriptStatus.aotMode = args.any { it.startsWith(ARG_AOT) }
-
-    if (!createProgramLock() && !ScriptStatus.aotMode){
-        WindowUtil.hideLaunchPage()
-        return
-    }
-
-    setLogPath()
-
-    ScriptStatus.programArgs = args.toList()
-
-    Application.launch(MainApplication::class.java, *args)
 }
