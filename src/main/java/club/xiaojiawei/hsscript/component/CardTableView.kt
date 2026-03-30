@@ -4,8 +4,7 @@ import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.TableFilterManagerGroup
 import club.xiaojiawei.hsscript.bean.SearchCardTableColumnConfig
 import club.xiaojiawei.hsscript.bean.tableview.NoEditTextFieldTableCell
-import club.xiaojiawei.hsscript.enums.ConfigEnum
-import club.xiaojiawei.hsscript.utils.ConfigUtil
+import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscriptcardsdk.bean.DBCard
 import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
 import club.xiaojiawei.kt.dsl.contextMenu
@@ -17,7 +16,6 @@ import javafx.fxml.FXMLLoader
 import javafx.geometry.Side
 import javafx.scene.control.Button
 import javafx.scene.control.CheckMenuItem
-import javafx.scene.control.ContextMenu
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -64,9 +62,7 @@ class CardTableView : TableView<DBCard>() {
 
     private val cardTableProxy: TableFilterManagerGroup<DBCard, DBCard> = TableFilterManagerGroup()
 
-    private val columnVisibilityConfig =
-        ConfigUtil.getObject(ConfigEnum.CARD_SEARCH_TABLE_COLUMNS, SearchCardTableColumnConfig::class.java)
-            ?: SearchCardTableColumnConfig()
+    private val columnVisibilityConfig = ConfigExUtil.getSearchCardTableColumn()
 
     private val noColVisible = SimpleBooleanProperty(columnVisibilityConfig.no)
     private val cardIdColVisible = SimpleBooleanProperty(columnVisibilityConfig.cardId)
@@ -122,8 +118,7 @@ class CardTableView : TableView<DBCard>() {
     }
 
     private fun saveColumnVisibilityConfig() {
-        ConfigUtil.putObject(
-            ConfigEnum.CARD_SEARCH_TABLE_COLUMNS,
+        ConfigExUtil.storeSearchCardTableColumn(
             SearchCardTableColumnConfig(
                 no = noColVisible.get(),
                 cardId = cardIdColVisible.get(),

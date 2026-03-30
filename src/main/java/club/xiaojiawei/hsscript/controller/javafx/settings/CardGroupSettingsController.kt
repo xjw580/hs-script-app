@@ -18,7 +18,6 @@ import club.xiaojiawei.hsscriptbase.util.setAll
 import club.xiaojiawei.hsscriptcardsdk.data.CardInfoData
 import club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum
 import club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum
-import club.xiaojiawei.hsscriptcardsdk.enums.CardTypeEnum
 import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
 import club.xiaojiawei.kt.dsl.*
 import club.xiaojiawei.kt.ext.runUILater
@@ -39,6 +38,8 @@ import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.ListCell
 import javafx.scene.control.SelectionMode
+import javafx.scene.control.SplitPane
+import javafx.scene.control.TableColumn
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
@@ -79,9 +80,7 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
 
     private var hasNotifiedUser = false
 
-    private val columnVisibilityConfig =
-        ConfigUtil.getObject(ConfigEnum.CARD_GROUP_TABLE_COLUMNS, CardGroupTableColumnConfig::class.java)
-            ?: CardGroupTableColumnConfig()
+    private val columnVisibilityConfig = ConfigExUtil.getCardGroupTableColumn()
 
     private val noColVisible = SimpleBooleanProperty(columnVisibilityConfig.no)
     private val cardIdColVisible = SimpleBooleanProperty(columnVisibilityConfig.cardId)
@@ -99,6 +98,7 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
         initCardTable()
         initCardGroupCardTable()
         initColumnSettingMenu()
+        initCardGroupSettingsSplitPane()
 
         cardGroupNameField.addEnterKeyFilter { _, _ -> renameCardGroup() }
         changeWeightCheckBox.isSelected = ConfigUtil.getBoolean(ConfigEnum.ENABLE_CHANGE_WEIGHT)
@@ -110,7 +110,10 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
     }
 
     @FXML
-    private lateinit var costCol: javafx.scene.control.TableColumn<CardGroupCard, Number?>
+    private lateinit var splitPane: SplitPane
+
+    @FXML
+    private lateinit var costCol: TableColumn<CardGroupCard, Number?>
 
     private var progress: DoubleProperty? = null
 
@@ -173,6 +176,13 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
         cardTable.bindColumnSettingButton(cardTableColumnSettingBtn)
     }
 
+    private fun initCardGroupSettingsSplitPane() {
+        val dividerPositions = ConfigExUtil.getCardGroupSettingsPageLayout().splitPositions
+        if (dividerPositions.isNotEmpty()) {
+            splitPane.setDividerPositions(*dividerPositions.toDoubleArray())
+        }
+    }
+
     private fun initColumnSettingMenu() {
         val menu = contextMenu {
             style()
@@ -207,8 +217,7 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
     }
 
     private fun saveColumnVisibilityConfig() {
-        ConfigUtil.putObject(
-            ConfigEnum.CARD_GROUP_TABLE_COLUMNS,
+        ConfigExUtil.storeCardGroupTableColumn(
             CardGroupTableColumnConfig(
                 no = noColVisible.get(),
                 cardId = cardIdColVisible.get(),
@@ -220,6 +229,14 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
                 weight = weightColVisible.get(),
                 powerWeight = powerWeightColVisible.get(),
                 changeWeight = changeWeightColVisible.get(),
+            )
+        )
+    }
+
+    private fun saveCardGroupSettingsSplitPane() {
+        ConfigExUtil.storeCardGroupSettingsPageLayout(
+            CardGroupSettingsPageLayout(
+                splitPositions = splitPane.dividers.map { it.position }
             )
         )
     }
@@ -1210,6 +1227,7 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
 
     override fun onHidden() {
         editActionPopup?.hide()
+        saveCardGroupSettingsSplitPane()
         saveAllModifiedCardGroups()
     }
 

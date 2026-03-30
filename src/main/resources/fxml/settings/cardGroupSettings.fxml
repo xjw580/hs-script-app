@@ -20,7 +20,7 @@
         <Double fx:id="colMinWeight" fx:value="25"/>
         <Double fx:id="icoScale" fx:value="0.8"/>
     </fx:define>
-    <SplitPane dividerPositions="0.2, 0.55" styleClass="split-pane-line">
+    <SplitPane fx:id="splitPane" dividerPositions="0.2, 0.55" styleClass="split-pane-line">
         <!-- 左侧：卡牌组列表 -->
         <VBox minWidth="0" style="-fx-padding: 5">
             <Label text="卡牌组列表" styleClass="section-title"/>

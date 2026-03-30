@@ -3,6 +3,9 @@ package club.xiaojiawei.hsscript.utils
 import ch.qos.logback.classic.Level
 import club.xiaojiawei.hsscript.bean.GameTask
 import club.xiaojiawei.hsscript.bean.HotKey
+import club.xiaojiawei.hsscript.bean.CardGroupSettingsPageLayout
+import club.xiaojiawei.hsscript.bean.CardGroupTableColumnConfig
+import club.xiaojiawei.hsscript.bean.SearchCardTableColumnConfig
 import club.xiaojiawei.hsscript.bean.WindowConfig
 import club.xiaojiawei.hsscript.bean.WorkTimeRuleSet
 import club.xiaojiawei.hsscript.bean.single.repository.AbstractRepository
@@ -264,6 +267,38 @@ object ConfigExUtil {
 
     fun storeWindowConfig(windowConfigs: List<WindowConfig>) {
         ConfigUtil.putString(ConfigEnum.WINDOW_CONFIG, objectMapper.writeValueAsString(windowConfigs))
+    }
+
+    fun getSearchCardTableColumn(): SearchCardTableColumnConfig {
+        return ConfigUtil.getObject(ConfigEnum.CARD_SEARCH_TABLE_COLUMNS, SearchCardTableColumnConfig::class.java)
+            ?: SearchCardTableColumnConfig()
+    }
+
+    fun storeSearchCardTableColumn(config: SearchCardTableColumnConfig) {
+        ConfigUtil.putString(ConfigEnum.CARD_SEARCH_TABLE_COLUMNS, objectMapper.writeValueAsString(config))
+    }
+
+    fun getCardGroupTableColumn(): CardGroupTableColumnConfig {
+        return ConfigUtil.getObject(ConfigEnum.CARD_GROUP_TABLE_COLUMNS, CardGroupTableColumnConfig::class.java)
+            ?: CardGroupTableColumnConfig()
+    }
+
+    fun storeCardGroupTableColumn(config: CardGroupTableColumnConfig) {
+        ConfigUtil.putString(ConfigEnum.CARD_GROUP_TABLE_COLUMNS, objectMapper.writeValueAsString(config))
+    }
+
+    fun getCardGroupSettingsPageLayout(): CardGroupSettingsPageLayout {
+        return ConfigUtil.getObject(
+            ConfigEnum.CARD_GROUP_SETTINGS_PAGE_LAYOUT,
+            CardGroupSettingsPageLayout::class.java
+        ) ?: CardGroupSettingsPageLayout()
+    }
+
+    fun storeCardGroupSettingsPageLayout(config: CardGroupSettingsPageLayout) {
+        ConfigUtil.putString(
+            ConfigEnum.CARD_GROUP_SETTINGS_PAGE_LAYOUT,
+            objectMapper.writeValueAsString(config)
+        )
     }
 
 }

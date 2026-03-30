@@ -651,6 +651,14 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 卡牌组设置页面的分隔占比
+     */
+    CARD_GROUP_SETTINGS_PAGE_LAYOUT(
+        group = LAYOUT_CONFIG_GROUP,
+        defaultValueInitializer = { objectMapper.writeValueAsString(CardGroupSettingsPageLayout()) },
+    ),
+
+    /**
      * 启用换牌权重
      */
     ENABLE_CHANGE_WEIGHT(
