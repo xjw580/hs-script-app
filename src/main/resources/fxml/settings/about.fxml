@@ -4,15 +4,12 @@
 <?import club.xiaojiawei.controls.ico.GithubIco?>
 <?import club.xiaojiawei.controls.NotificationManager?>
 <?import club.xiaojiawei.factory.NotificationFactory?>
+<?import club.xiaojiawei.hsscript.component.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
-<?import club.xiaojiawei.hsscript.component.UrlLabel?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.image.Image?>
-<?import club.xiaojiawei.hsscript.component.TipNode?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/about.css"
@@ -96,6 +93,11 @@
                     <TitledPane text="使用到的开源库，开源万岁" expanded="false"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
+                            <HBox styleClass="h-box">
+                                <UrlLabel text="javafx-md" url="https://github.com/xjw580/javafx-md"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <Label text="MPL 2.0"/>
+                            </HBox>
                             <HBox styleClass="h-box">
                                 <UrlLabel text="bytebuddy" url="https://github.com/raphw/byte-buddy"/>
                                 <HBox HBox.hgrow="ALWAYS"/>

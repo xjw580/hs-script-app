@@ -8,10 +8,10 @@ import kotlin.test.Test
  * @author 肖嘉威
  * @date 2026/3/9 9:03
  */
+@Ignore
 class SystemUtilTest {
 
     @Test
-    @Ignore
     fun testChangeOpacityForGame() {
         GameUtil.findGameHWND()?.let {
             SystemUtil.changeWindowOpacity(it, 50)
@@ -21,7 +21,6 @@ class SystemUtilTest {
     }
 
     @Test
-    @Ignore
     fun testChangeOpacityForPlatform() {
         GameUtil.findPlatformHWND()?.let {
             SystemUtil.changeWindowOpacity(it, 50)
