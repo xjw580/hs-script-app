@@ -80,6 +80,10 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
         } else if (repositoryList.first() == CustomRepository) {
             customUpdateSource.isSelected = true
         }
+        giteeUpdateSource.text = GiteeRepository.getName()
+        githubUpdateSource.text = GithubRepository.getName()
+        customUpdateSource.text = CustomRepository.getName()
+
         mouseControlModeComboBox.setCellFactory {
             object : ListCell<MouseControlModeEnum?>() {
                 private val ico = HelpIco()

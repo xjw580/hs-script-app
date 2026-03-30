@@ -33,7 +33,8 @@
                                 <Button fx:id="refreshDriver" text="刷新驱动" onAction="#refreshDriver"
                                         styleClass="btn-ui, btn-ui-small" visible="false" managed="false"/>
                             </SettingHBox>
-                            <SettingHBox name="限制鼠标范围" tip="鼠标活动范围将限制在游戏窗口内" tabWindow="ADVANCED_SETTINGS" group="鼠标">
+                            <SettingHBox name="限制鼠标范围" tip="鼠标活动范围将限制在游戏窗口内"
+                                         tabWindow="ADVANCED_SETTINGS" group="鼠标">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="LIMIT_MOUSE_RANGE"/>
                             </SettingHBox>
                             <SettingHBox name="鼠标整体移动速度" tabWindow="ADVANCED_SETTINGS" group="鼠标">
@@ -48,22 +49,26 @@
                     <TitledPane fx:id="windowTitled" text="窗口"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="游戏窗口不透明度" tip="不透明度为0时，鼠标将穿透游戏窗口" tabWindow="ADVANCED_SETTINGS" group="窗口">
+                            <SettingHBox name="游戏窗口不透明度" tip="不透明度为0时，鼠标将穿透游戏窗口"
+                                         tabWindow="ADVANCED_SETTINGS" group="窗口">
                                 <ConfigNumberField config="GAME_WINDOW_OPACITY"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    minValue="0" maxValue="255" prefWidth="${fieldWidth}"/>
                             </SettingHBox>
-                            <SettingHBox name="战网窗口不透明度" tip="不透明度为0时，鼠标将穿透战网窗口" tabWindow="ADVANCED_SETTINGS" group="窗口">
+                            <SettingHBox name="战网窗口不透明度" tip="不透明度为0时，鼠标将穿透战网窗口"
+                                         tabWindow="ADVANCED_SETTINGS" group="窗口">
                                 <ConfigNumberField config="PLATFORM_WINDOW_OPACITY"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    minValue="0" maxValue="255" prefWidth="${fieldWidth}"/>
                             </SettingHBox>
-                            <SettingHBox name="游戏窗口缩小倍数" tip="主显示器与游戏窗口高度之比" tabWindow="ADVANCED_SETTINGS" group="窗口">
+                            <SettingHBox name="游戏窗口缩小倍数" tip="主显示器与游戏窗口高度之比"
+                                         tabWindow="ADVANCED_SETTINGS" group="窗口">
                                 <ConfigFloatNumberField decimalCount="1" config="GAME_WINDOW_REDUCTION_FACTOR"
                                                         styleClass="text-field-ui, text-field-ui-small"
                                                         minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
                             </SettingHBox>
-                            <SettingHBox name="战网窗口缩小倍数" tip="主显示器与战网窗口高度之比" tabWindow="ADVANCED_SETTINGS" group="窗口">
+                            <SettingHBox name="战网窗口缩小倍数" tip="主显示器与战网窗口高度之比"
+                                         tabWindow="ADVANCED_SETTINGS" group="窗口">
                                 <ConfigFloatNumberField decimalCount="1" config="PLATFORM_WINDOW_REDUCTION_FACTOR"
                                                         styleClass="text-field-ui, text-field-ui-small"
                                                         minValue="0" maxValue="100" prefWidth="${fieldWidth}"/>
@@ -72,7 +77,8 @@
                                 <ConfigSwitch fx:id="topGameWindow" notificationManager="${notificationManager}"
                                               config="TOP_GAME_WINDOW"/>
                             </SettingHBox>
-                            <SettingHBox name="实时更新游戏窗口信息" tip="打开此项后软件可以感知到游戏窗口的变化" tabWindow="ADVANCED_SETTINGS" group="窗口">
+                            <SettingHBox name="实时更新游戏窗口信息" tip="打开此项后软件可以感知到游戏窗口的变化"
+                                         tabWindow="ADVANCED_SETTINGS" group="窗口">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="UPDATE_GAME_WINDOW"/>
                             </SettingHBox>
                         </VBox>
@@ -82,40 +88,52 @@
                     <TitledPane fx:id="behaviorTitled" text="行为"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="阻止游戏反作弊" tip="阻止游戏加载本地反作弊插件，必须用本软件启动游戏才能生效" beta="true" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="阻止游戏反作弊"
+                                         tip="阻止游戏加载本地反作弊插件，必须用本软件启动游戏才能生效" beta="true"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="PREVENT_AC"/>
                             </SettingHBox>
-                            <SettingHBox name="自动刷新游戏任务" tip="每次进入游戏首页时检查" beta="true" tabWindow="ADVANCED_SETTINGS" group="行为">
-                                <ConfigSwitch notificationManager="${notificationManager}" config="AUTO_REFRESH_GAME_TASK"/>
+                            <SettingHBox name="自动刷新游戏任务" tip="每次进入游戏首页时检查" beta="true"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="AUTO_REFRESH_GAME_TASK"/>
                             </SettingHBox>
                             <SettingHBox name="游戏启动方式偏好" tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ComboBox fx:id="gameStartupModeComboBox"
                                           styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
                             </SettingHBox>
                             <SettingHBox name="避免以管理员权限启动游戏" tabWindow="ADVANCED_SETTINGS" group="行为">
-                                <ConfigSwitch notificationManager="${notificationManager}" config="PREVENT_ADMIN_LAUNCH_GAME"/>
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="PREVENT_ADMIN_LAUNCH_GAME"/>
                             </SettingHBox>
-                            <SettingHBox name="工作时最小化" tip="工作时将关闭软件所有窗口仅保留托盘，此时只能检测到Java进程，推荐打开" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="工作时最小化"
+                                         tip="工作时将关闭软件所有窗口仅保留托盘，此时只能检测到Java进程，推荐打开"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="WORKING_MINIMIZE"/>
                             </SettingHBox>
-                            <SettingHBox name="检查游戏响应超时" tip="游戏超过指定时间(秒)无响应将重启游戏" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="检查游戏响应超时" tip="游戏超过指定时间(秒)无响应将重启游戏"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigNumberField notificationManager="${notificationManager}" config="GAME_TIMEOUT"
                                                    promptText="秒" prefWidth="${fieldWidth}"
                                                    styleClass="text-field-ui, text-field-ui-small"/>
                             </SettingHBox>
-                            <SettingHBox name="单次匹配最长时间/s" tip="超过此值将重新匹配" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="单次匹配最长时间/s" tip="超过此值将重新匹配"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigNumberField config="MATCH_MAXIMUM_TIME"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    prefWidth="${fieldWidth}"
                                                    notificationManager="${notificationManager}"/>
                             </SettingHBox>
-                            <SettingHBox name="最长空闲时间/min" tip="软件工作时闲置时间超过此值将重启游戏" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="最长空闲时间/min" tip="软件工作时闲置时间超过此值将重启游戏"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigNumberField config="IDLE_MAXIMUM_TIME"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    prefWidth="${fieldWidth}"
                                                    notificationManager="${notificationManager}"/>
                             </SettingHBox>
-                            <SettingHBox name="游戏日志大小限制/KB" tip="游戏日志文件超过此值将重启游戏。设为-1将禁用大小限制" tabWindow="ADVANCED_SETTINGS" group="行为">
+                            <SettingHBox name="游戏日志大小限制/KB"
+                                         tip="游戏日志文件超过此值将重启游戏。设为-1将禁用大小限制"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ConfigNumberField config="GAME_LOG_LIMIT"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    prefWidth="${fieldWidth}"
@@ -129,9 +147,11 @@
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
                             <SettingHBox name="开机自启" tabWindow="ADVANCED_SETTINGS" group="系统">
-                                <ConfigSwitch fx:id="powerBootSwitch" notificationManager="${notificationManager}" config="POWER_BOOT"/>
+                                <ConfigSwitch fx:id="powerBootSwitch" notificationManager="${notificationManager}"
+                                              config="POWER_BOOT"/>
                             </SettingHBox>
-                            <SettingHBox fx:id="autoStartPane" name="自启后自动开始" tabWindow="ADVANCED_SETTINGS" group="系统">
+                            <SettingHBox fx:id="autoStartPane" name="自启后自动开始" tabWindow="ADVANCED_SETTINGS"
+                                         group="系统">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="AUTO_START"/>
                             </SettingHBox>
                             <SettingHBox name="发送Windows通知" tabWindow="ADVANCED_SETTINGS" group="系统">
@@ -148,12 +168,16 @@
                                 <TextField fx:id="exitHotKey" styleClass="text-field-ui, text-field-ui-small"
                                            prefWidth="${fieldWidth}" editable="false"/>
                             </SettingHBox>
-                            <SettingHBox name="软件保护" tip="软件所在目录无权限的程序和用户无法访问" tabWindow="ADVANCED_SETTINGS" group="系统">
+                            <SettingHBox name="软件保护" tip="软件所在目录无权限的程序和用户无法访问"
+                                         tabWindow="ADVANCED_SETTINGS" group="系统">
                                 <ComboBox fx:id="softProtectedModeComboBox"
                                           styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
                             </SettingHBox>
-                            <SettingHBox fx:id="onlyRuntimeProtectItem" name="仅软件运行时保护" tabWindow="ADVANCED_SETTINGS" group="系统">
-                                <ConfigSwitch fx:id="onlyRuntimeProtectSwitch" notificationManager="${notificationManager}" config="ONLY_RUNTIME_PROTECT"/>
+                            <SettingHBox fx:id="onlyRuntimeProtectItem" name="仅软件运行时保护"
+                                         tabWindow="ADVANCED_SETTINGS" group="系统">
+                                <ConfigSwitch fx:id="onlyRuntimeProtectSwitch"
+                                              notificationManager="${notificationManager}"
+                                              config="ONLY_RUNTIME_PROTECT"/>
                             </SettingHBox>
                             <SettingHBox fx:id="aotPane" name="AOT缓存" tabWindow="ADVANCED_SETTINGS" group="系统">
                                 <Button fx:id="aotFlushBtn" text="刷新" onAction="#refreshAOTCache"
@@ -164,7 +188,8 @@
                                 <Button text="创建AOT缓存" onAction="#createAOTCache" contentDisplay="RIGHT"
                                         styleClass="btn-ui, btn-ui-normal, btn-ui-small">
                                     <graphic>
-                                        <TipNode text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
+                                        <TipNode
+                                                text="用于加快软件启动速度,缓存会占用一定的磁盘空间,每次更新软件都需要重新创建"/>
                                     </graphic>
                                 </Button>
                             </SettingHBox>
@@ -180,7 +205,7 @@
                                     <Double fx:id="icoScale" fx:value="1.1"/>
                                     <ToggleGroup fx:id="updateSourceToggle"/>
                                 </fx:define>
-                                <RadioButton fx:id="giteeUpdateSource" text="Gitee" toggleGroup="$updateSourceToggle"
+                                <RadioButton fx:id="giteeUpdateSource" toggleGroup="$updateSourceToggle"
                                              styleClass="radio-button-ui, radio-button-ui-main">
                                     <graphic>
                                         <GiteeIco scaleX="${icoScale}" scaleY="${icoScale}"/>
@@ -193,7 +218,7 @@
                                         </Tooltip>
                                     </tooltip>
                                 </RadioButton>
-                                <RadioButton fx:id="githubUpdateSource" text="Github" toggleGroup="$updateSourceToggle"
+                                <RadioButton fx:id="githubUpdateSource" toggleGroup="$updateSourceToggle"
                                              styleClass="radio-button-ui, radio-button-ui-main">
                                     <graphic>
                                         <GithubIco scaleX="${icoScale}" scaleY="${icoScale}"/>
@@ -206,14 +231,14 @@
                                         </Tooltip>
                                     </tooltip>
                                 </RadioButton>
-                                <RadioButton fx:id="customUpdateSource" text="自定义" toggleGroup="$updateSourceToggle"
+                                <RadioButton fx:id="customUpdateSource" toggleGroup="$updateSourceToggle"
                                              styleClass="radio-button-ui, radio-button-ui-main">
                                     <graphic>
                                         <EditIco scaleX="${icoScale}" scaleY="${icoScale}"
                                                  onMouseClicked="#settingCustomUpdateSource"/>
                                     </graphic>
                                     <tooltip>
-                                        <Tooltip text="自定义更新源">
+                                        <Tooltip text="使用第三方更新源，需要遵循Github API风格">
                                             <showDuration>
                                                 <fx:reference source="tooltipDuration"/>
                                             </showDuration>

@@ -54,4 +54,6 @@ object GithubRepository : AbstractRepository() {
         return "xjw580"
     }
 
+    override fun getName(): String = "Github"
+
 }

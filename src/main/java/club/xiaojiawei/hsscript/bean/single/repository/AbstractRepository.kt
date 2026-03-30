@@ -55,4 +55,8 @@ abstract class AbstractRepository {
     abstract fun getDomain(): String?
 
     abstract fun getUserName(): String?
+
+    abstract fun getName(): String
+
+    override fun toString(): String = getName()
 }

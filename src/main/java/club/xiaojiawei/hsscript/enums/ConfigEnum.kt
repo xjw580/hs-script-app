@@ -2,6 +2,8 @@ package club.xiaojiawei.hsscript.enums
 
 import ch.qos.logback.classic.Level
 import club.xiaojiawei.hsscript.bean.*
+import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
+import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.service.*
 import club.xiaojiawei.hsscriptbase.enums.RunModeEnum
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -10,7 +12,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.melloware.jintellitype.JIntellitype
 
 /**
- * 脚本配置信息
+ * 软件配置信息
  * @author 肖嘉威
  * @date 2023/7/5 11:26
  */
@@ -24,6 +26,7 @@ private val objectMapper: ObjectMapper by lazy {
 @JvmInline
 value class ConfigGroup(val name: String)
 
+/*配置组-开始*/
 val INIT_CONFIG_GROUP = ConfigGroup("init")
 
 val PLUGIN_CONFIG_GROUP = ConfigGroup("plugin")
@@ -43,6 +46,7 @@ val DEV_CONFIG_GROUP = ConfigGroup("dev")
 val WEIGHT_CONFIG_GROUP = ConfigGroup("weight")
 
 val LAYOUT_CONFIG_GROUP = ConfigGroup("layout")
+/*配置组-结束*/
 
 private const val WORK_TIME_RULE_PRESETS_ONE = "presets-one"
 private const val WORK_TIME_RULE_PRESETS_EMPTY = ""
@@ -203,17 +207,21 @@ enum class ConfigEnum(
     /**
      * 更新源
      */
-    UPDATE_SOURCE(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "Gitee" }),
+    UPDATE_SOURCE(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { GiteeRepository.getName() }),
 
     /**
      * 自定义更新服务器域名
      */
-    CUSTOM_UPDATE_SERVER_DOMAIN(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "localhost:8080" }),
+    CUSTOM_UPDATE_SERVER_DOMAIN(
+        group = VERSION_CONFIG_GROUP,
+        defaultValueInitializer = { CustomRepository.customDomain }),
 
     /**
      * 自定义更新服务器用户名
      */
-    CUSTOM_UPDATE_SERVER_USER(group = VERSION_CONFIG_GROUP, defaultValueInitializer = { "xiaojiawei" }),
+    CUSTOM_UPDATE_SERVER_USER(
+        group = VERSION_CONFIG_GROUP,
+        defaultValueInitializer = { CustomRepository.customUserName }),
 
     /**
      * 更新开发版

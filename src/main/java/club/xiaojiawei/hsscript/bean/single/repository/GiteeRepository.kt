@@ -61,4 +61,6 @@ object GiteeRepository : AbstractRepository() {
         return "zergqueen"
     }
 
+    override fun getName(): String = "Gitee"
+
 }

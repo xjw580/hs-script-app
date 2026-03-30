@@ -254,7 +254,11 @@ object WindowUtil {
         runUI {
             for (entry in STAGE_MAP) {
                 if (forceAll || entry.key !== WindowEnum.GAME_WINDOW_CONTROL_MODAL) {
-                    entry.value.hide()
+                    runCatching {
+                        entry.value.hide()
+                    }.onFailure {
+                        log.debug { it }
+                    }
                 }
             }
         }

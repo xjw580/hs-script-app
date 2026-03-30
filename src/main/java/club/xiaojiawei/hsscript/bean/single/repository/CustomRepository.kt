@@ -15,15 +15,17 @@ import org.springframework.web.client.getForObject
 object CustomRepository : AbstractRepository() {
 
     // 自定义服务器配置
-    private var customDomain: String = "localhost:8080"
-    private var customUserName: String = "xiaojiawei"
+    var customDomain: String = "localhost:8080"
+        private set
+    var customUserName: String = "xiaojiawei"
+        private set
 
     /**
      * 配置自定义服务器
      * @param domain 服务器域名，如 "version.example.com" 或 "192.168.1.100:8080"
      * @param userName 用户名，默认 "xiaojiawei"
      */
-    fun configure(domain: String, userName: String = "xiaojiawei") {
+    fun configure(domain: String = customDomain, userName: String = customUserName) {
         customDomain = domain
         customUserName = userName
     }
@@ -32,9 +34,11 @@ object CustomRepository : AbstractRepository() {
         var latestRelease: Release? = null
         if (isPreview) {
             // 预发布版：从 /releases 列表获取
-            val releases: Array<Release>? = NetUtil.buildRestTemplate().getForObject<Array<Release>>(
-                getLatestReleaseURL(true)
-            )
+            val releases: Array<Release>? = runCatching {
+                NetUtil.buildRestTemplate().getForObject<Array<Release>>(
+                    getLatestReleaseURL(true)
+                )
+            }.getOrNull()
             if (!releases.isNullOrEmpty()) {
                 latestRelease = releases[0]
             }
@@ -47,45 +51,39 @@ object CustomRepository : AbstractRepository() {
         return latestRelease
     }
 
-    override fun getLatestReleaseURL(isPreview: Boolean): String {
-        return if (isPreview) {
-            String.format(
-                "http://%s/repos/%s/%s/releases",
-                getDomain(),
-                getUserName(),
-                PROJECT_NAME
-            )
-        } else {
-            String.format(
-                "http://%s/repos/%s/%s/releases/latest",
-                getDomain(),
-                getUserName(),
-                PROJECT_NAME
-            )
-        }
-    }
-
-    override fun getReleaseDownloadURL(release: Release): String {
-        return String.format(
-            "http://%s/%s/%s/releases/download/%s/%s",
+    override fun getLatestReleaseURL(isPreview: Boolean): String = if (isPreview) {
+        String.format(
+            "http://%s/repos/%s/%s/releases",
             getDomain(),
             getUserName(),
-            PROJECT_NAME,
-            release.tagName,
-            getFileName(release)
+            PROJECT_NAME
+        )
+    } else {
+        String.format(
+            "http://%s/repos/%s/%s/releases/latest",
+            getDomain(),
+            getUserName(),
+            PROJECT_NAME
         )
     }
 
-    override fun getReleasePageURL(release: Release): String {
-        // 自定义服务器没有网页界面，返回下载链接
-        return getReleaseDownloadURL(release)
-    }
+    override fun getReleaseDownloadURL(release: Release): String = String.format(
+        "http://%s/%s/%s/releases/download/%s/%s",
+        getDomain(),
+        getUserName(),
+        PROJECT_NAME,
+        release.tagName,
+        getFileName(release)
+    )
 
-    override fun getDomain(): String {
-        return customDomain
-    }
+    /**
+     * 自定义服务器没有网页界面，返回下载链接
+     */
+    override fun getReleasePageURL(release: Release): String = getReleaseDownloadURL(release)
 
-    override fun getUserName(): String {
-        return customUserName
-    }
+    override fun getDomain(): String = customDomain
+
+    override fun getUserName(): String = customUserName
+
+    override fun getName(): String = "Custom"
 }

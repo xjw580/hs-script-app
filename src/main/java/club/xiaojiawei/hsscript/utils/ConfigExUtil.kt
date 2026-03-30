@@ -147,25 +147,20 @@ object ConfigExUtil {
         }
 
         // 检查是否配置了自定义服务器
-        if (updateSource.startsWith("custom") || updateSource.contains("自定义")) {
-            // 配置自定义服务器（可以从配置文件读取）
+        if (updateSource == CustomRepository.getName().lowercase()) {
             val customDomain = ConfigUtil.getString(ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN)
             if (customDomain.isNotBlank()) {
                 CustomRepository.configure(
                     domain = customDomain,
-                    userName = ConfigUtil.getString(ConfigEnum.CUSTOM_UPDATE_SERVER_USER).ifBlank { "xiaojiawei" }
+                    userName = ConfigUtil.getString(ConfigEnum.CUSTOM_UPDATE_SERVER_USER)
+                        .ifBlank { CustomRepository.customUserName }
                 )
                 return listOf(CustomRepository, GiteeRepository, GithubRepository)
             }
         }
 
-        if (GiteeRepository::class.java.simpleName
-                .lowercase()
-                .startsWith(updateSource)
-        ) {
-            return listOf(GiteeRepository, GithubRepository)
-        }
-        return listOf(GithubRepository, GiteeRepository)
+        return if (GiteeRepository.getName().lowercase() == updateSource)
+            listOf(GiteeRepository, GithubRepository) else listOf(GithubRepository, GiteeRepository)
     }
 
     fun storePreventAntiCheat(status: Boolean) {
