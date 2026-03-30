@@ -91,11 +91,13 @@ object VersionListener {
         }
     }
 
+    private const val MIN_CHECK_VERSION_INTERVAL = 1000L * 60 * 60 // 毫秒
+
     val launch: Unit by lazy {
         if (checkVersionTask != null) return@lazy
 
         checkVersionTask = EXTRA_THREAD_POOL.scheduleWithFixedDelay(LRunnable {
-            if (System.currentTimeMillis() - ConfigUtil.getLong(ConfigEnum.LAST_CHECK_VERSION_TIME) > 1000 * 60 * 60 &&
+            if (System.currentTimeMillis() - ConfigUtil.getLong(ConfigEnum.LAST_CHECK_VERSION_TIME) > MIN_CHECK_VERSION_INTERVAL &&
                 (BuildInfo.SOFT_RUN_MODE != SoftRunMode.FILE || ScriptStatus.programArgs.contains(ARG_UPDATE))
             ) {
                 checkVersion()

@@ -31,12 +31,16 @@ object ReplaceCardPhaseStrategy : AbstractPhaseStrategy() {
                 cancelAllTask()
 //                执行换牌策略
                 val winRateLimit = ConfigUtil.getInt(ConfigEnum.MAXIMUM_WIN_RATE_LIMIT)
+                val winStreakLimit = ConfigUtil.getInt(ConfigEnum.MAXIMUM_WIN_STREAK_LIMIT)
                 (ChangeCardThread {
-                    if (WarEx.warCount != 0
-                        && (WarEx.winCount * 100.0 / WarEx.warCount) > winRateLimit
-                            .toDouble()
+                    if (winRateLimit >= 0
+                        && WarEx.warCount != 0
+                        && (WarEx.winCount * 100.0 / WarEx.warCount) > winRateLimit.toDouble()
                     ) {
                         log.info { "达到胜率限制[${winRateLimit}%]，准备投降" }
+                        GameUtil.surrender()
+                    } else if (winStreakLimit >= 0 && WarEx.winStreak > winStreakLimit) {
+                        log.info { "达到连胜限制[$winStreakLimit]，准备投降" }
                         GameUtil.surrender()
                     } else {
                         changeCard()

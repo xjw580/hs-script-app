@@ -73,6 +73,15 @@ object WarEx {
         set(value) = winCountProperty.set(value)
 
     /**
+     * 当前连胜
+     */
+    val winStreakProperty: IntegerProperty = SimpleIntegerProperty(0)
+
+    var winStreak
+        get() = winStreakProperty.get()
+        set(value) = winStreakProperty.set(value)
+
+    /**
      * 挂机时长，单位：min
      */
     val hangingTimeProperty: IntegerProperty = SimpleIntegerProperty(0)
@@ -95,6 +104,7 @@ object WarEx {
     fun resetStatistics() {
         warCount = 0
         winCount = 0
+        winStreak = 0
         hangingTime = 0
         hangingEXP = 0
     }
@@ -204,7 +214,10 @@ object WarEx {
             var flag = false
             if (won == me.gameId) {
                 winCount++
+                winStreak++
                 flag = true
+            } else {
+                winStreak = 0
             }
             log.info { "本局游戏胜者：$won" }
             log.info { "本局游戏败者：$lost" }

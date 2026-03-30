@@ -36,6 +36,7 @@ import javafx.scene.paint.Paint
 import javafx.stage.*
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 窗口工具类
@@ -45,7 +46,7 @@ import java.lang.reflect.InvocationTargetException
 object WindowUtil {
     private const val CONTROLLER_KEY = "controller"
 
-    private val STAGE_MAP: MutableMap<WindowEnum, Stage> = mutableMapOf()
+    private val STAGE_MAP: MutableMap<WindowEnum, Stage> = ConcurrentHashMap()
 
     private val windowConfig by lazy {
         ConfigExUtil.getWindowConfig().associateBy { it.windowEnum }.toMutableMap()
@@ -252,7 +253,9 @@ object WindowUtil {
 
     fun hideAllStage(forceAll: Boolean = false) {
         runUI {
-            for (entry in STAGE_MAP) {
+            val iterator = STAGE_MAP.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
                 if (forceAll || entry.key !== WindowEnum.GAME_WINDOW_CONTROL_MODAL) {
                     runCatching {
                         entry.value.hide()
@@ -298,7 +301,9 @@ object WindowUtil {
             runCatching {
                 stage.isIconified = false
             }.onFailure { log.error { it.message } }
-            for (entry in STAGE_MAP) {
+            val iterator = STAGE_MAP.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
                 if (entry.value.owner == stage) {
                     entry.value.hide()
                 }
@@ -311,7 +316,9 @@ object WindowUtil {
             runCatching {
                 stage.isIconified = false
             }.onFailure { log.error { it.message } }
-            for (entry in STAGE_MAP) {
+            val iterator = STAGE_MAP.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
                 if (entry.value.owner == stage) {
                     entry.value.hide()
                 }

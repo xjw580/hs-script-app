@@ -259,7 +259,7 @@ enum class ConfigEnum(
     /**
      * 鼠标移动暂停间隔，值越小越慢，最小为1
      */
-    PAUSE_STEP(group = MOUSE_CONFIG_GROUP, defaultValueInitializer = { "7" }, service = PauseStepService),
+    PAUSE_STEP(group = MOUSE_CONFIG_GROUP, defaultValueInitializer = { 7.toString() }, service = PauseStepService),
 
     /**
      * 阻止游戏的反作弊
@@ -278,14 +278,18 @@ enum class ConfigEnum(
     /**
      * 游戏日志大小限制/KB，游戏默认10240，当小于0时将阻止游戏写入日志到磁盘
      */
-    GAME_LOG_LIMIT(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "51200" }, service = GameLogLimitService),
+    GAME_LOG_LIMIT(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = { 51200.toString() },
+        service = GameLogLimitService
+    ),
 
     /**
      * 游戏窗口不透明度(0~255)
      */
     GAME_WINDOW_OPACITY(
         group = WINDOW_CONFIG_GROUP,
-        defaultValueInitializer = { "255" },
+        defaultValueInitializer = { 255.toString() },
         service = GameWindowOpacityService
     ),
 
@@ -294,7 +298,7 @@ enum class ConfigEnum(
      */
     PLATFORM_WINDOW_OPACITY(
         group = WINDOW_CONFIG_GROUP,
-        defaultValueInitializer = { "255" },
+        defaultValueInitializer = { 255.toString() },
         service = PlatformWindowOpacityService,
     ),
 
@@ -303,7 +307,7 @@ enum class ConfigEnum(
      */
     GAME_WINDOW_REDUCTION_FACTOR(
         group = WINDOW_CONFIG_GROUP,
-        defaultValueInitializer = { "0" },
+        defaultValueInitializer = { 0.toString() },
         service = GameWindowReductionFactorService,
     ),
 
@@ -312,7 +316,7 @@ enum class ConfigEnum(
      */
     PLATFORM_WINDOW_REDUCTION_FACTOR(
         group = WINDOW_CONFIG_GROUP,
-        defaultValueInitializer = { "0" },
+        defaultValueInitializer = { 0.toString() },
         service = PlatformWindowReductionFactorService,
     ),
 
@@ -338,19 +342,19 @@ enum class ConfigEnum(
      */
     GAME_TIMEOUT(
         group = BEHAVIOR_CONFIG_GROUP,
-        defaultValueInitializer = { "60" },
+        defaultValueInitializer = { 60.toString() },
         service = GameTimeoutService,
     ),
 
     /**
      * 最长匹配时间/s（超过重新匹配）
      */
-    MATCH_MAXIMUM_TIME(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "90" }),
+    MATCH_MAXIMUM_TIME(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { 90.toString() }),
 
     /**
      * 最长空闲时间/min（超过重启游戏）
      */
-    IDLE_MAXIMUM_TIME(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { "10" }),
+    IDLE_MAXIMUM_TIME(group = BEHAVIOR_CONFIG_GROUP, defaultValueInitializer = { 10.toString() }),
 
     /**
      * 自启后自动开始
@@ -442,7 +446,7 @@ enum class ConfigEnum(
      */
     MOUSE_ACTION_INTERVAL(
         group = STRATEGY_CONFIG_GROUP,
-        defaultValueInitializer = { "3500" },
+        defaultValueInitializer = { 3500.toString() },
         service = MouseActionIntervalService
     ),
 
@@ -464,7 +468,7 @@ enum class ConfigEnum(
     /**
      * 超过指定回合投降
      */
-    OVER_TURN_SURRENDER(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { "-1" }),
+    OVER_TURN_SURRENDER(group = STRATEGY_CONFIG_GROUP, defaultValueInitializer = { (-1).toString() }),
 
     /**
      * 被斩杀投降
@@ -481,7 +485,7 @@ enum class ConfigEnum(
      */
     WAR_TIMEOUT_SURRENDER(
         group = STRATEGY_CONFIG_GROUP,
-        defaultValueInitializer = { "-1" },
+        defaultValueInitializer = { (-1).toString() },
         service = WarTimeoutSurrenderService,
     ),
 
@@ -490,7 +494,15 @@ enum class ConfigEnum(
      */
     MAXIMUM_WIN_RATE_LIMIT(
         group = STRATEGY_CONFIG_GROUP,
-        defaultValueInitializer = { "100" },
+        defaultValueInitializer = { 100.toString() },
+    ),
+
+    /**
+     * 最大连胜限制
+     */
+    MAXIMUM_WIN_STREAK_LIMIT(
+        group = STRATEGY_CONFIG_GROUP,
+        defaultValueInitializer = { (-1).toString() },
     ),
 
     /**
@@ -651,7 +663,7 @@ enum class ConfigEnum(
     ),
 
     /**
-     * 卡牌组设置页面的分隔占比
+     * 卡牌组设置页面布局
      */
     CARD_GROUP_SETTINGS_PAGE_LAYOUT(
         group = LAYOUT_CONFIG_GROUP,
@@ -678,6 +690,7 @@ enum class ConfigEnum(
     LAST_CHECK_VERSION_TIME(
         group = OTHER_CONFIG_GROUP,
         defaultValueInitializer = { System.currentTimeMillis().toString() }),
+
     ;
 
     val defaultValue: String by lazy {

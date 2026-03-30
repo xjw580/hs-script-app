@@ -3,7 +3,7 @@ package club.xiaojiawei.hsscript.statistics
 import club.xiaojiawei.hsscript.consts.DATA_DIR
 import club.xiaojiawei.hsscript.consts.STATISTICS_DB_NAME
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.YearMonth
 
 /**
  * @author 肖嘉威
@@ -16,14 +16,29 @@ object RecordDaoEx {
     }
 
     fun queryRecord(startDate: LocalDate, endDate: LocalDate): List<Record> {
-        val recordDao = RECORD_DAO
-        val minDateTime = LocalDateTime.of(startDate.year, startDate.monthValue, startDate.dayOfMonth, 0, 0)
-        val maxDateTime = LocalDateTime.of(endDate.year, endDate.monthValue, endDate.dayOfMonth, 0, 0).plusDays(1)
-        val records = recordDao.queryByDateRange(minDateTime, maxDateTime).filter {
-            val endTime = it.endTime ?: return@filter false
-            endTime.isAfter(minDateTime) && endTime.isBefore(maxDateTime)
+        val minDateTime = startDate.atStartOfDay()
+        val maxDateTime = endDate.plusDays(1).atStartOfDay()
+        return RECORD_DAO.query(
+            Record(
+                startTime = minDateTime,
+                endTime = maxDateTime,
+            )
+        )
+    }
+
+    fun queryMonthlyRecordsByStrategy(strategyId: String?, month: YearMonth = YearMonth.now()): List<Record> {
+        if (strategyId.isNullOrBlank()) {
+            return emptyList()
         }
-        return records
+        val startDateTime = month.atDay(1).atStartOfDay()
+        val endDateTime = month.plusMonths(1).atDay(1).atStartOfDay()
+        return RECORD_DAO.query(
+            Record(
+                strategyId = strategyId,
+                startTime = startDateTime,
+                endTime = endDateTime,
+            )
+        )
     }
 
 }

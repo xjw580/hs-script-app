@@ -22,22 +22,29 @@
                     <TitledPane fx:id="strategyTitled" text="策略"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="操作间隔/ms" tip="对战时的攻击，出牌等视为一个操作，此值过小会因卡牌动画导致数据不同步问题" tabWindow="STRATEGY_SETTINGS" group="策略">
+                            <SettingHBox name="操作间隔/ms"
+                                         tip="对战时的攻击，出牌等视为一个操作，此值过小会因卡牌动画导致数据不同步问题"
+                                         tabWindow="STRATEGY_SETTINGS" group="策略">
                                 <ConfigNumberField config="MOUSE_ACTION_INTERVAL"
                                                    styleClass="text-field-ui, text-field-ui-small"
                                                    hideIcon="true" prefWidth="${fieldWidth}"/>
                             </SettingHBox>
-                            <SettingHBox name="随机事件" tip="我方回合结束后，可能触发点击卡牌等事件" tabWindow="STRATEGY_SETTINGS" group="策略">
+                            <SettingHBox name="随机事件" tip="我方回合结束后，可能触发点击卡牌等事件"
+                                         tabWindow="STRATEGY_SETTINGS" group="策略">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EVENT"/>
                             </SettingHBox>
-                            <SettingHBox name="随机表情" tip="我方回合结束后，可能发问候等表情" tabWindow="STRATEGY_SETTINGS" group="策略">
+                            <SettingHBox name="随机表情" tip="我方回合结束后，可能发问候等表情"
+                                         tabWindow="STRATEGY_SETTINGS" group="策略">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="RANDOM_EMOTION"/>
                             </SettingHBox>
-                            <SettingHBox name="只打人机" beta="true" tip="若对方行为不像人机则考虑投降" tabWindow="STRATEGY_SETTINGS" group="策略">
+                            <SettingHBox name="只打人机" beta="true" tip="若对方行为不像人机则考虑投降"
+                                         tabWindow="STRATEGY_SETTINGS" group="策略">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="ONLY_ROBOT"/>
                             </SettingHBox>
-                            <SettingHBox name="分析卡牌描述" beta="true" tip="可以解析出卡牌的行为，修改后下局游戏生效" tabWindow="STRATEGY_SETTINGS" group="策略">
-                                <ConfigSwitch notificationManager="${notificationManager}" config="ANALYZE_CARD_DESCRIPTION"/>
+                            <SettingHBox name="分析卡牌描述" beta="true" tip="可以解析出卡牌的行为，修改后下局游戏生效"
+                                         tabWindow="STRATEGY_SETTINGS" group="策略">
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="ANALYZE_CARD_DESCRIPTION"/>
                             </SettingHBox>
                         </VBox>
                     </TitledPane>
@@ -46,22 +53,40 @@
                     <TitledPane fx:id="surrenderTitled" text="投降"
                                 styleClass="titled-pane-ui, titled-pane-ui-big, titled-pane-ui-pure, item-titled-pane">
                         <VBox styleClass="item-v-box">
-                            <SettingHBox name="超回合投降" tip="指定我方回合数后自动投降" tabWindow="STRATEGY_SETTINGS" group="投降">
-                                <ConfigNumberField notificationManager="${notificationManager}" config="OVER_TURN_SURRENDER"
-                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
+                            <SettingHBox name="超回合投降" tip="指定我方回合数后自动投降" tabWindow="STRATEGY_SETTINGS"
+                                         group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}"
+                                                   config="OVER_TURN_SURRENDER"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1"
+                                                   maxValue="99999"
                                                    styleClass="text-field-ui, text-field-ui-small"/>
                             </SettingHBox>
-                            <SettingHBox name="被斩杀投降" tip="要被斩了投降，只做粗略计算" tabWindow="STRATEGY_SETTINGS" group="投降">
+                            <SettingHBox name="被斩杀投降" tip="要被斩了投降，只做粗略计算" tabWindow="STRATEGY_SETTINGS"
+                                         group="投降">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="KILLED_SURRENDER"/>
                             </SettingHBox>
-                            <SettingHBox name="对局超时投降" tip="游戏对局超过指定时间(秒)将直接投降" tabWindow="STRATEGY_SETTINGS" group="投降">
-                                <ConfigNumberField notificationManager="${notificationManager}" config="WAR_TIMEOUT_SURRENDER"
-                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="99999"
+                            <SettingHBox name="对局超时投降" tip="游戏对局超过指定时间(秒)将直接投降"
+                                         tabWindow="STRATEGY_SETTINGS" group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}"
+                                                   config="WAR_TIMEOUT_SURRENDER"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1"
+                                                   maxValue="99999"
                                                    styleClass="text-field-ui, text-field-ui-small"/>
                             </SettingHBox>
-                            <SettingHBox name="最大胜率" tip="超过最大胜率将直接投降" tabWindow="STRATEGY_SETTINGS" group="投降">
-                                <ConfigNumberField notificationManager="${notificationManager}" config="MAXIMUM_WIN_RATE_LIMIT"
-                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1" maxValue="100"
+                            <SettingHBox name="最大胜率" tip="超过最大胜率将直接投降" tabWindow="STRATEGY_SETTINGS"
+                                         group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}"
+                                                   config="MAXIMUM_WIN_RATE_LIMIT"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1"
+                                                   maxValue="100"
+                                                   styleClass="text-field-ui, text-field-ui-small"/>
+                            </SettingHBox>
+                            <SettingHBox name="最大连胜" tip="超过最大连胜将直接投降" tabWindow="STRATEGY_SETTINGS"
+                                         group="投降">
+                                <ConfigNumberField notificationManager="${notificationManager}"
+                                                   config="MAXIMUM_WIN_STREAK_LIMIT"
+                                                   prefWidth="${fieldWidth}" hideIcon="true" minValue="-1"
+                                                   maxValue="99999"
                                                    styleClass="text-field-ui, text-field-ui-small"/>
                             </SettingHBox>
                         </VBox>
