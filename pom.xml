@@ -12,7 +12,7 @@
     <description>炉石传说脚本</description>
     <groupId>com.github.xjw580</groupId>
     <artifactId>hs-script-app</artifactId>
-    <version>v4.15.0.2-DEV</version>
+    <version>v4.15.0.3-DEV</version>
 
     <repositories>
         <repository>
@@ -96,6 +96,11 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.xjw580</groupId>
+            <artifactId>javafx-md</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!-- JSON 支持 -->
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
