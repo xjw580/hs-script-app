@@ -2,16 +2,20 @@ package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
 import club.xiaojiawei.builder.buildInjectStarter
+import club.xiaojiawei.builder.buildStarter
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal
+import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.FileIco
+import club.xiaojiawei.controls.ico.OKIco
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
+import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.starter.AbstractStarter
-import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectGameStarter
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscript.utils.WindowUtil.showStage
@@ -20,8 +24,6 @@ import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.config.DBConfig.CARD_DB_NAME
-import com.sun.jna.Pointer
-import com.sun.jna.platform.win32.WinDef
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
 import javafx.animation.Timeline
@@ -54,7 +56,10 @@ import java.util.concurrent.TimeUnit
  * @author 肖嘉威
  * @date 2025/1/20 22:38
  */
-class DeveloperSettingsController : Initializable {
+class DeveloperSettingsController : Initializable, StageHook {
+
+    @FXML
+    protected lateinit var refreshInjectStatusBtn: Button
 
     @FXML
     protected lateinit var progressModal: ProgressModal
@@ -378,7 +383,7 @@ class DeveloperSettingsController : Initializable {
     protected fun checkPermission() {
         SystemUtil.messageInfoOk(
             "${GAME_CN_NAME}: ${GameUtil.getGameProgramPermission().comment}\n${PLATFORM_CN_NAME}: ${GameUtil.getPlatformProgramPermission().comment}",
-            hwnd = WinDef.HWND(Pointer(WindowUtil.getHWND(rootPane.scene.window)))
+            hwnd = rootPane.scene.window.toHWND()
         )
     }
 
@@ -454,7 +459,56 @@ class DeveloperSettingsController : Initializable {
 
     @FXML
     protected fun injectGame() {
-        InjectStarter(force = true).start()
+        if (GameUtil.isAliveOfGame()) {
+            InjectGameStarter(force = true).start()
+        } else {
+            Modal(rootPane, "", "${GAME_CN_NAME}未运行", {}).show()
+        }
     }
 
+    @FXML
+    protected fun launchGame() {
+        buildStarter {
+            platform()
+            game()
+            injectGame()
+        }.start()
+    }
+
+    @FXML
+    protected fun launchPlatform() {
+        buildStarter {
+            platform()
+            injectPlatform()
+        }.start()
+    }
+
+    @FXML
+    protected fun checkInjectStatus() {
+        val gamePid = CSystemDll.INSTANCE.findProcessId(
+            GAME_PROGRAM_NAME,
+            true
+        )
+        val text =
+            if (gamePid == 0L) {
+                refreshInjectStatusBtn.graphic = null
+                "${GAME_CN_NAME}未运行"
+            } else if (CSystemDll.INSTANCE.isDllLoadedInProcess(gamePid, LIB_HS_FILE.name)) {
+                refreshInjectStatusBtn.graphic = OKIco()
+                "${LIB_HS_FILE.name}已注入"
+            } else if (CSystemDll.INSTANCE.isDllLoadedInProcess(gamePid, LIB_HS_BASE_FILE.name)) {
+                refreshInjectStatusBtn.graphic = OKIco()
+                "${LIB_HS_BASE_FILE.name}已注入"
+            } else {
+                refreshInjectStatusBtn.graphic = FailIco()
+                "未注入"
+            }
+        refreshInjectStatusBtn.tooltip = Tooltip(text)
+
+    }
+
+    override fun onShown() {
+        super.onShown()
+        checkInjectStatus()
+    }
 }

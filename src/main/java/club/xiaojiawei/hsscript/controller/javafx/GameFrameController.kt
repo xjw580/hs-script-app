@@ -9,7 +9,7 @@ import club.xiaojiawei.hsscript.consts.GAME_CN_NAME
 import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.starter.AbstractStarter
-import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectGameStarter
 import club.xiaojiawei.hsscript.utils.GameUtil
 import club.xiaojiawei.hsscript.utils.go
 import club.xiaojiawei.hsscript.utils.runUI
@@ -111,7 +111,7 @@ class GameFrameController : Initializable, StageHook {
     private var running = false
 
     private fun execCapture() {
-        InjectStarter().start()
+        InjectGameStarter().start()
         CSystemDll.INSTANCE.capture(true)
         val frameReader = FrameReader().apply {
             initialize()

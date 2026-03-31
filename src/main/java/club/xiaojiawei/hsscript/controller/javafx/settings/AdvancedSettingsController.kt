@@ -4,6 +4,7 @@ import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.HelpIco
 import club.xiaojiawei.controls.ico.OKIco
+import club.xiaojiawei.controls.ico.WarnIco
 import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
@@ -62,6 +63,7 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
 
     override fun onShown() {
         refreshAOTCache()
+        checkACStatus()
     }
 
     private fun checkEnableAOT() {
@@ -484,6 +486,41 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
                 ConfigEnum.CUSTOM_UPDATE_SERVER_DOMAIN.putString(domain)
                 ConfigEnum.CUSTOM_UPDATE_SERVER_USER.putString(user)
             }).show()
+    }
+
+    @FXML
+    private fun checkACStatus() {
+        val acDllName = "libacsdk_x86.dll"
+        val tooltip =
+            if (!GameUtil.isAliveOfGame()) {
+                "${GAME_CN_NAME}未运行"
+            } else if (CSystemDll.INSTANCE.isDllLoadedInProcess(
+                    CSystemDll.INSTANCE.findProcessId(
+                        GAME_PROGRAM_NAME,
+                        true
+                    ), acDllName
+                )
+            ) {
+                "${GAME_CN_NAME}已加载${acDllName}"
+            } else {
+                "${GAME_CN_NAME}未加载${acDllName}"
+            }
+        val ico =
+            if (!GameUtil.isAliveOfGame()) {
+                OKIco()
+            } else if (CSystemDll.INSTANCE.isDllLoadedInProcess(
+                    CSystemDll.INSTANCE.findProcessId(
+                        GAME_PROGRAM_NAME,
+                        true
+                    ), acDllName
+                )
+            ) {
+                WarnIco()
+            } else {
+                OKIco()
+            }
+        refreshACBtn.graphic = ico
+        refreshACBtn.tooltip = Tooltip(tooltip)
     }
 
 }

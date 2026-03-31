@@ -9,11 +9,11 @@ import club.xiaojiawei.hsscriptbase.config.log
 
 
 /**
- * 启动游戏
+ * 注入游戏
  * @author 肖嘉威
  * @date 2023/7/5 14:38
  */
-class InjectStarter(
+class InjectGameStarter(
     val enableDebug: () -> Boolean = { ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY) },
     val force: Boolean = false
 ) :

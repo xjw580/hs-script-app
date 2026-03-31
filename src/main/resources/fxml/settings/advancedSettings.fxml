@@ -91,7 +91,15 @@
                             <SettingHBox name="阻止游戏反作弊"
                                          tip="阻止游戏加载本地反作弊插件，必须用本软件启动游戏才能生效" beta="true"
                                          tabWindow="ADVANCED_SETTINGS" group="行为">
+                                <Button fx:id="refreshACBtn" text="刷新"
+                                        styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#checkACStatus"
+                                        contentDisplay="RIGHT"/>
                                 <ConfigSwitch notificationManager="${notificationManager}" config="PREVENT_AC"/>
+                            </SettingHBox>
+                            <SettingHBox name="退出软件后卸载注入" tip="只能卸载游戏的"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
+                                <ConfigSwitch notificationManager="${notificationManager}"
+                                              config="UNINSTALL_DLL_AFTER_QUIT_SOFT"/>
                             </SettingHBox>
                             <SettingHBox name="自动刷新游戏任务" tip="每次进入游戏首页时检查" beta="true"
                                          tabWindow="ADVANCED_SETTINGS" group="行为">
@@ -181,6 +189,7 @@
                             </SettingHBox>
                             <SettingHBox fx:id="aotPane" name="AOT缓存" tabWindow="ADVANCED_SETTINGS" group="系统">
                                 <Button fx:id="aotFlushBtn" text="刷新" onAction="#refreshAOTCache"
+                                        contentDisplay="RIGHT"
                                         styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>
                                 <Button text="打开" onAction="#openAOTCacheDir"
                                         styleClass="btn-ui, btn-ui-normal, btn-ui-small"/>

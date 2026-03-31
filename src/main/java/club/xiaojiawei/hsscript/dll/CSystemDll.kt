@@ -4,9 +4,6 @@ import club.xiaojiawei.hsscript.config.DRIVER_LOCK
 import club.xiaojiawei.hsscript.consts.ARG_PAUSE
 import club.xiaojiawei.hsscript.consts.PROGRAM_NAME
 import club.xiaojiawei.hsscript.consts.ROOT_PATH
-import club.xiaojiawei.hsscript.starter.AbstractStarter
-import club.xiaojiawei.hsscript.starter.GameStarter
-import club.xiaojiawei.hsscript.starter.InjectStarter
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscriptbase.config.log
 import com.sun.jna.*
@@ -167,7 +164,7 @@ interface CSystemDll : Library {
 
         fun enablePowerBoot(enable: Boolean, start: Boolean = false): Boolean {
             return File(ROOT_PATH).listFiles()
-                .find { it.name == "${PROGRAM_NAME}.exe" || it.name == "${PROGRAM_NAME}-native.exe" }
+                ?.find { it.name == "${PROGRAM_NAME}.exe" || it.name == "${PROGRAM_NAME}-native.exe" }
                 ?.let { latestJar ->
                     val countDownLatch = CountDownLatch(1)
                     var res = false

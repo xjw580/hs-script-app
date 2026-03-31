@@ -25,7 +25,9 @@ object ShutdownHookConfig {
                         }
                         CSystemDll.INSTANCE.removeSystemTray()
                         WindowUtil.saveConfig()
-//                        CSystemDll.INSTANCE.uninstall()
+                        ConfigEnum.UNINSTALL_DLL_AFTER_QUIT_SOFT.getBoolean().isTrue {
+                            CSystemDll.INSTANCE.uninstall()
+                        }
                         CSystemDll.INSTANCE.capture(false)
                         CSystemDll.INSTANCE.limitMouseRange(false)
                         CSystemDll.INSTANCE.showMouseTrack(false)

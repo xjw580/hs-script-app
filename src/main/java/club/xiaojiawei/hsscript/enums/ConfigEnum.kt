@@ -411,6 +411,16 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 退出软件后卸载注入
+     */
+    UNINSTALL_DLL_AFTER_QUIT_SOFT(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            FALSE_STR
+        }
+    ),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(

@@ -17,7 +17,7 @@ object StarterConfig {
         platform()
         loginPlatform()
         game()
-        inject()
+        injectGame()
         injectedAfter()
         logListener()
         exceptionListen()

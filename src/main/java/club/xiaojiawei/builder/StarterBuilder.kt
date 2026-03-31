@@ -34,18 +34,18 @@ class StarterBuilder {
             tailStarter?.setNextStarter(starter)
             tailStarter = starter
         }
-        if (registerTask){
+        if (registerTask) {
             TaskManager.addTask(starter)
         }
     }
 
     private var registerTask = false
 
-    fun registerTask(){
+    fun registerTask() {
         registerTask = true
     }
 
-    fun unregisterTask(){
+    fun unregisterTask() {
         registerTask = false
     }
 
@@ -57,8 +57,10 @@ class StarterBuilder {
 
     fun injectedAfter() = addStarter(InjectedAfterStarter())
 
-    fun inject(enableDebug: () -> Boolean = { ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY) }) =
-        addStarter(InjectStarter(enableDebug))
+    fun injectGame(enableDebug: () -> Boolean = { ConfigUtil.getBoolean(ConfigEnum.ENABLE_CONSOLE_HOTKEY) }) =
+        addStarter(InjectGameStarter(enableDebug))
+
+    fun injectPlatform() = addStarter(InjectPlatformStarter())
 
     fun loginPlatform() = addStarter(LoginPlatformStarter())
 
@@ -93,6 +95,6 @@ fun buildInjectStarter(
 ): AbstractStarter = buildStarter {
     platform()
     game()
-    inject(enableDebug)
+    injectGame(enableDebug)
     custom(lastStarter)
 }

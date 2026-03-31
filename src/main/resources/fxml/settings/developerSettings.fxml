@@ -43,17 +43,32 @@
                                 </Label>
                             </SettingHBox>
                             <SettingHBox name="管理游戏注入" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <Button text="注入" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#injectGame"/>
-                                <Button text="卸载" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#uninstallGame"/>
+                                <Button fx:id="refreshInjectStatusBtn" text="刷新" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#checkInjectStatus" contentDisplay="RIGHT"/>
+                                <Button text="注入" styleClass="btn-ui, btn-ui-warn, btn-ui-small"
+                                        onAction="#injectGame"/>
+                                <Button text="卸载" styleClass="btn-ui, btn-ui-error, btn-ui-small"
+                                        onAction="#uninstallGame"/>
                             </SettingHBox>
-                            <SettingHBox name="显示游戏控件位置" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <ConfigSwitch notificationManager="${notificationManager}"
-                                              config="DISPLAY_GAME_RECT_POS"/>
+                            <SettingHBox name="游戏内绘制" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Label text="控件位置" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="DISPLAY_GAME_RECT_POS"/>
+                                    </graphic>
+                                </Label>
+                                <Label text="鼠标轨迹" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <HBox alignment="CENTER">
+                                            <TipNode text="显示脚本驱动鼠标时在游戏内的轨迹"/>
+                                            <ConfigSwitch notificationManager="${notificationManager}"
+                                                          config="DISPLAY_MOUSE_TRACK"/>
+                                        </HBox>
+                                    </graphic>
+                                </Label>
                             </SettingHBox>
-                            <SettingHBox name="显示鼠标轨迹" tip="显示脚本驱动鼠标时在游戏内的轨迹"
-                                         tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <ConfigSwitch notificationManager="${notificationManager}"
-                                              config="DISPLAY_MOUSE_TRACK"/>
+                            <SettingHBox name="启动" tabWindow="DEVELOPER_SETTINGS" group="调试">
+                                <Button text="炉石传说" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#launchGame"/>
+                                <Button text="战网" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#launchPlatform"/>
                             </SettingHBox>
                             <SettingHBox name="保存OCR图片" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
@@ -76,7 +91,7 @@
                             <SettingHBox name="控制台" tip="快捷键Alt+A" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <Button text="启动" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
                                         onAction="#openConsole"/>
-                                <Button text="关闭" styleClass="btn-ui, btn-ui-normal, btn-ui-small"
+                                <Button text="关闭" styleClass="btn-ui, btn-ui-small"
                                         onAction="#closeConsole"/>
                                 <Label text="启用热键" contentDisplay="RIGHT">
                                     <graphic>

@@ -6,6 +6,8 @@ import club.xiaojiawei.hsscriptbase.bean.LRunnable
 import club.xiaojiawei.hsscriptbase.config.VIRTUAL_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import club.xiaojiawei.hsscriptbase.util.isTrue
+import com.sun.jna.Pointer
+import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.animation.PauseTransition
 import javafx.application.Platform
 import javafx.beans.value.WritableValue

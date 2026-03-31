@@ -2,7 +2,7 @@ package club.xiaojiawei.hsscript.dll
 
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 import club.xiaojiawei.hsscript.starter.GameStarter
-import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectGameStarter
 import club.xiaojiawei.hsscript.starter.PlatformStarter
 import java.util.concurrent.CountDownLatch
 import kotlin.test.Ignore
@@ -19,7 +19,7 @@ class DeveloperTest {
     fun testDeveloper() {
         val starter = PlatformStarter()
         val countDownLatch = CountDownLatch(1)
-        starter.setNextStarter(GameStarter()).setNextStarter(InjectStarter().apply {
+        starter.setNextStarter(GameStarter()).setNextStarter(InjectGameStarter().apply {
             setNextStarter(object : AbstractStarter() {
                 override fun execStart() {
                     CSystemDll.INSTANCE.logHook(true)

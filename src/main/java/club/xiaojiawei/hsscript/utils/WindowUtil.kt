@@ -17,6 +17,7 @@ import club.xiaojiawei.hsscript.utils.SystemUtil.showWindow
 import club.xiaojiawei.hsscriptbase.config.log
 import club.xiaojiawei.hsscriptbase.util.isTrue
 import com.sun.javafx.tk.quantum.WindowStage
+import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.application.Platform
 import javafx.event.ActionEvent
@@ -522,3 +523,5 @@ object WindowUtil {
         return popup
     }
 }
+
+fun Window.toHWND(): HWND = HWND(Pointer(WindowUtil.getHWND(this)))

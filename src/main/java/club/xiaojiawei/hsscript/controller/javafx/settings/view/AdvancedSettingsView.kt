@@ -21,6 +21,9 @@ import javafx.scene.layout.VBox
 open class AdvancedSettingsView {
 
     @FXML
+    protected lateinit var refreshACBtn: Button
+
+    @FXML
     protected lateinit var autoStartPane: HBox
 
     @FXML

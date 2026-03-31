@@ -20,7 +20,7 @@ import club.xiaojiawei.hsscript.enums.GameStartupModeEnum
 import club.xiaojiawei.hsscript.enums.MouseControlModeEnum
 import club.xiaojiawei.hsscript.enums.SoftProtectedModeEnum
 import club.xiaojiawei.hsscript.initializer.DriverInitializer
-import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectGameStarter
 import club.xiaojiawei.hsscript.starter.InjectedAfterStarter
 import club.xiaojiawei.hsscript.status.PauseStatus
 import club.xiaojiawei.hsscript.status.ScriptStatus
@@ -110,7 +110,7 @@ object ConfigExUtil {
                 if (oldMouseControlMode === MouseControlModeEnum.DRIVE) {
                     DriverInitializer().uninstall()
                 }
-                InjectStarter().start()
+                InjectGameStarter().start()
                 InjectedAfterStarter().start()
             }
 

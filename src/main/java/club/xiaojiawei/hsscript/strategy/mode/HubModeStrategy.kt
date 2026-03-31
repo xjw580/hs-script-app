@@ -8,7 +8,7 @@ import club.xiaojiawei.hsscript.consts.SCREEN_SCALE
 import club.xiaojiawei.hsscript.consts.TESS_DATA_PATH
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.SCREEN_WIDTH
-import club.xiaojiawei.hsscript.starter.InjectStarter
+import club.xiaojiawei.hsscript.starter.InjectGameStarter
 import club.xiaojiawei.hsscript.statistics.RecordDaoEx
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
 import club.xiaojiawei.hsscript.status.PauseStatus
@@ -180,7 +180,7 @@ object HubModeStrategy : AbstractModeStrategy<Any?>() {
 
         log.info { "准备识别${GAME_CN_NAME}任务" }
 
-        InjectStarter().start()
+        InjectGameStarter().start()
 
         val oldWidth = ScriptStatus.GAME_RECT.right - ScriptStatus.GAME_RECT.left
         val oldHeight = ScriptStatus.GAME_RECT.bottom - ScriptStatus.GAME_RECT.top
