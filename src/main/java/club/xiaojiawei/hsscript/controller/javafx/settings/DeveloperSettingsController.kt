@@ -37,6 +37,7 @@ import javafx.geometry.Pos
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.*
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
@@ -57,6 +58,12 @@ import java.util.concurrent.TimeUnit
  * @date 2025/1/20 22:38
  */
 class DeveloperSettingsController : Initializable, StageHook {
+
+    @FXML
+    protected lateinit var platformIco: ImageView
+
+    @FXML
+    protected lateinit var gameIco: ImageView
 
     @FXML
     protected lateinit var refreshInjectStatusBtn: Button
@@ -173,6 +180,8 @@ class DeveloperSettingsController : Initializable, StageHook {
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
+        gameIco.image = Image("file:" + SystemUtil.getResourcesImgFile(GAME_IMG_NAME).absolutePath)
+        platformIco.image = Image("file:" + SystemUtil.getResourcesImgFile(PLATFORM_IMG_NAME).absolutePath)
         initValue()
         addListener()
         listenNavigation()

@@ -9,6 +9,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
+<?import javafx.scene.image.ImageView?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/settings/developerSettings.css"
@@ -67,8 +68,19 @@
                                 </Label>
                             </SettingHBox>
                             <SettingHBox name="启动" tabWindow="DEVELOPER_SETTINGS" group="调试">
-                                <Button text="炉石传说" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#launchGame"/>
-                                <Button text="战网" styleClass="btn-ui, btn-ui-normal, btn-ui-small" onAction="#launchPlatform"/>
+                                <fx:define>
+                                    <Double fx:id="icoSize" fx:value="15"/>
+                                </fx:define>
+                                <Button text="炉石传说" styleClass="btn-ui, btn-ui-small" onAction="#launchGame">
+                                    <graphic>
+                                        <ImageView fx:id="gameIco" fitHeight="${icoSize}" fitWidth="${icoSize}"/>
+                                    </graphic>
+                                </Button>
+                                <Button text="战网" styleClass="btn-ui, btn-ui-small" onAction="#launchPlatform">
+                                    <graphic>
+                                        <ImageView fx:id="platformIco" fitHeight="${icoSize}" fitWidth="${icoSize}"/>
+                                    </graphic>
+                                </Button>
                             </SettingHBox>
                             <SettingHBox name="保存OCR图片" tabWindow="DEVELOPER_SETTINGS" group="调试">
                                 <ConfigSwitch notificationManager="${notificationManager}" config="SAVE_OCR_IMG"/>
