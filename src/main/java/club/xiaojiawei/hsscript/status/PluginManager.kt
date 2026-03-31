@@ -1,5 +1,6 @@
 package club.xiaojiawei.hsscript.status
 
+import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.consts.PLUGIN_PATH
 import club.xiaojiawei.hsscript.utils.ClassLoaderUtil
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
@@ -23,6 +24,11 @@ import java.util.stream.StreamSupport
  * @date 2024/9/7 15:05
  */
 object PluginManager {
+
+    private data class PendingPlugin<T>(
+        val pluginWrapper: PluginWrapper<T>,
+        val targetIds: List<String>,
+    )
 
     /**
      * key：pluginId
@@ -85,6 +91,7 @@ object PluginManager {
     ) {
         pluginWrapperMap.clear()
         val result = ClassLoaderUtil.getClassLoader(pluginDir)
+        val pendingPlugins = mutableListOf<PendingPlugin<T>>()
 
         val deckClassLoaders = result.getOrDefault(emptyList())
 
@@ -122,23 +129,7 @@ object PluginManager {
                     it::class.java.packageName.startsWith(packageName)
                 })
                 pluginWrapper.setEnabled(isEnabled)
-
-                val plugin = pluginWrapper.plugin
-                val pluginId = plugin.id()
-                if (plugin is CardPlugin) {
-                    val pluginScope = plugin.pluginScope()
-                    if (pluginScope === PluginScope.PUBLIC) {
-                        addPluginWrapper(pluginWrapper, pluginWrapperMap, "", pluginClass.simpleName)
-                    } else if (pluginScope === PluginScope.PROTECTED) {
-                        addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
-                    } else {
-                        for (id in pluginScope) {
-                            addPluginWrapper(pluginWrapper, pluginWrapperMap, id, pluginClass.simpleName)
-                        }
-                    }
-                } else if (plugin is StrategyPlugin) {
-                    addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
-                }
+                pendingPlugins.add(PendingPlugin(pluginWrapper, resolveTargetIds(pluginWrapper.plugin)))
             }
         }
 
@@ -174,22 +165,7 @@ object PluginManager {
                     if (spiList.isEmpty()) continue
                     pluginWrapper = PluginWrapper(plugin, spiList)
                     pluginWrapper.setEnabled(isEnabled)
-
-                    val pluginId = plugin.id()
-                    if (plugin is CardPlugin) {
-                        val pluginScope = plugin.pluginScope()
-                        if (pluginScope === PluginScope.PUBLIC) {
-                            addPluginWrapper(pluginWrapper, pluginWrapperMap, "", pluginClass.simpleName)
-                        } else if (pluginScope === PluginScope.PROTECTED) {
-                            addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
-                        } else {
-                            for (id in pluginScope) {
-                                addPluginWrapper(pluginWrapper, pluginWrapperMap, id, pluginClass.simpleName)
-                            }
-                        }
-                    } else if (plugin is StrategyPlugin) {
-                        addPluginWrapper(pluginWrapper, pluginWrapperMap, pluginId, pluginClass.simpleName)
-                    }
+                    pendingPlugins.add(PendingPlugin(pluginWrapper, resolveTargetIds(plugin)))
                 }
             } catch (e: ServiceConfigurationError) {
                 log.warn(e) { "加载SPI错误" }
@@ -198,6 +174,55 @@ object PluginManager {
             } catch (e: Exception) {
                 log.warn(e) { "加载插件错误" }
             }
+        }
+
+        applyHighestVersionPolicy(pendingPlugins, pluginWrapperMap, pluginClass.simpleName)
+    }
+
+    private fun <T> applyHighestVersionPolicy(
+        pendingPlugins: List<PendingPlugin<T>>,
+        pluginWrapperMap: MutableMap<String, MutableList<PluginWrapper<T>>>,
+        type: String,
+    ) {
+        val latestPluginMap = pendingPlugins
+            .groupBy { it.pluginWrapper.plugin.id() }
+            .mapValues { (_, plugins) ->
+                plugins.maxWith { left, right ->
+                    Release.compareVersion(
+                        left.pluginWrapper.plugin.version(),
+                        right.pluginWrapper.plugin.version(),
+                    )
+                }
+            }
+        for (pendingPlugin in pendingPlugins) {
+            val pluginWrapper = pendingPlugin.pluginWrapper
+            val plugin = pluginWrapper.plugin
+            if (latestPluginMap[plugin.id()] !== pendingPlugin) {
+                log.info {
+                    "插件${plugin.name()}(${plugin.id()})版本${plugin.version()}不是最高版本，跳过加载"
+                }
+                continue
+            }
+            for (targetId in pendingPlugin.targetIds) {
+                addPluginWrapper(pluginWrapper, pluginWrapperMap, targetId, type)
+            }
+        }
+    }
+
+    private fun resolveTargetIds(plugin: Plugin): List<String> {
+        return if (plugin is CardPlugin) {
+            val pluginScope = plugin.pluginScope()
+            if (pluginScope === PluginScope.PUBLIC) {
+                listOf("")
+            } else if (pluginScope === PluginScope.PROTECTED) {
+                listOf(plugin.id())
+            } else {
+                pluginScope.toList()
+            }
+        } else if (plugin is StrategyPlugin) {
+            listOf(plugin.id())
+        } else {
+            emptyList()
         }
     }
 
