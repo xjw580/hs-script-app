@@ -8,6 +8,8 @@ import club.xiaojiawei.controls.ico.FailIco
 import club.xiaojiawei.controls.ico.OKIco
 import club.xiaojiawei.hsscript.bean.Release
 import club.xiaojiawei.hsscript.utils.ConfigExUtil
+import club.xiaojiawei.hsscript.utils.SystemUtil.openFile
+import club.xiaojiawei.hsscript.utils.SystemUtil.openFileAndSelect
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.CheckBox
@@ -16,6 +18,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
+import java.io.File
 
 /**
  * @author 肖嘉威
@@ -120,7 +123,8 @@ class PluginItem(
                         scaleX = 0.8
                         scaleY = 0.8
                     }
-                strategySDKVersion.tooltip = Tooltip("策略SDK版本不兼容，最低为$minimumCompatibleVersion，可能无法正常使用")
+                strategySDKVersion.tooltip =
+                    Tooltip("策略SDK版本不兼容，最低为$minimumCompatibleVersion，可能无法正常使用")
             } else {
                 strategySDKVersion.styleClass.add("label-ui-success")
                 strategySDKVersion.graphic =
@@ -165,5 +169,24 @@ class PluginItem(
                 ConfigExUtil.storeCardPluginDisabled(disableList)
             }
         }
+    }
+
+    fun openPluginLocation() {
+        val location = resolvePluginLocation()
+        if (location == null || !location.exists()) {
+            notificationManager?.showWarn("未找到插件位置", 3)
+            return
+        }
+        if (location.isFile) {
+            openFileAndSelect(location)
+        } else {
+            openFile(location)
+        }
+    }
+
+    private fun resolvePluginLocation(): File? {
+        return runCatching {
+            pluginWrapper.plugin::class.java.protectionDomain.codeSource.location.toURI()
+        }.getOrNull()?.let { File(it) }
     }
 }

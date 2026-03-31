@@ -23,7 +23,10 @@ import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
+import javafx.scene.control.MenuItem
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.layout.Pane
@@ -103,6 +106,36 @@ class PluginSettingsController : Initializable {
     }
 
     private fun initValue() {
+        pluginListView.setCellFactory {
+            object : ListCell<PluginItem>() {
+                private val openLocationMenuItem = MenuItem("打开插件位置")
+                private val menu = ContextMenu(openLocationMenuItem)
+
+                init {
+                    openLocationMenuItem.setOnAction {
+                        item?.openPluginLocation()
+                    }
+                    setOnMousePressed { event ->
+                        if (!isEmpty) {
+                            pluginListView.selectionModel.select(index)
+                        }
+                    }
+                }
+
+                override fun updateItem(item: PluginItem?, empty: Boolean) {
+                    super.updateItem(item, empty)
+                    if (empty || item == null) {
+                        graphic = null
+                        text = null
+                        contextMenu = null
+                    } else {
+                        graphic = item
+                        text = null
+                        contextMenu = menu
+                    }
+                }
+            }
+        }
         val progress = rootProgressModal.show()
         val pluginItems = pluginListView.items
         EXTRA_THREAD_POOL.submit {
@@ -119,7 +152,7 @@ class PluginSettingsController : Initializable {
                     .toList()
             }.onSuccess { plugins ->
                 runUI {
-                    pluginItems.addAll(plugins)
+                    pluginItems.setAll(plugins)
                     rootProgressModal.hide(progress)
                 }
             }.onFailure {
