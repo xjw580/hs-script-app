@@ -59,7 +59,8 @@ object CardGroupUtil {
     fun loadAllCardGroups(): List<CardGroupInfo> {
         ensureCardGroupDirExists()
         val cardGroupDir = CARD_GROUP_DIR.toFile()
-        val cardGroupFiles = cardGroupDir.listFiles { file -> file.extension == CARD_GROUP_FILE_EXT } ?: return emptyList()
+        val cardGroupFiles =
+            cardGroupDir.listFiles { file -> file.extension == CARD_GROUP_FILE_EXT } ?: return emptyList()
 
         return cardGroupFiles.mapNotNull { file ->
             try {
@@ -187,8 +188,7 @@ object CardGroupUtil {
                 )
             }
         }
-
-        log.info { "已应用 ${enabledCardGroups.size} 个卡牌组，共 ${enabledCardGroups.sumOf { it.cards.size }} 张卡牌配置" }
+        log.info { "已应用 ${enabledCardGroups.map { it.name }} ${enabledCardGroups.size}个卡牌组，共 ${enabledCardGroups.sumOf { it.cards.size }} 张卡牌配置" }
     }
 
     /**

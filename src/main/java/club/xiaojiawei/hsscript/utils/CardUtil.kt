@@ -1,17 +1,19 @@
 package club.xiaojiawei.hsscript.utils
 
-import club.xiaojiawei.hsscriptcardsdk.CardAction
-import club.xiaojiawei.hsscriptcardsdk.bean.Card
-import club.xiaojiawei.hsscriptcardsdk.bean.War
-import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
-import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscript.bean.CommonCardAction
 import club.xiaojiawei.hsscript.bean.CommonCardAction.Companion.DEFAULT
 import club.xiaojiawei.hsscript.bean.log.ExtraEntity
 import club.xiaojiawei.hsscript.bean.log.TagChangeEntity
 import club.xiaojiawei.hsscript.bean.single.WarEx
+import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.status.CardActionManager.CARD_ACTION_MAP
 import club.xiaojiawei.hsscript.status.DeckStrategyManager
+import club.xiaojiawei.hsscriptcardsdk.CardAction
+import club.xiaojiawei.hsscriptcardsdk.bean.Card
+import club.xiaojiawei.hsscriptcardsdk.bean.War
+import club.xiaojiawei.hsscriptcardsdk.cardparser.ParsedCardActionFactory
+import club.xiaojiawei.hsscriptcardsdk.data.COIN_CARD_ID
+import club.xiaojiawei.hsscriptcardsdk.enums.ZoneEnum
 import club.xiaojiawei.hsscriptcardsdk.mapper.BaseCardMapper
 import club.xiaojiawei.hsscriptcardsdk.mapper.EntityMapper
 import java.util.function.Supplier
@@ -52,18 +54,16 @@ object CardUtil {
 
     fun setCardAction(card: Card?) {
         card ?: return
-        val deckStrategy = DeckStrategyManager.currentDeckStrategy
-        deckStrategy ?: return
+        val deckStrategy = DeckStrategyManager.currentDeckStrategy ?: return
 
         if (card.isCoinCard) {
             card.cardId = COIN_CARD_ID
         }
 
-        val supplier: Supplier<CardAction>? = (CARD_ACTION_MAP[deckStrategy.pluginId]?.get(card.cardId)) ?: let {
-            CARD_ACTION_MAP[""]?.get(card.cardId)
-        }
+        val supplier: (()->CardAction)? = CARD_ACTION_MAP[deckStrategy.pluginId]?.get(card.cardId)
+            ?: CARD_ACTION_MAP[""]?.get(card.cardId)
 
-        val cardAction = supplier?.get() ?: if (card.action === DEFAULT) CommonCardAction() else card.action
+        val cardAction = supplier?.invoke() ?: if (card.action === DEFAULT) CommonCardAction() else card.action
         cardAction.belongCard = card
         card.action = cardAction
     }

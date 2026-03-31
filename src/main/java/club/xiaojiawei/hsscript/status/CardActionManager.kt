@@ -18,7 +18,7 @@ object CardActionManager {
      * key1：pluginId
      * key2：cardId
      */
-    val CARD_ACTION_MAP: MutableMap<String, LikeTrie<Supplier<CardAction>>> = FXCollections.observableMap(load())
+    val CARD_ACTION_MAP: MutableMap<String, LikeTrie<()->CardAction>> = FXCollections.observableMap(load())
 
     init {
         loadCardProperty().addListener { _: ObservableValue<out Boolean>?, _: Boolean?, t1: Boolean ->
@@ -28,9 +28,9 @@ object CardActionManager {
         }
     }
 
-    private fun load(): MutableMap<String, LikeTrie<Supplier<CardAction>>> {
+    private fun load(): MutableMap<String, LikeTrie<()->CardAction>> {
         return CARD_ACTION_PLUGINS.mapValues { entry ->
-            val likeTrie = LikeTrie<Supplier<CardAction>>()
+            val likeTrie = LikeTrie<()->CardAction>()
 
             val list = entry.value.flatMap { pluginWrapper ->
                 // 添加监听器，当状态变化时重新加载
@@ -44,7 +44,7 @@ object CardActionManager {
                 // 将每个 CardAction 生成的 Supplier 添加到 LikeTrie
                 val idArray = cardAction.getCardId()
                 for (cardId in idArray) {
-                    likeTrie[cardId] = Supplier { cardAction.createNewInstance() }
+                    likeTrie[cardId] = { cardAction.createNewInstance() }
                 }
             }
 

@@ -11,6 +11,7 @@ import com.sun.jna.platform.win32.WinDef.HWND
 import javafx.animation.PauseTransition
 import javafx.application.Platform
 import javafx.beans.value.WritableValue
+import javafx.embed.swing.SwingFXUtils
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.event.EventType
@@ -20,12 +21,16 @@ import javafx.scene.control.ListView
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.control.Tooltip
+import javafx.scene.image.WritableImage
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.stage.Window
 import javafx.util.Duration
+import java.awt.image.BufferedImage
+import java.io.FileOutputStream
 import java.util.concurrent.Future
+import javax.imageio.ImageIO
 import kotlin.reflect.KProperty
 
 /**
@@ -158,6 +163,11 @@ fun <T> ListView<T>.addAndScroll(item: T, index: Int = -1) {
         scrollTo(index)
     }
 }
+
+fun WritableImage.toBufferedImage(): BufferedImage = SwingFXUtils.fromFXImage(this, null)
+
+fun WritableImage.save(formatName: String, output: FileOutputStream) =
+    ImageIO.write(SwingFXUtils.fromFXImage(this, null), formatName, output)
 
 
 object FXUtil {

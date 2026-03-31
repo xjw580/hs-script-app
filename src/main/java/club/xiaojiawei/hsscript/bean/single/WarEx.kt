@@ -10,6 +10,7 @@ import club.xiaojiawei.hsscriptbase.util.isTrue
 import club.xiaojiawei.hsscriptcardsdk.bean.Player
 import club.xiaojiawei.hsscriptcardsdk.bean.area.*
 import club.xiaojiawei.hsscriptcardsdk.bean.safeRun
+import club.xiaojiawei.hsscriptcardsdk.cardparser.ParsedCardActionFactory
 import club.xiaojiawei.hsscriptcardsdk.status.WAR
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.IntegerProperty
@@ -207,6 +208,7 @@ object WarEx {
             }
             warCount++
         }
+        ParsedCardActionFactory.clear()
     }
 
     private fun printResult(): Boolean {

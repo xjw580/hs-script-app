@@ -16,7 +16,7 @@ import kotlin.math.min
  * @author 肖嘉威
  * @date 2024/9/5 22:42
  */
-class CommonCardAction : CardAction(false) {
+class CommonCardAction : CardAction(false, true) {
 
     private var lastRect: GameRect? = null
 
