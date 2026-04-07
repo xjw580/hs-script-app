@@ -1120,6 +1120,219 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscript.bean.CardGroupCard",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCardId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getChangeWeight",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDbfId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEffectType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPlayActions",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPowerActions",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPowerWeight",
+          "parameterTypes": []
+        },
+        {
+          "name": "getWeight",
+          "parameterTypes": []
+        },
+        {
+          "name": "setCardId",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setChangeWeight",
+          "parameterTypes": [
+            "double"
+          ]
+        },
+        {
+          "name": "setDbfId",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "setEffectType",
+          "parameterTypes": [
+            "club.xiaojiawei.hsscriptcardsdk.enums.CardEffectTypeEnum"
+          ]
+        },
+        {
+          "name": "setName",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setPlayActions",
+          "parameterTypes": [
+            "java.util.List"
+          ]
+        },
+        {
+          "name": "setPowerActions",
+          "parameterTypes": [
+            "java.util.List"
+          ]
+        },
+        {
+          "name": "setPowerWeight",
+          "parameterTypes": [
+            "double"
+          ]
+        },
+        {
+          "name": "setWeight",
+          "parameterTypes": [
+            "double"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.bean.CardGroupInfo",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCards",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEnabled",
+          "parameterTypes": []
+        },
+        {
+          "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "setCards",
+          "parameterTypes": [
+            "java.util.List"
+          ]
+        },
+        {
+          "name": "setEnabled",
+          "parameterTypes": [
+            "boolean"
+          ]
+        },
+        {
+          "name": "setName",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.bean.CardGroupSettingsPageLayout",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.util.List"
+          ]
+        },
+        {
+          "name": "getSplitPositions",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.bean.CardGroupTableColumnConfig",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        },
+        {
+          "name": "getCardId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getChangeWeight",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCost",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEffectType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getNo",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPlayAction",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPowerAction",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPowerWeight",
+          "parameterTypes": []
+        },
+        {
+          "name": "getWeight",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "club.xiaojiawei.hsscript.bean.GameTask",
       "methods": [
         {
@@ -1281,6 +1494,61 @@
     },
     {
       "type": "club.xiaojiawei.hsscript.bean.Release[]"
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.bean.SearchCardTableColumnConfig",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        },
+        {
+          "name": "getAttack",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCardId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCardSet",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCost",
+          "parameterTypes": []
+        },
+        {
+          "name": "getHealth",
+          "parameterTypes": []
+        },
+        {
+          "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getNo",
+          "parameterTypes": []
+        },
+        {
+          "name": "getText",
+          "parameterTypes": []
+        },
+        {
+          "name": "getType",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "club.xiaojiawei.hsscript.bean.WeightCard",
@@ -1687,6 +1955,9 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscript.component.Double"
+    },
+    {
       "type": "club.xiaojiawei.hsscript.component.EditActionPane",
       "fields": [
         {
@@ -1899,6 +2170,15 @@
         },
         {
           "name": "startTime"
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscript.component.svg.ShowAllIco",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -2313,6 +2593,10 @@
           "parameterTypes": []
         },
         {
+          "name": "checkACStatus",
+          "parameterTypes": []
+        },
+        {
           "name": "refreshAOTCache",
           "parameterTypes": [
             "javafx.event.ActionEvent"
@@ -2350,6 +2634,14 @@
     },
     {
       "type": "club.xiaojiawei.hsscript.controller.javafx.settings.CardGroupSettingsController",
+      "fields": [
+        {
+          "name": "costCol"
+        },
+        {
+          "name": "splitPane"
+        }
+      ],
       "methods": [
         {
           "name": "<init>",
@@ -2379,10 +2671,16 @@
           "name": "cardTable"
         },
         {
+          "name": "cardTableColumnSettingBtn"
+        },
+        {
           "name": "changeWeightCheckBox"
         },
         {
           "name": "changeWeightCol"
+        },
+        {
+          "name": "columnSettingBtn"
         },
         {
           "name": "effectTypeCol"
@@ -2416,6 +2714,32 @@
         },
         {
           "name": "weightCol"
+        }
+      ],
+      "methods": [
+        {
+          "name": "addCard",
+          "parameterTypes": []
+        },
+        {
+          "name": "copyCardGroup",
+          "parameterTypes": []
+        },
+        {
+          "name": "createCardGroup",
+          "parameterTypes": []
+        },
+        {
+          "name": "exportCardGroup",
+          "parameterTypes": []
+        },
+        {
+          "name": "importCardGroup",
+          "parameterTypes": []
+        },
+        {
+          "name": "renameCardGroup",
+          "parameterTypes": []
         }
       ]
     },
@@ -2480,13 +2804,22 @@
           "name": "fileLogLevelComboBox"
         },
         {
+          "name": "gameIco"
+        },
+        {
           "name": "navigationBarToggle"
         },
         {
           "name": "notificationManager"
         },
         {
+          "name": "platformIco"
+        },
+        {
           "name": "progressModal"
+        },
+        {
+          "name": "refreshInjectStatusBtn"
         },
         {
           "name": "rootPane"
@@ -2511,6 +2844,10 @@
         },
         {
           "name": "captureGameFrame",
+          "parameterTypes": []
+        },
+        {
+          "name": "checkInjectStatus",
           "parameterTypes": []
         },
         {
@@ -2874,6 +3211,9 @@
         },
         {
           "name": "powerBootSwitch"
+        },
+        {
+          "name": "refreshACBtn"
         },
         {
           "name": "refreshDriver"
@@ -3453,6 +3793,12 @@
       "type": "club.xiaojiawei.hsscriptbasestrategy.strategy.HsSurrenderDeckStrategy"
     },
     {
+      "type": "club.xiaojiawei.hsscriptcardsdk.CardAction"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.CardAction$DefaultCardAction"
+    },
+    {
       "type": "club.xiaojiawei.hsscriptcardsdk.bean.BaseCard"
     },
     {
@@ -3522,6 +3868,12 @@
           ]
         },
         {
+          "name": "setDbfId",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
           "name": "setHealth",
           "parameterTypes": [
             "java.lang.Integer"
@@ -3548,6 +3900,96 @@
       ]
     },
     {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.AbstractSpellAllRivalPlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.CardActionGenerator$CreateNewInstanceInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.PlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.SpellAllRivalDamagePlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.SpellAllRivalFreezePlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.SpellNoPointPlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.TargetDomainAwarePlayActionInterceptor"
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.generated.GeneratedCardAction_CS2_025",
+      "fields": [
+        {
+          "name": "delegate$1ei6c20"
+        },
+        {
+          "name": "delegate$3iroa71"
+        },
+        {
+          "name": "delegate$7c39fi0"
+        },
+        {
+          "name": "delegate$92ag7j0"
+        },
+        {
+          "name": "value$lbb0ae1"
+        },
+        {
+          "name": "value$p4aitn0"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.generated.GeneratedCardAction_CS2_026",
+      "fields": [
+        {
+          "name": "delegate$03rq4p1"
+        },
+        {
+          "name": "delegate$dt0e681"
+        },
+        {
+          "name": "value$tcglv10"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.hsscriptcardsdk.cardparser.generated.GeneratedCardAction_VAC_520",
+      "fields": [
+        {
+          "name": "delegate$mnl68l0"
+        },
+        {
+          "name": "delegate$op32911"
+        },
+        {
+          "name": "value$5i3ani1"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "club.xiaojiawei.hsscriptcardsdk.enums.CardActionEnum"
     },
     {
@@ -3567,6 +4009,15 @@
     },
     {
       "type": "club.xiaojiawei.hsscriptcardsdk.mapper.EntityMapperImpl",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "club.xiaojiawei.md.MarkdownView",
       "methods": [
         {
           "name": "<init>",
@@ -5760,6 +6211,12 @@
         {
           "name": "classLoaderValueMap"
         }
+      ],
+      "methods": [
+        {
+          "name": "registerAsParallelCapable",
+          "parameterTypes": []
+        }
       ]
     },
     {
@@ -5803,6 +6260,9 @@
           ]
         }
       ]
+    },
+    {
+      "type": "java.lang.Double[]"
     },
     {
       "type": "java.lang.Enum"
@@ -5877,7 +6337,18 @@
       ]
     },
     {
-      "type": "java.lang.Module"
+      "type": "java.lang.Module",
+      "methods": [
+        {
+          "name": "isExported",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.lang.Number"
     },
     {
       "type": "java.lang.Object",
@@ -5904,6 +6375,24 @@
       "methods": [
         {
           "name": "run",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "java.lang.Runtime",
+      "methods": [
+        {
+          "name": "version",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "java.lang.Runtime$Version",
+      "methods": [
+        {
+          "name": "feature",
           "parameterTypes": []
         }
       ]
@@ -5979,6 +6468,10 @@
           "parameterTypes": [
             "java.lang.String"
           ]
+        },
+        {
+          "name": "getSecurityManager",
+          "parameterTypes": []
         }
       ]
     },
@@ -6041,29 +6534,92 @@
       ]
     },
     {
+      "type": "java.lang.constant.ClassDesc"
+    },
+    {
+      "type": "java.lang.constant.ClassDesc[]"
+    },
+    {
       "type": "java.lang.constant.Constable"
     },
     {
       "type": "java.lang.constant.ConstantDesc"
     },
     {
+      "type": "java.lang.constant.ConstantDesc[]"
+    },
+    {
+      "type": "java.lang.constant.DirectMethodHandleDesc"
+    },
+    {
+      "type": "java.lang.constant.DirectMethodHandleDesc$Kind"
+    },
+    {
       "type": "java.lang.constant.DynamicConstantDesc"
+    },
+    {
+      "type": "java.lang.constant.MethodHandleDesc"
+    },
+    {
+      "type": "java.lang.constant.MethodTypeDesc"
     },
     {
       "type": "java.lang.invoke.MethodHandle"
     },
     {
-      "type": "java.lang.invoke.MethodHandles"
+      "type": "java.lang.invoke.MethodHandles",
+      "methods": [
+        {
+          "name": "lookup",
+          "parameterTypes": []
+        }
+      ]
     },
     {
-      "type": "java.lang.invoke.MethodHandles$Lookup"
+      "type": "java.lang.invoke.MethodHandles$Lookup",
+      "methods": [
+        {
+          "name": "findVirtual",
+          "parameterTypes": [
+            "java.lang.Class",
+            "java.lang.String",
+            "java.lang.invoke.MethodType"
+          ]
+        }
+      ]
     },
     {
-      "type": "java.lang.invoke.MethodType"
+      "type": "java.lang.invoke.MethodType",
+      "methods": [
+        {
+          "name": "methodType",
+          "parameterTypes": [
+            "java.lang.Class",
+            "java.lang.Class[]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.lang.reflect.AnnotatedArrayType"
+    },
+    {
+      "type": "java.lang.reflect.AnnotatedParameterizedType"
+    },
+    {
+      "type": "java.lang.reflect.AnnotatedType"
     },
     {
       "type": "java.lang.reflect.Executable",
       "methods": [
+        {
+          "name": "getAnnotatedReceiverType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getParameterCount",
+          "parameterTypes": []
+        },
         {
           "name": "getParameters",
           "parameterTypes": []
@@ -6093,6 +6649,10 @@
       "methods": [
         {
           "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "isNamePresent",
           "parameterTypes": []
         }
       ]
@@ -6255,6 +6815,9 @@
     },
     {
       "type": "java.nio.charset.Charset"
+    },
+    {
+      "type": "java.security.AccessController"
     },
     {
       "type": "java.security.AlgorithmParametersSpi"
@@ -6971,6 +7534,9 @@
       ]
     },
     {
+      "type": "javafx.scene.control.Double"
+    },
+    {
       "type": "javafx.scene.control.GridPane"
     },
     {
@@ -7574,6 +8140,9 @@
     },
     {
       "type": "javafx.scene.layout.ConstraintsBase"
+    },
+    {
+      "type": "javafx.scene.layout.Double"
     },
     {
       "type": "javafx.scene.layout.FlowPane",
@@ -8229,6 +8798,139 @@
     },
     {
       "type": "kotlinx.serialization.protobuf.ProtoBuf"
+    },
+    {
+      "type": "net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable"
+    },
+    {
+      "type": "net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter"
+    },
+    {
+      "type": "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType"
+    },
+    {
+      "type": "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.AllArguments"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.Argument",
+      "methods": [
+        {
+          "name": "bindingMechanic",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.Argument$BindingMechanic"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.BindingPriority"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.Default"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.DefaultCall"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.DefaultCallHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.DefaultMethod"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.DefaultMethodHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.FieldGetterHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.FieldSetterHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.FieldValue"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.Origin"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.Super"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.SuperCall"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.SuperCallHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.SuperMethod"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.SuperMethodHandle"
+    },
+    {
+      "type": "net.bytebuddy.implementation.bind.annotation.This"
+    },
+    {
+      "type": "net.bytebuddy.utility.Invoker"
+    },
+    {
+      "type": "net.bytebuddy.utility.Invoker$Dispatcher",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaModule$Module"
+    },
+    {
+      "type": "net.bytebuddy.utility.JavaModule$Resolver"
     },
     {
       "type": "org.apache.commons.logging.LogFactory"
@@ -9167,6 +9869,146 @@
           "java.lang.reflect.ParameterizedType",
           "org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy",
           "java.io.Serializable"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$Generic"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaModule$Module"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "net.bytebuddy.utility.JavaModule$Resolver"
         ]
       }
     }
