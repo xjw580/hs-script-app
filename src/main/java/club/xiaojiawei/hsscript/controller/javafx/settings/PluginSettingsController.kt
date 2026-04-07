@@ -20,15 +20,12 @@ import club.xiaojiawei.hsscriptcardsdk.util.CardDBUtil
 import club.xiaojiawei.hsscriptpluginsdk.bean.PluginWrapper
 import club.xiaojiawei.hsscriptstrategysdk.DeckStrategy
 import club.xiaojiawei.hsscriptstrategysdk.StrategyPlugin
+import club.xiaojiawei.kt.dsl.config
+import club.xiaojiawei.kt.dsl.menuItem
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.ListCell
-import javafx.scene.control.ListView
-import javafx.scene.control.MenuItem
-import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
+import javafx.scene.control.*
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import java.net.URL
@@ -108,13 +105,17 @@ class PluginSettingsController : Initializable {
     private fun initValue() {
         pluginListView.setCellFactory {
             object : ListCell<PluginItem>() {
-                private val openLocationMenuItem = MenuItem("打开插件位置")
-                private val menu = ContextMenu(openLocationMenuItem)
-
-                init {
-                    openLocationMenuItem.setOnAction {
+                private val openLocationMenuItem = menuItem {
+                    +"打开插件位置"
+                    onAction {
                         item?.openPluginLocation()
                     }
+                }
+                private val menu = ContextMenu(openLocationMenuItem).config {
+                    style()
+                }
+
+                init {
                     setOnMousePressed { event ->
                         if (!isEmpty) {
                             pluginListView.selectionModel.select(index)
