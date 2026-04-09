@@ -6,11 +6,13 @@ import club.xiaojiawei.hsscript.dll.CSystemDll
 import club.xiaojiawei.hsscript.dll.User32ExDll
 import club.xiaojiawei.hsscript.dll.User32ExDll.Companion.HWND_BOTTOM
 import club.xiaojiawei.hsscript.enums.ConfigEnum
+import club.xiaojiawei.hsscript.status.Mode
 import club.xiaojiawei.hsscript.status.ScriptStatus
 import club.xiaojiawei.hsscript.utils.*
 import club.xiaojiawei.hsscriptbase.config.EXTRA_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.LAUNCH_PROGRAM_THREAD_POOL
 import club.xiaojiawei.hsscriptbase.config.log
+import club.xiaojiawei.hsscriptbase.enums.ModeEnum
 import club.xiaojiawei.hsscriptbase.util.isFalse
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef.HWND
@@ -99,16 +101,30 @@ class GameStarter : AbstractStarter() {
         } else {
             log.info { GAME_CN_NAME + "正在运行" }
         }
+        if (ConfigEnum.CLOSE_PLATFORM_AFTER_START_GAME.getBoolean()) {
+            go {
+                var count = 0
+                while (Mode.currMode === ModeEnum.STARTUP || Mode.currMode === ModeEnum.LOGIN) {
+                    if (count++ > 15) {
+                        return@go
+                    }
+                    Thread.sleep(1000)
+                }
+                GameUtil.killPlatform()
+            }
+        } else if (ConfigEnum.BOTTOM_PLACEMENT_PLATFORM_AFTER_START_GAME.getBoolean()) {
 //        将战网窗口置底
-        User32ExDll.INSTANCE.SetWindowPos(
-            ScriptStatus.platformHWND,
-            HWND_BOTTOM,
-            0,
-            0,
-            0,
-            0,
-            SWP_NOACTIVATE xor SWP_NOMOVE xor SWP_NOSIZE
-        )
+            User32ExDll.INSTANCE.SetWindowPos(
+                ScriptStatus.platformHWND,
+                HWND_BOTTOM,
+                0,
+                0,
+                0,
+                0,
+                SWP_NOACTIVATE xor SWP_NOMOVE xor SWP_NOSIZE
+            )
+        }
+
         startNextStarter()
     }
 

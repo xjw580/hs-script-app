@@ -421,6 +421,26 @@ enum class ConfigEnum(
     ),
 
     /**
+     * 启动游戏后关闭战网
+     */
+    CLOSE_PLATFORM_AFTER_START_GAME(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            FALSE_STR
+        }
+    ),
+
+    /**
+     * 启动游戏后置底战网
+     */
+    BOTTOM_PLACEMENT_PLATFORM_AFTER_START_GAME(
+        group = BEHAVIOR_CONFIG_GROUP,
+        defaultValueInitializer = {
+            TRUE_STR
+        }
+    ),
+
+    /**
      * 套牌插件禁用列表
      */
     DECK_PLUGIN_DISABLED(

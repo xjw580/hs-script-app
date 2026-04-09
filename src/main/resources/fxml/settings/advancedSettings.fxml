@@ -106,6 +106,21 @@
                                 <ConfigSwitch notificationManager="${notificationManager}"
                                               config="AUTO_REFRESH_GAME_TASK"/>
                             </SettingHBox>
+                            <SettingHBox name="启动游戏后"
+                                         tabWindow="ADVANCED_SETTINGS" group="行为">
+                                <Label text="置底战网窗口" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="BOTTOM_PLACEMENT_PLATFORM_AFTER_START_GAME"/>
+                                    </graphic>
+                                </Label>
+                                <Label text="关闭战网" contentDisplay="RIGHT">
+                                    <graphic>
+                                        <ConfigSwitch notificationManager="${notificationManager}"
+                                                      config="CLOSE_PLATFORM_AFTER_START_GAME"/>
+                                    </graphic>
+                                </Label>
+                            </SettingHBox>
                             <SettingHBox name="游戏启动方式偏好" tabWindow="ADVANCED_SETTINGS" group="行为">
                                 <ComboBox fx:id="gameStartupModeComboBox"
                                           styleClass="combo-box-ui, combo-box-ui-small, combo-box-ui-normal"/>
