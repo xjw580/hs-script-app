@@ -1966,6 +1966,20 @@
         {
           "name": "windowBar"
         }
+      ],
+      "methods": [
+        {
+          "name": "addAction",
+          "parameterTypes": []
+        },
+        {
+          "name": "apply",
+          "parameterTypes": []
+        },
+        {
+          "name": "save",
+          "parameterTypes": []
+        }
       ]
     },
     {
