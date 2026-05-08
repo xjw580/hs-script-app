@@ -1,8 +1,8 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
 import ch.qos.logback.classic.Level
-import club.xiaojiawei.builder.buildInjectStarter
-import club.xiaojiawei.builder.buildStarter
+import club.xiaojiawei.hsscript.builder.buildInjectStarter
+import club.xiaojiawei.hsscript.builder.buildStarter
 import club.xiaojiawei.controls.Modal
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.controls.ProgressModal

@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.controller.javafx
 
-import club.xiaojiawei.builder.buildStarter
+import club.xiaojiawei.hsscript.builder.buildStarter
 import club.xiaojiawei.controls.Notification
 import club.xiaojiawei.controls.NotificationManager
 import club.xiaojiawei.hsscript.bean.FrameData

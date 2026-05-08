@@ -1,4 +1,4 @@
-package club.xiaojiawei.builder
+package club.xiaojiawei.hsscript.builder
 
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.starter.*

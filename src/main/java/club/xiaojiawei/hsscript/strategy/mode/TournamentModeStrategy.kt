@@ -32,12 +32,13 @@ object TournamentModeStrategy : AbstractModeStrategy<Any?>() {
 
     val CHANGE_MODE_RECT: GameRect by lazy { GameRect(0.2868, 0.3256, -0.4672, -0.4279) }
 
-    val STANDARD_MODE_RECT: GameRect by lazy { GameRect(-0.2012, -0.0295, -0.2156, -0.0400) }
+    val WILD_MODE_RECT: GameRect by lazy { GameRect(-0.3072, -0.1755, -0.1924, -0.0647) }
 
-    val WILD_MODE_RECT: GameRect by lazy { GameRect(0.0295, 0.2012, -0.2156, -0.0400) }
+    val STANDARD_MODE_RECT: GameRect by lazy { GameRect(-0.0691, 0.0612, -0.2446, -0.1097) }
 
-    val CASUAL_MODE_RECT: GameRect by lazy { GameRect(0.2557, 0.4278, -0.1769, 0.0014) }
+    val CASUAL_MODE_RECT: GameRect by lazy { GameRect(0.1622, 0.2886, -0.1817, -0.0540) }
 
+    @Deprecated("已被移除")
     val CLASSIC_MODE_RECT: GameRect by lazy { GameRect(-0.4278, -0.2557, -0.1769, 0.0014) }
 
     val TOURNAMENT_MODE_RECT: GameRect by lazy { GameRect(-0.0790, 0.0811, -0.2090, -0.1737) }

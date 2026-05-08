@@ -1,6 +1,6 @@
 package club.xiaojiawei.hsscript.config
 
-import club.xiaojiawei.builder.buildStarter
+import club.xiaojiawei.hsscript.builder.buildStarter
 import club.xiaojiawei.hsscript.starter.AbstractStarter
 
 /**
