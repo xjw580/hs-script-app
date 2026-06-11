@@ -11,6 +11,7 @@ import club.xiaojiawei.hsscript.utils.ConfigExUtil
 import club.xiaojiawei.hsscript.utils.ConfigUtil
 import club.xiaojiawei.hsscript.utils.SystemUtil
 import club.xiaojiawei.hsscript.utils.WindowUtil
+import club.xiaojiawei.hsscript.utils.ownWindow
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
@@ -59,7 +60,7 @@ class InitSettingsController : Initializable {
     protected fun gameClicked() {
         val directoryChooser = DirectoryChooser()
         directoryChooser.title = "选择" + GAME_CN_NAME + "安装路径"
-        val file = directoryChooser.showDialog(Stage())
+        val file = directoryChooser.showDialog(rootPane.ownWindow())
         if (file != null) {
             gamePath.text = file.absolutePath
         }
@@ -72,7 +73,7 @@ class InitSettingsController : Initializable {
         fileChooser.extensionFilters.add(
             FileChooser.ExtensionFilter("程序", "*.exe")
         )
-        val chooseFile = fileChooser.showOpenDialog(Stage())
+        val chooseFile = fileChooser.showOpenDialog(rootPane.ownWindow())
         if (chooseFile != null) {
             platformPath.text = chooseFile.absolutePath
         }
