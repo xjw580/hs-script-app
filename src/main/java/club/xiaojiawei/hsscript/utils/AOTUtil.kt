@@ -33,9 +33,7 @@ object AOTUtil {
                         val startCMD =
                             "$aotBatch \"${SystemUtil.getCurrentJarFile().name}\" \"${AOT_DIR}\\${PROGRAM_NAME}_${BuildInfo.VERSION}\" \"${MainApplication::class.java.packageName}.MainKt\""
                         CMDUtil.directExec(
-                            arrayOf(
-                                "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
-                            )
+                            "cmd", "/c", "start", "\"AOTWindow\"", "cmd.exe", "/k", startCMD
                         ).waitFor()
                         successCallback()
                     },

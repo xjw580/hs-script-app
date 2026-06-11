@@ -218,7 +218,7 @@ object ConfigExUtil {
         return ConfigUtil.getArray(
             ConfigEnum.GAME_STARTUP_MODE,
             GameStartupModeEnum::class.java,
-        ) ?: mutableListOf(GameStartupModeEnum.MESSAGE, GameStartupModeEnum.CMD)
+        ) ?: mutableListOf(GameStartupModeEnum.PLATFORM_MESSAGE, GameStartupModeEnum.PLATFORM_ARG)
     }
 
     fun storeGameStartupMode(gameStartupModeEnums: List<GameStartupModeEnum>) {

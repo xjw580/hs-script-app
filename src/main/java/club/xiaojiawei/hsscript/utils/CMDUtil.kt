@@ -54,6 +54,6 @@ object CMDUtil {
         return CommandResult(sb.toString(), exitCode)
     }
 
-    fun directExec(command: Array<String>): Process = Runtime.getRuntime().exec(command)
+    fun directExec(vararg command: String): Process = Runtime.getRuntime().exec(command)
 
 }

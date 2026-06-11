@@ -9,6 +9,7 @@ import club.xiaojiawei.hsscript.bean.HotKey
 import club.xiaojiawei.hsscript.bean.single.repository.CustomRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GiteeRepository
 import club.xiaojiawei.hsscript.bean.single.repository.GithubRepository
+import club.xiaojiawei.hsscript.component.TipNode
 import club.xiaojiawei.hsscript.consts.*
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.AdvancedSettingsView
 import club.xiaojiawei.hsscript.dll.CSystemDll
@@ -36,6 +37,7 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.geometry.NodeOrientation
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
@@ -110,6 +112,33 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
         refreshDriver.isManaged = isDrive
 
         gameStartupModeComboBox.items.addAll(GameStartupModeEnum.entries.toTypedArray())
+        gameStartupModeComboBox.setCellFactory {
+            object : ListCell<GameStartupModeEnum?>() {
+                override fun updateItem(s: GameStartupModeEnum?, b: Boolean) {
+                    super.updateItem(s, b)
+                    contentDisplay = ContentDisplay.RIGHT
+                    if (s == null || b) {
+                        graphic = null
+                        return
+                    }
+                    graphic =
+                        hbox {
+                            prefWidth(40.0)
+                            padding(right = 5.0, left = 5.0)
+                            alignCenter()
+                            addText { +s.comment }
+                            addHSpacer()
+                            +TipNode().apply {
+                                tooltip = Tooltip(s.introduction)
+                            }
+                        }
+                }
+            }
+        }
+        gameStartupModeComboBox.converter = object : StringConverter<GameStartupModeEnum>() {
+            override fun toString(`object`: GameStartupModeEnum?): String? = `object`?.comment
+            override fun fromString(string: String?): GameStartupModeEnum? = null
+        }
         gameStartupModeComboBox.value = ConfigExUtil.getGameStartupMode().first()
 
         softProtectedModeComboBox.converter = object : StringConverter<SoftProtectedModeEnum>() {
