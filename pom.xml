@@ -12,7 +12,7 @@
     <description>炉石传说脚本</description>
     <groupId>com.github.xjw580</groupId>
     <artifactId>hs-script-app</artifactId>
-<!--    <version>v4.16.0.1-DEV</version>-->
+    <!--    <version>v4.16.0.1-DEV</version>-->
 
     <repositories>
         <repository>
@@ -100,6 +100,12 @@
             <groupId>com.github.xjw580</groupId>
             <artifactId>javafx-md</artifactId>
             <version>0.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JSON 支持 -->
         <dependency>
