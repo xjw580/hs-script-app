@@ -1,9 +1,7 @@
 package club.xiaojiawei.hsscript.controller.javafx.settings
 
-import club.xiaojiawei.controls.ProgressModal
 import club.xiaojiawei.hsscript.bean.SettingItem
 import club.xiaojiawei.hsscript.component.SettingHBox
-import club.xiaojiawei.hsscript.component.SettingsSearchField
 import club.xiaojiawei.hsscript.controller.javafx.settings.view.SettingsView
 import club.xiaojiawei.hsscript.enums.ConfigEnum
 import club.xiaojiawei.hsscript.enums.WindowEnum
@@ -13,17 +11,13 @@ import club.xiaojiawei.hsscript.utils.getBoolean
 import club.xiaojiawei.kt.ext.runUILater
 import javafx.application.Platform
 import javafx.beans.property.DoubleProperty
-import javafx.beans.value.ObservableValue
-import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
-import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import java.net.URL
 import java.util.*
@@ -55,15 +49,10 @@ class SettingsController : SettingsView(), Initializable, StageHook {
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         windowMap
-        val selectedItem = tabPane.selectionModel.selectedItem
-        if (selectedItem != null) {
-            loadTab(selectedItem)
-        }
         tabPane.selectionModel.selectedItemProperty()
-            .addListener { observable: ObservableValue<out Tab>?, oldValue: Tab?, newValue: Tab ->
+            .addListener { _, _, newValue: Tab ->
                 loadTab(newValue)
             }
-
         initSearch()
     }
 
@@ -99,6 +88,8 @@ class SettingsController : SettingsView(), Initializable, StageHook {
                 progress = null
             }
         }
+        loadTab(tabPane.selectionModel.selectedItem)
+        System.gc()
     }
 
     /**

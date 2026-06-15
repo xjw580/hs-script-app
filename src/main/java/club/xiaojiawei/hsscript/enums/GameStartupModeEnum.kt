@@ -32,7 +32,7 @@ enum class GameStartupModeEnum(val comment: String, val introduction: String, va
 //        }),
 
     PLATFORM_ARG(
-        PLATFORM_CN_NAME,
+        "${PLATFORM_CN_NAME}参数",
         "通过向${PLATFORM_CN_NAME}传递参数的方式启动",
         {
             GameUtil.launchPlatformAndGame()

@@ -151,6 +151,11 @@ class CardTableView : TableView<DBCard>() {
         }
     }
 
+    fun showNoColumn(title: String = "序号") {
+        noCol.text = title
+        noCol.isVisible = true
+    }
+
     private fun initTable() {
         this.selectionModel.selectionMode = SelectionMode.MULTIPLE
         this.isEditable = true

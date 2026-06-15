@@ -7,6 +7,7 @@ import club.xiaojiawei.controls.TableFilterManagerGroup
 import club.xiaojiawei.hsscript.component.CardTableView
 import club.xiaojiawei.hsscript.component.PluginDeckStrategyItem
 import club.xiaojiawei.hsscript.component.PluginItem
+import club.xiaojiawei.hsscript.interfaces.StageHook
 import club.xiaojiawei.hsscript.status.PluginManager.CARD_ACTION_PLUGINS
 import club.xiaojiawei.hsscript.status.PluginManager.DECK_STRATEGY_PLUGINS
 import club.xiaojiawei.hsscript.utils.SystemUtil.openURL
@@ -31,12 +32,13 @@ import javafx.scene.layout.VBox
 import java.net.URL
 import java.util.*
 import java.util.stream.Stream
+import kotlin.math.ceil
 
 /**
  * @author 肖嘉威
  * @date 2023/9/10 15:07
  */
-class PluginSettingsController : Initializable {
+class PluginSettingsController : Initializable, StageHook {
     @FXML
     protected lateinit var pluginTabPane: TabPane
 
@@ -62,7 +64,7 @@ class PluginSettingsController : Initializable {
     protected lateinit var cardTable: CardTableView
 
     @FXML
-    protected lateinit var cardTableProxy: TableFilterManagerGroup<DBCard, DBCard>
+    protected lateinit var pagination: Pagination
 
     @FXML
     protected lateinit var pluginGraphicDescription: Pane
@@ -94,6 +96,8 @@ class PluginSettingsController : Initializable {
     @FXML
     protected lateinit var pluginListView: ListView<PluginItem>
 
+    private var currentCardIds = emptyList<DBCard>()
+
     override fun initialize(
         url: URL?,
         resourceBundle: ResourceBundle?,
@@ -103,6 +107,7 @@ class PluginSettingsController : Initializable {
     }
 
     private fun initValue() {
+        cardTable.showNoColumn()
         pluginListView.setCellFactory {
             object : ListCell<PluginItem>() {
                 private val openLocationMenuItem = menuItem {
@@ -166,6 +171,9 @@ class PluginSettingsController : Initializable {
     }
 
     private fun listen() {
+        pagination.currentPageIndexProperty().addListener { _, _, newValue ->
+            loadCardPage(newValue.toInt())
+        }
         pluginListView.selectionModel
             .selectedItemProperty()
             .addListener { _, _, newPluginItem: PluginItem? ->
@@ -201,7 +209,7 @@ class PluginSettingsController : Initializable {
                 val progress = cardRootProgressModal.show()
                 EXTRA_THREAD_POOL.submit {
                     runCatching {
-                        val dbCards = mutableSetOf<DBCard>()
+                        val dbCards = linkedSetOf<DBCard>()
                         for (cardAction in spiInstance) {
                             cardAction as CardAction
                             val cardIds = cardAction.getCardId()
@@ -209,10 +217,10 @@ class PluginSettingsController : Initializable {
                                 dbCards.addAll(CardDBUtil.queryCardById(cardId, 100, 0, false))
                             }
                         }
-                        dbCards
+                        dbCards.toList()
                     }.onSuccess { dbCards ->
                         runUI {
-                            cardTableProxy.setAll(dbCards)
+                            initCards(dbCards)
                             cardRootProgressModal.hide(progress)
                         }
                     }.onFailure {
@@ -260,10 +268,29 @@ class PluginSettingsController : Initializable {
         }
     }
 
-    fun apply(actionEvent: ActionEvent?) {
+    private fun initCards(dBCards: List<DBCard>) {
+        currentCardIds = dBCards
+        pagination.pageCount = maxOf(1, ceil(dBCards.size.toDouble() / CARD_ID_PAGE_SIZE).toInt())
+        if (pagination.currentPageIndex == 0) {
+            loadCardPage(0)
+        } else {
+            pagination.currentPageIndex = 0
+        }
     }
 
-    fun save(actionEvent: ActionEvent?) {
+    private fun loadCardPage(pageIndex: Int) {
+        if (currentCardIds.isEmpty()) return
+        val fromIndex = pageIndex * CARD_ID_PAGE_SIZE
+        if (fromIndex >= currentCardIds.size) {
+            cardTable.items.clear()
+            return
+        }
+        cardTable.currentOffset = fromIndex
+        cardTable.items.setAll(currentCardIds.subList(
+            fromIndex,
+            minOf(fromIndex + CARD_ID_PAGE_SIZE, currentCardIds.size)
+        ))
+        cardTable.scrollTo(0)
     }
 
     @FXML
@@ -272,5 +299,21 @@ class PluginSettingsController : Initializable {
         val homeUrl = selectedItem.pluginWrapper.plugin.homeUrl()
         if (homeUrl.isBlank() || !homeUrl.contains("http")) return
         openURL(homeUrl)
+    }
+
+    override fun onShown() {
+        super.onShown()
+    }
+
+    override fun onHidden() {
+        super.onHidden()
+        pluginListView.selectionModel.clearSelection()
+        currentCardIds = emptyList()
+        pagination.pageCount = 0
+        System.gc()
+    }
+
+    companion object {
+        private const val CARD_ID_PAGE_SIZE = 60
     }
 }

@@ -26,17 +26,18 @@
             </VBox>
             <fx:define>
                 <Tab text="适配的卡牌" fx:id="cardTab">
-                    <StackPane style="-fx-padding: 5;">
-                        <CardTableView fx:id="cardTable" notificationManager="${notificationManager}">
-                            <placeholder>
-                                <StackPane>
-                                    <Label text="未适配任何卡牌"/>
-                                </StackPane>
-                            </placeholder>
-                        </CardTableView>
-                        <fx:define>
-                            <TableFilterManagerGroup fx:id="cardTableProxy" tableView="$cardTable" autoRegisterColFilter="true"/>
-                        </fx:define>
+                    <StackPane>
+                        <VBox style="-fx-padding: 5;">
+                            <CardTableView fx:id="cardTable" notificationManager="${notificationManager}" VBox.vgrow="ALWAYS">
+                                <placeholder>
+                                    <StackPane>
+                                        <Label text="未适配任何卡牌"/>
+                                    </StackPane>
+                                </placeholder>
+                            </CardTableView >
+                            <Pagination fx:id="pagination" styleClass="pagination-ui, pagination-ui-normal"
+                                        maxPageIndicatorCount="5"/>
+                        </VBox>
                         <ProgressModal fx:id="cardRootProgressModal" title="加载中..."/>
                     </StackPane>
                 </Tab>
