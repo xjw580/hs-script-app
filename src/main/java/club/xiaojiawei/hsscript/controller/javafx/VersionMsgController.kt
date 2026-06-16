@@ -36,11 +36,12 @@ class VersionMsgController : Initializable {
         versionDescription.setMarkdown(
             """
             🐛 Bug修复
-            1. 修复native版无法编辑行为的问题
+            1. 修复初始设置页里选择路径时选择器弹窗未指定父窗口的问题
             
             🔧 重构与优化
-            1. 更新卡牌数据库
-            2. 移除幻变模式的位置
+            1. javafx-md库排除javafx-web库
+            2. 优化版本说明页排版
+            3. 插件设置页:适配卡牌分页加载；激进的内存释放逻辑
             """.trimIndent()
         )
     }
