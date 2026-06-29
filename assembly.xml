@@ -21,6 +21,7 @@
                 <exclude>com.github.xjw580:hs-script-base-strategy-plugin</exclude>
                 <exclude>com.github.xjw580:hs-card-plugin-template</exclude>
                 <exclude>com.github.xjw580:hs-strategy-plugin-template</exclude>
+                <exclude>com.github.xjw580:hs-ai-strategy-plugin</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>
@@ -28,6 +29,7 @@
             <includes>
                 <include>com.github.xjw580:hs-script-base-card-plugin</include>
                 <include>com.github.xjw580:hs-script-base-strategy-plugin</include>
+                <include>com.github.xjw580:hs-ai-strategy-plugin</include>
             </includes>
         </dependencySet>
     </dependencySets>

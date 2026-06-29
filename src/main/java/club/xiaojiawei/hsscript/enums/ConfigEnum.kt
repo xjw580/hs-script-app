@@ -45,6 +45,8 @@ val DEV_CONFIG_GROUP = ConfigGroup("dev")
 
 val WEIGHT_CONFIG_GROUP = ConfigGroup("weight")
 
+val AI_CONFIG_GROUP = ConfigGroup("ai")
+
 val LAYOUT_CONFIG_GROUP = ConfigGroup("layout")
 /*配置组-结束*/
 
@@ -720,6 +722,48 @@ enum class ConfigEnum(
     LAST_CHECK_VERSION_TIME(
         group = OTHER_CONFIG_GROUP,
         defaultValueInitializer = { System.currentTimeMillis().toString() }),
+
+    /**
+     * AI决策开关
+     */
+    AI_ENABLED(group = AI_CONFIG_GROUP, defaultValueInitializer = { FALSE_STR }),
+
+    /**
+     * LLM API base URL
+     */
+    AI_BASE_URL(group = AI_CONFIG_GROUP, defaultValueInitializer = { "" }),
+
+    /**
+     * provider标识
+     */
+    AI_PROVIDER(group = AI_CONFIG_GROUP, defaultValueInitializer = { "openai" }),
+
+    /**
+     * 模型名
+     */
+    AI_MODEL(group = AI_CONFIG_GROUP, defaultValueInitializer = { "" }),
+
+    /**
+     * API密钥
+     */
+    AI_API_KEY(group = AI_CONFIG_GROUP, defaultValueInitializer = { "" }),
+
+    /**
+     * 超时毫秒
+     */
+    AI_TIMEOUT(group = AI_CONFIG_GROUP, defaultValueInitializer = { "30000" }),
+
+    /**
+     * 温度
+     */
+    AI_TEMPERATURE(group = AI_CONFIG_GROUP, defaultValueInitializer = { "0.7" }),
+
+    /**
+     * 失败回退策略id
+     */
+    AI_FALLBACK_STRATEGY(
+        group = AI_CONFIG_GROUP,
+        defaultValueInitializer = { DEFAULT_DECK_STRATEGY_ID }),
 
     ;
 

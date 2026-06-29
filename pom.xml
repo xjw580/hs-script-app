@@ -154,6 +154,12 @@
             <groupId>com.github.xjw580</groupId>
             <artifactId>hs-script-base-card-plugin</artifactId>
         </dependency>
+        <!--AI策略插件-->
+        <dependency>
+            <groupId>com.github.xjw580</groupId>
+            <artifactId>hs-ai-strategy-plugin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--模板插件-->
         <!--        <dependency>-->
         <!--            <groupId>com.github.xjw580</groupId>-->
@@ -167,22 +173,6 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
             <classifier>win</classifier>
         </dependency>
         <dependency>
@@ -198,6 +188,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
             <classifier>win</classifier>
         </dependency>
         <!--JavaFX组件UI库-->
