@@ -519,7 +519,7 @@ class AdvancedSettingsController : AdvancedSettingsView(), StageHook, Initializa
 
     @FXML
     private fun checkACStatus() {
-        val acDllName = "libacsdk_x86.dll"
+        val acDllName = "libacsdk_x64.dll"
         val tooltip =
             if (!GameUtil.isAliveOfGame()) {
                 "${GAME_CN_NAME}未运行"
