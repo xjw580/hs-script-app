@@ -55,12 +55,20 @@ import javafx.util.StringConverter
 import java.net.URL
 import java.time.LocalDate
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author 肖嘉威
  * @date 2023/2/21 12:33
  */
 class MainController : MainView() {
+    companion object {
+        private val dayChangeMonitorStarted = AtomicBoolean(false)
+
+        @Volatile
+        private var activeController: MainController? = null
+    }
+
     private var isNotHoverLog = true
 
     private val runModeMap: MutableMap<RunModeEnum, MutableList<DeckStrategy>> = EnumMap(RunModeEnum::class.java)
@@ -77,14 +85,17 @@ class MainController : MainView() {
         addListener()
         initModeAndDeck()
         reloadWorkTime()
-        go {
+        activeController = this
+        if (dayChangeMonitorStarted.compareAndSet(false, true)) {
+            go {
             while (true) {
                 Thread.sleep(30_000)
                 if (LocalDate.now() > initDate) {
                     initDate = LocalDate.now()
                     log.info { "新的一天，应用新的工作时间规则" }
-                    reloadWorkTime()
+                    activeController?.reloadWorkTime()
                 }
+            }
             }
         }
     }
