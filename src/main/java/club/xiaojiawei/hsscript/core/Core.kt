@@ -86,11 +86,14 @@ object Core {
      * 启动脚本
      */
     fun start(force: Boolean = false) {
-        if ((!force && WorkTimeListener.working) || lock.isLocked) return
+        if (!force && WorkTimeListener.working) return
 
         CORE_THREAD_POOL.execute {
+            var lockAcquired = false
             try {
-                if ((!force && WorkTimeListener.working) || !lock.tryLock()) return@execute
+                if (!force && WorkTimeListener.working) return@execute
+                lockAcquired = lock.tryLock()
+                if (!lockAcquired) return@execute
 
                 if (ScriptStatus.isValidGameInstallPath && ScriptStatus.isValidPlatformProgramPath) {
                     WorkTimeListener.working = true
@@ -101,7 +104,9 @@ object Core {
                     PauseStatus.isPause = true
                 }
             } finally {
-                lock.unlock()
+                if (lockAcquired) {
+                    lock.unlock()
+                }
             }
         }
     }

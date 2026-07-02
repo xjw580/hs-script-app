@@ -158,16 +158,8 @@ class MemoryLogFile(val filename: String, private val recoverReadPos: Boolean = 
     override fun close() {
         lock.write {
             if (!closed && channelId >= 0) {
-                channelId = -1
-                closed = true
-            }
-        }
-    }
-
-    private fun reallyClose() {
-        lock.write {
-            if (!closed && channelId >= 0) {
-                LogReader.nativeCloseChannel(channelId)
+                val currentChannelId = channelId
+                LogReader.nativeCloseChannel(currentChannelId)
                 channelId = -1
                 closed = true
             }
