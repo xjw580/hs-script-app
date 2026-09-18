@@ -36,7 +36,8 @@ class VersionMsgController : Initializable {
         versionDescription.setMarkdown(
             """
             🔧 重构与优化
-            1. 相关工具更新成64位以适配游戏
+            1. 更新卡牌数据库
+            2. 修改反作弊的拦截方式
             """.trimIndent()
         )
     }
