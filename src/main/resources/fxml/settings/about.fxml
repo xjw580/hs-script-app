@@ -83,6 +83,8 @@
                                                            fitWidth="250"/>
                                             </content>
                                         </UrlLabel>
+                                        <UrlLabel text="使用步骤" url="https://github.com/xjw580/Hearthstone-Script/#-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"/>
+                                        <UrlLabel text="常见问题" url="https://github.com/xjw580/Hearthstone-Script/blob/master/doc/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md"/>
                                     </HBox>
                                 </VBox>
                             </HBox>
