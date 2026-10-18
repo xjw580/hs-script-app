@@ -971,7 +971,19 @@ class CardGroupSettingsController : CardGroupSettingsView(), Initializable, Stag
             for (cardInfo in deckInfo.cards) {
                 val dbCard = cardsMap[cardInfo.dbfId]
                 if (dbCard != null) {
-//                    cards.add(dbCardParser.parseAsGroupCard(dbCard))
+                    val cost = dbCard.cost
+                    cards.add(
+                        CardGroupCard(
+                            cardId = dbCard.cardId,
+                            dbfId = dbCard.dbfId,
+                            name = dbCard.name,
+                            playActions = CardInfoData.parsePlayAction(dbCard),
+                            powerActions = CardInfoData.parsePowerAction(dbCard),
+                            weight = 1.0,
+                            powerWeight = 1.0,
+                            changeWeight = if (cost == null || cost > 2) -1.0 else 0.0
+                        )
+                    )
                 } else {
                     notFoundCount++
                 }
